@@ -1,0 +1,1001 @@
+title,description,priority,category
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+WebSocket disconnects,WebSocket connections disconnect after short duration during real-time updates.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Packet loss during upload,File uploads suffer packet loss resulting in slow or failed transfers.,Medium,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+High network latency,Application responses delayed significantly due to high network latency.,Medium,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+SSL handshake failure,SSL/TLS handshake fails for some clients due to certificate chain issues.,High,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Service unreachable in region,Complete service outage reported in specific geographic region due to network routing failure.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Regional ISP outage,Users affected by regional ISP outage cannot access the service.,Critical,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Load balancer misrouting,Load balancer routes requests to unhealthy instances causing failures.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+VPN connection unstable,VPN connections drop intermittently causing application sessions to disconnect.,Medium,Network
+Firewall blocking traffic,Firewall rules blocking outbound application traffic in corporate networks.,High,Network
+API endpoint unreachable,Backend API endpoint unreachable from frontend due to network gateway failure.,High,Network
+Intermittent connectivity drops,Users experience frequent disconnections while using the application over stable internet.,High,Network
+Mobile network unstable,Application loses connectivity frequently on mobile networks despite good signal.,Medium,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network
+Gateway rate limiting,Network gateway rate limiting causes delayed API responses but service remains usable.,Low,Network
+DNS lookup failing,DNS resolution fails for application domain causing users to be unable to reach the service.,Critical,Network
+Proxy configuration error,Proxy server misconfiguration prevents requests from reaching backend services.,High,Network

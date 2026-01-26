@@ -1,0 +1,1001 @@
+title,description,priority,category
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Excess permissions granted,User account has been granted broader permissions than intended during onboarding.,Critical,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+User deactivation request,Request to deactivate a former employee account as part of offboarding.,Low,Account
+Conflicting multiple roles,User assigned multiple roles causing conflicting permissions in application.,High,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Environment access inconsistent,User has different access levels in staging and production environments.,Medium,Account
+Permission inheritance broken,Inherited permissions from group membership not applied correctly.,High,Account
+Account visibility issue,User account not visible to managers despite correct organizational assignment.,Medium,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Profile update not reflected,User updated profile information but changes are not reflected across all sections.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Incorrect role assigned,User was assigned an incorrect role granting access to features outside their responsibility.,Critical,Account
+User reactivation request,Previously deactivated user needs account reactivation for project work.,Low,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Admin ownership transfer needed,Admin ownership needs to be transferred due to role change in organization.,Low,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Missing feature access,User cannot access required features despite having an active account and correct subscription.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account
+Team membership incorrect,User is assigned to the wrong team affecting visibility of shared resources.,Medium,Account
+Profile sync delay,User profile changes delayed due to synchronization lag between systems.,Medium,Account
+Role change not applied,Requested role change was approved but has not taken effect in the system.,High,Account
+Account status mismatch,Account shows active in one area but inactive in another causing confusion.,Medium,Account

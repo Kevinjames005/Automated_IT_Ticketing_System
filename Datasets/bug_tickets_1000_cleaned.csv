@@ -1,0 +1,1001 @@
+title,description,priority,category
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+UI layout breaks,UI layout breaks on smaller screens and overlaps important content.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+Browser incompatibility,Application features fail on older browser versions.,High,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+API returns 500 error,"Backend API returns intermittent 500 errors during normal requests, breaking core features.",High,Bug
+Timezone mismatch bug,Events displayed with incorrect timezone after recent update.,Medium,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Search results missing,Search feature omits valid results even when exact query is used.,Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Localization text overflow,Translated text overflows UI containers causing layout issues.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Settings not saved,User settings revert back after refresh despite successful save message.,Medium,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Checkout button unresponsive,"Checkout button does not respond on web app, preventing users from completing purchases.",High,Bug
+Cache shows old data,"Cached responses not invalidated, causing outdated information to be displayed.",Medium,Bug
+Notifications delayed,"Push notifications arrive hours late, making them ineffective.",Low,Bug
+App crashes on launch,"Application crashes immediately after launch on Android devices, blocking all access.",Critical,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
+Database records duplicated,Race condition causes duplicate records to be created in the database.,Critical,Bug
+File upload corrupted,Uploaded files are saved in corrupted state and cannot be opened.,Critical,Bug
+Session expires early,User session expires unexpectedly during active usage leading to lost progress.,Low,Bug
+Screen freezes after login,"Application freezes after successful login, blocking further navigation.",High,Bug
