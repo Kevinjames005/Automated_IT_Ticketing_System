@@ -10,7 +10,7 @@ import threading
 # CONFIGURATION - EDIT THESE VALUES
 # =============================================================================
 
-INPUT_CSV = 'customer_support_tickets.csv'
+INPUT_CSV = 'Datasets/customer_support_tickets.csv'
 OUTPUT_CSV = 'classified_tickets.csv'
 TEXT_COLUMN = 'description'
 ID_COLUMN = 'id'
