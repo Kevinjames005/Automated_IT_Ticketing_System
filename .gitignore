@@ -1,7 +1,7 @@
 # Ignore datasets
 Datasets/
 *.csv
-!**/classified_tickets.csv
+classified_tickets.csv
 
 dataset_creation.ipynb
 
