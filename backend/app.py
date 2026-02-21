@@ -1,7 +1,10 @@
 import os
 from flask import Flask,request,jsonify
+from matplotlib import text
 from ml.inference import predict
 from dotenv import load_dotenv
+from ml.vector_search import semantic_search
+
 
 load_dotenv()
 
@@ -92,10 +95,27 @@ def classify():
     if not data or "subject" not in data or "body" not in data:
         return {"error": "Invalid input"}, 400
     
+    #Rule Based Classification
+
     override = rule_based_override(data["subject"], data["body"])
     if override:
         return jsonify(override), 200
     
+    # Semantic Search
+
+    text = data["subject"] + " " + data["body"]
+
+    vector_result = semantic_search(text)
+
+    if vector_result["resolved"]:
+        return jsonify({
+            "source": "semantic_search",
+            "resolution": vector_result["content"],
+            "similarity": vector_result["similarity"]
+        }), 200
+
+    # ML Calssification
+
     result = predict(data["subject"], data["body"])
     result["source"] = "model"
 
