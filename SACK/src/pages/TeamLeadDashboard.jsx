@@ -1,58 +1,29 @@
 import { useState } from "react";
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  LineChart,
-  Line,
-  Legend,
-  Area,
-  AreaChart,
+  AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell, BarChart, Bar, Legend,
 } from "recharts";
 import {
-  TrendingUp,
-  TrendingDown,
-  Clock,
-  CheckCircle,
-  AlertCircle,
-  Users,
-  Download,
-  Filter,
-  Calendar,
-  Search,
-  MoreVertical,
-  ChevronDown,
-  RefreshCw,
-  Bell,
-  Settings,
-  LayoutDashboard,
-  Ticket,
-  BarChart3,
-  LogOut,
-  Menu,
-  X,
+  TrendingUp, TrendingDown, Clock, CheckCircle, AlertCircle,
+  Users, Download, Calendar, Search, MoreVertical, ChevronDown,
+  RefreshCw, Bell, Settings, LayoutDashboard, Ticket, BarChart3,
+  LogOut, Menu, X, UserPlus,
 } from "lucide-react";
 
 const priorityData = [
-  { name: "High", value: 14, color: "#ef4444" },
-  { name: "Medium", value: 28, color: "#f97316" },
-  { name: "Low", value: 10, color: "#22c55e" },
+  { name: "High", value: 14, color: "#f87171" },
+  { name: "Medium", value: 28, color: "#94a3b8" },
+  { name: "Low", value: 10, color: "#e2e8f0" },
 ];
 
 const responseData = [
-  { name: "Mon", tickets: 12, resolved: 8, pending: 4 },
-  { name: "Tue", tickets: 18, resolved: 12, pending: 6 },
-  { name: "Wed", tickets: 10, resolved: 9, pending: 1 },
-  { name: "Thu", tickets: 22, resolved: 15, pending: 7 },
-  { name: "Fri", tickets: 15, resolved: 11, pending: 4 },
-  { name: "Sat", tickets: 8, resolved: 6, pending: 2 },
-  { name: "Sun", tickets: 5, resolved: 4, pending: 1 },
+  { name: "Mon", tickets: 12, resolved: 8 },
+  { name: "Tue", tickets: 18, resolved: 12 },
+  { name: "Wed", tickets: 10, resolved: 9 },
+  { name: "Thu", tickets: 22, resolved: 15 },
+  { name: "Fri", tickets: 15, resolved: 11 },
+  { name: "Sat", tickets: 8, resolved: 6 },
+  { name: "Sun", tickets: 5, resolved: 4 },
 ];
 
 const categoryData = [
@@ -64,186 +35,75 @@ const categoryData = [
   { name: "Security", tickets: 12 },
 ];
 
+const teamMembers = ["John Doe", "Sarah Smith", "Mike Johnson", "Emily Chen"];
+
 const teamPerformance = [
-  {
-    id: 1,
-    name: "John Doe",
-    avatar: "JD",
-    assigned: 18,
-    resolved: 15,
-    pending: 3,
-    avgResponse: "1.2h",
-    avgResolution: "4.5h",
-    satisfaction: 4.8,
-    status: "online",
-  },
-  {
-    id: 2,
-    name: "Sarah Smith",
-    avatar: "SS",
-    assigned: 22,
-    resolved: 20,
-    pending: 2,
-    avgResponse: "0.8h",
-    avgResolution: "3.2h",
-    satisfaction: 4.9,
-    status: "online",
-  },
-  {
-    id: 3,
-    name: "Mike Johnson",
-    avatar: "MJ",
-    assigned: 15,
-    resolved: 12,
-    pending: 3,
-    avgResponse: "2.1h",
-    avgResolution: "5.8h",
-    satisfaction: 4.6,
-    status: "away",
-  },
-  {
-    id: 4,
-    name: "Emily Chen",
-    avatar: "EC",
-    assigned: 20,
-    resolved: 18,
-    pending: 2,
-    avgResponse: "1.5h",
-    avgResolution: "4.0h",
-    satisfaction: 4.7,
-    status: "online",
-  },
+  { id: 1, name: "John Doe",    avatar: "JD", assigned: 18, resolved: 15, pending: 3, avgResponse: "1.2h", avgResolution: "4.5h", satisfaction: 4.8, status: "online" },
+  { id: 2, name: "Sarah Smith", avatar: "SS", assigned: 22, resolved: 20, pending: 2, avgResponse: "0.8h", avgResolution: "3.2h", satisfaction: 4.9, status: "online" },
+  { id: 3, name: "Mike Johnson",avatar: "MJ", assigned: 15, resolved: 12, pending: 3, avgResponse: "2.1h", avgResolution: "5.8h", satisfaction: 4.6, status: "away"   },
+  { id: 4, name: "Emily Chen",  avatar: "EC", assigned: 20, resolved: 18, pending: 2, avgResponse: "1.5h", avgResolution: "4.0h", satisfaction: 4.7, status: "online" },
 ];
 
-const recentTickets = [
-  {
-    id: "TCK-1045",
-    title: "Email not syncing with mobile",
-    priority: "high",
-    category: "Communication",
-    response: "45 mins",
-    resolution: "3 hrs",
-    assigned: "John Doe",
-    status: "in-progress",
-    created: "2 hours ago",
-  },
-  {
-    id: "TCK-1044",
-    title: "VPN connection timeout",
-    priority: "high",
-    category: "Network",
-    response: "1 hr",
-    resolution: "5 hrs",
-    assigned: "Sarah Smith",
-    status: "in-progress",
-    created: "4 hours ago",
-  },
-  {
-    id: "TCK-1043",
-    title: "Password reset request",
-    priority: "low",
-    category: "Account",
-    response: "15 mins",
-    resolution: "1 hr",
-    assigned: "Mike Johnson",
-    status: "resolved",
-    created: "5 hours ago",
-  },
-  {
-    id: "TCK-1042",
-    title: "Software installation needed",
-    priority: "medium",
-    category: "Software",
-    response: "30 mins",
-    resolution: "4 hrs",
-    assigned: "Emily Chen",
-    status: "in-progress",
-    created: "6 hours ago",
-  },
-  {
-    id: "TCK-1041",
-    title: "Printer not responding",
-    priority: "medium",
-    category: "Hardware",
-    response: "1.5 hrs",
-    resolution: "6 hrs",
-    assigned: "John Doe",
-    status: "open",
-    created: "8 hours ago",
-  },
+const initialTickets = [
+  { id: "TCK-1045", title: "Email not syncing with mobile",  priority: "high",   category: "Communication", response: "45 mins", assigned: "John Doe",    status: "in-progress", created: "2 hours ago" },
+  { id: "TCK-1044", title: "VPN connection timeout",         priority: "high",   category: "Network",       response: "1 hr",    assigned: "Sarah Smith", status: "in-progress", created: "4 hours ago" },
+  { id: "TCK-1043", title: "Password reset request",         priority: "low",    category: "Account",       response: "15 mins", assigned: "Mike Johnson",status: "resolved",    created: "5 hours ago" },
+  { id: "TCK-1042", title: "Software installation needed",   priority: "medium", category: "Software",      response: "30 mins", assigned: "Emily Chen",  status: "in-progress", created: "6 hours ago" },
+  { id: "TCK-1041", title: "Printer not responding",         priority: "medium", category: "Hardware",      response: "1.5 hrs", assigned: "",            status: "open",        created: "8 hours ago" },
 ];
 
-const COLORS = {
-  high: "#ef4444",
-  medium: "#f97316",
-  low: "#22c55e",
-};
-
-export default function ImprovedTeamLeadDashboard() {
+export default function TeamLeadDashboard() {
   const [timeRange, setTimeRange] = useState("7days");
-  const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [showNotifications, setShowNotifications] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
+  const [tickets, setTickets] = useState(initialTickets);
+  const [assignModal, setAssignModal] = useState(null); // ticket id
+  const [selectedAgent, setSelectedAgent] = useState("");
 
-  // Calculate trend percentages
-  const calculateTrend = (current, previous) => {
-    const change = ((current - previous) / previous) * 100;
-    return {
-      value: Math.abs(change).toFixed(1),
-      isPositive: change > 0,
-    };
-  };
+  const totalTicketsTrend = { value: "10.9", isPositive: true };
+  const responseTrend = { value: "21.7" };
+  const resolutionTrend = { value: "12.7" };
+  const pendingTrend = { value: "27.8", isPositive: true };
 
-  const totalTicketsTrend = calculateTrend(142, 128);
-  const responseTrend = calculateTrend(1.8, 2.3);
-  const resolutionTrend = calculateTrend(6.2, 7.1);
-  const pendingTrend = calculateTrend(23, 18);
-
-  // Filter tickets based on search
-  const filteredTickets = recentTickets.filter(
-    (ticket) =>
-      ticket.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ticket.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ticket.assigned.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredTickets = tickets.filter(
+    (t) =>
+      t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (t.assigned && t.assigned.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  const getPriorityColor = (priority) => {
-    switch (priority) {
-      case "high":
-        return "bg-red-100 text-red-700 border-red-200";
-      case "medium":
-        return "bg-orange-100 text-orange-700 border-orange-200";
-      case "low":
-        return "bg-green-100 text-green-700 border-green-200";
-      default:
-        return "bg-gray-100 text-gray-700 border-gray-200";
-    }
+  const handleAssign = (ticketId) => {
+    if (!selectedAgent) return;
+    setTickets((prev) =>
+      prev.map((t) =>
+        t.id === ticketId ? { ...t, assigned: selectedAgent, status: t.status === "open" ? "in-progress" : t.status } : t
+      )
+    );
+    setAssignModal(null);
+    setSelectedAgent("");
   };
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "open":
-        return "bg-blue-100 text-blue-700";
-      case "in-progress":
-        return "bg-amber-100 text-amber-700";
-      case "resolved":
-        return "bg-green-100 text-green-700";
-      default:
-        return "bg-gray-100 text-gray-700";
-    }
-  };
+  const getPriorityStyle = (p) => ({
+    high:   { background: "rgba(248,113,113,0.12)", color: "#f87171",  border: "1px solid rgba(248,113,113,0.25)" },
+    medium: { background: "rgba(148,163,184,0.12)", color: "#94a3b8",  border: "1px solid rgba(148,163,184,0.25)" },
+    low:    { background: "rgba(226,232,240,0.1)",  color: "#e2e8f0",  border: "1px solid rgba(226,232,240,0.2)"  },
+  }[p] || {});
+
+  const getStatusStyle = (s) => ({
+    open:        { background: "rgba(148,163,184,0.1)", color: "#94a3b8" },
+    "in-progress": { background: "rgba(251,191,36,0.1)",  color: "#fbbf24" },
+    resolved:    { background: "rgba(74,222,128,0.1)",  color: "#4ade80" },
+  }[s] || {});
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200">
-          <p className="font-semibold text-gray-800 mb-2">{label}</p>
-          {payload.map((entry, index) => (
-            <p key={index} className="text-sm" style={{ color: entry.color }}>
-              {entry.name}: {entry.value}
-            </p>
+        <div style={{ background: "#111", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: "10px 14px" }}>
+          <p style={{ color: "#fff", fontWeight: 600, marginBottom: 6, fontSize: 13 }}>{label}</p>
+          {payload.map((e, i) => (
+            <p key={i} style={{ color: e.color, fontSize: 12, margin: "2px 0" }}>{e.name}: {e.value}</p>
           ))}
         </div>
       );
@@ -251,408 +111,434 @@ export default function ImprovedTeamLeadDashboard() {
     return null;
   };
 
+  const navItems = [
+    { id: "overview", label: "Dashboard",        icon: LayoutDashboard },
+    { id: "tickets",  label: "Tickets",           icon: Ticket },
+    { id: "team",     label: "Team Performance",  icon: Users },
+    { id: "analytics",label: "Analytics",         icon: BarChart3 },
+  ];
+
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* MOBILE SIDEBAR OVERLAY */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
+    <div style={{ minHeight: "100vh", display: "flex", background: "#080808", fontFamily: "'Nunito Sans', sans-serif" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Nunito+Sans:wght@300;400;500;600&display=swap');
+
+        * { box-sizing: border-box; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+
+        @keyframes fadeSlideIn {
+          from { opacity: 0; transform: translateY(16px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse-dot {
+          0%,100% { opacity: 1; } 50% { opacity: 0.4; }
+        }
+        @keyframes shimmer {
+          0%   { background-position: -200% center; }
+          100% { background-position: 200% center; }
+        }
+        @keyframes modalIn {
+          from { opacity: 0; transform: scale(0.94); }
+          to   { opacity: 1; transform: scale(1); }
+        }
+
+        .nav-btn {
+          width: 100%; display: flex; align-items: center; gap: 12px;
+          padding: 10px 14px; border-radius: 12px; border: none;
+          background: transparent; cursor: pointer;
+          font-family: 'Nunito Sans', sans-serif; font-size: 14px;
+          color: rgba(255,255,255,0.4); transition: all 0.2s;
+          text-align: left;
+        }
+        .nav-btn:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.8); }
+        .nav-btn.active { background: rgba(255,255,255,0.08); color: #ffffff; font-weight: 600; }
+
+        .kpi-card {
+          background: rgba(255,255,255,0.03);
+          border: 1px solid rgba(255,255,255,0.07);
+          border-radius: 18px; padding: 24px;
+          transition: border-color 0.2s, background 0.2s;
+          animation: fadeSlideIn 0.5s ease both;
+        }
+        .kpi-card:hover { border-color: rgba(255,255,255,0.14); background: rgba(255,255,255,0.05); }
+
+        .chart-card {
+          background: rgba(255,255,255,0.03);
+          border: 1px solid rgba(255,255,255,0.07);
+          border-radius: 18px; padding: 24px;
+        }
+
+        .ticket-row { transition: background 0.15s; }
+        .ticket-row:hover { background: rgba(255,255,255,0.03); }
+
+        .assign-btn {
+          display: inline-flex; align-items: center; gap: 5px;
+          padding: 5px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12);
+          background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.6);
+          font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+          cursor: pointer; transition: all 0.2s;
+          font-family: 'Nunito Sans', sans-serif;
+        }
+        .assign-btn:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.25); }
+
+        .export-btn {
+          display: flex; align-items: center; gap: 6px;
+          padding: 8px 16px; border-radius: 10px; border: none;
+          background: #ffffff; color: #080808;
+          font-family: 'Nunito Sans', sans-serif; font-weight: 600; font-size: 13px;
+          cursor: pointer; transition: opacity 0.2s;
+          position: relative; overflow: hidden;
+        }
+        .export-btn::before {
+          content: ''; position: absolute; inset: 0;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+          background-size: 200% 100%;
+          animation: shimmer 2.5s infinite;
+        }
+        .export-btn:hover { opacity: 0.88; }
+
+        .modal-overlay {
+          position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+          display: flex; align-items: center; justify-content: center; z-index: 200;
+          backdrop-filter: blur(4px);
+        }
+        .modal-box {
+          background: #111; border: 1px solid rgba(255,255,255,0.1);
+          border-radius: 18px; padding: 28px; width: 340px;
+          animation: modalIn 0.25s ease both;
+        }
+        .modal-select {
+          width: 100%; padding: 10px 14px; border-radius: 10px;
+          background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+          color: #fff; font-family: 'Nunito Sans', sans-serif; font-size: 14px;
+          outline: none; margin: 16px 0; cursor: pointer;
+        }
+        .modal-select option { background: #1a1a1a; }
+        .modal-confirm {
+          width: 100%; padding: 11px; border-radius: 10px; border: none;
+          background: #fff; color: #080808;
+          font-family: 'Nunito Sans', sans-serif; font-weight: 700; font-size: 14px;
+          cursor: pointer; transition: opacity 0.2s;
+        }
+        .modal-confirm:hover { opacity: 0.88; }
+        .modal-cancel {
+          width: 100%; padding: 11px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);
+          background: transparent; color: rgba(255,255,255,0.5);
+          font-family: 'Nunito Sans', sans-serif; font-size: 14px;
+          cursor: pointer; margin-top: 8px; transition: color 0.2s;
+        }
+        .modal-cancel:hover { color: #fff; }
+
+        .search-input {
+          width: 100%; padding: 9px 14px 9px 38px;
+          background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+          border-radius: 10px; color: #fff; font-family: 'Nunito Sans', sans-serif; font-size: 13px;
+          outline: none; transition: border-color 0.2s;
+        }
+        .search-input:focus { border-color: rgba(255,255,255,0.3); }
+        .search-input::placeholder { color: rgba(255,255,255,0.25); }
+
+        .mobile-overlay { display: none; }
+        @media(max-width: 768px) {
+          .sidebar { position: fixed !important; z-index: 100; }
+          .mobile-overlay { display: block; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99; }
+        }
+
+        th { font-family: 'Nunito Sans', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.3); font-weight: 600; }
+      `}</style>
+
+      {/* ASSIGN MODAL */}
+      {assignModal && (
+        <div className="modal-overlay" onClick={() => setAssignModal(null)}>
+          <div className="modal-box" onClick={e => e.stopPropagation()}>
+            <h3 style={{ color: "#fff", fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 18, marginBottom: 4 }}>Assign Ticket</h3>
+            <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 13 }}>{assignModal}</p>
+            <select className="modal-select" value={selectedAgent} onChange={e => setSelectedAgent(e.target.value)}>
+              <option value="">Select an agent...</option>
+              {teamMembers.map(m => <option key={m} value={m}>{m}</option>)}
+            </select>
+            <button className="modal-confirm" onClick={() => handleAssign(assignModal)}>Confirm Assignment</button>
+            <button className="modal-cancel" onClick={() => setAssignModal(null)}>Cancel</button>
+          </div>
+        </div>
       )}
 
-      {/* SIDEBAR */}
-        <aside
-            className={`fixed md:relative md:translate-x-0 inset-y-0 left-0 w-64 bg-white border-r border-gray-200 shadow-lg p-6 flex flex-col z-50 transform transition-transform duration-300 ${
-             sidebarOpen ? "translate-x-0" : "-translate-x-full"
-         }`}
-        >
+      {/* SIDEBAR OVERLAY (mobile) */}
+      {sidebarOpen && <div className="mobile-overlay" onClick={() => setSidebarOpen(false)} />}
 
-        {/* Logo & Close Button */}
-        <div className="flex items-center justify-between mb-10">
-          <h2 className="text-xl font-bold text-orange-500">AI Ticketing</h2>
-          <button
-            onClick={() => setSidebarOpen(false)}
-            className="md:hidden text-gray-500 hover:text-gray-700"
-          >
-            <X className="w-5 h-5" />
+      {/* SIDEBAR */}
+      <aside className="sidebar" style={{
+        width: 240, background: "#0d0d0d", borderRight: "1px solid rgba(255,255,255,0.06)",
+        display: "flex", flexDirection: "column", padding: "24px 16px",
+        transform: sidebarOpen ? "translateX(0)" : undefined,
+        transition: "transform 0.3s",
+        height: "100vh", position: "sticky", top: 0, flexShrink: 0,
+      }}>
+        {/* Logo */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 36, padding: "0 6px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{ width: 8, height: 8, background: "#fff", borderRadius: "50%", boxShadow: "0 0 10px 3px rgba(255,255,255,0.3)", animation: "pulse-dot 2.5s ease infinite" }} />
+            <span style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", letterSpacing: "0.05em" }}>AI Ticket</span>
+          </div>
+          <button onClick={() => setSidebarOpen(false)} style={{ display: "none", background: "none", border: "none", color: "rgba(255,255,255,0.4)", cursor: "pointer" }}>
+            <X size={16} />
           </button>
         </div>
 
-        {/* Navigation */}
-        <nav className="space-y-2 flex-1">
-          <button
-            onClick={() => setActiveTab("overview")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition ${
-              activeTab === "overview"
-                ? "bg-orange-50 text-orange-600 font-medium"
-                : "text-gray-600 hover:bg-gray-50"
-            }`}
-          >
-            <LayoutDashboard className="w-5 h-5" />
-            Dashboard
-          </button>
-
-          <button
-            onClick={() => setActiveTab("tickets")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition ${
-              activeTab === "tickets"
-                ? "bg-orange-50 text-orange-600 font-medium"
-                : "text-gray-600 hover:bg-gray-50"
-            }`}
-          >
-            <Ticket className="w-5 h-5" />
-            Tickets
-          </button>
-
-          <button
-            onClick={() => setActiveTab("team")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition ${
-              activeTab === "team"
-                ? "bg-orange-50 text-orange-600 font-medium"
-                : "text-gray-600 hover:bg-gray-50"
-            }`}
-          >
-            <Users className="w-5 h-5" />
-            Team Performance
-          </button>
-
-          <button
-            onClick={() => setActiveTab("analytics")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition ${
-              activeTab === "analytics"
-                ? "bg-orange-50 text-orange-600 font-medium"
-                : "text-gray-600 hover:bg-gray-50"
-            }`}
-          >
-            <BarChart3 className="w-5 h-5" />
-            Analytics
-          </button>
-
-          <button
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition"
-          >
-            <Settings className="w-5 h-5" />
-            Settings
+        {/* Nav */}
+        <nav style={{ flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
+          {navItems.map(({ id, label, icon: Icon }) => (
+            <button key={id} className={`nav-btn ${activeTab === id ? "active" : ""}`} onClick={() => setActiveTab(id)}>
+              <Icon size={16} /> {label}
+            </button>
+          ))}
+          <button className="nav-btn" style={{ marginTop: 8 }}>
+            <Settings size={16} /> Settings
           </button>
         </nav>
 
-        {/* User Profile */}
-        <div className="border-t border-gray-200 pt-4 mt-4">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-semibold">
-              TL
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-medium text-gray-800">Team Lead</p>
-              <p className="text-xs text-gray-500">admin@company.com</p>
+        {/* User */}
+        <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 16, marginTop: 16 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12, padding: "0 6px" }}>
+            <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", color: "#080808", fontWeight: 700, fontSize: 13, flexShrink: 0 }}>TL</div>
+            <div>
+              <p style={{ color: "#fff", fontSize: 13, fontWeight: 600, margin: 0 }}>Team Lead</p>
+              <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, margin: 0 }}>admin@company.com</p>
             </div>
           </div>
-          <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg transition">
-            <LogOut className="w-4 h-4" />
-            Logout
-          </button>
+          <button className="nav-btn"><LogOut size={16} /> Logout</button>
         </div>
       </aside>
 
-      {/* MAIN CONTENT */}
-      <main className="flex-1">
-        {/* TOP HEADER BAR */}
-        <header className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-30 shadow-sm">
-          <div className="flex items-center justify-between">
-            {/* Mobile Menu & Title */}
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setSidebarOpen(true)}
-                className="md:hidden text-gray-600 hover:text-gray-800"
-              >
-                <Menu className="w-6 h-6" />
-              </button>
-              <div>
-                <h1 className="text-xl md:text-2xl font-bold text-gray-800">
-                  Team Lead Dashboard
-                </h1>
-                <p className="text-xs md:text-sm text-gray-500 mt-0.5">
-                  Monitor ticket flow and team productivity
-                </p>
-              </div>
+      {/* MAIN */}
+      <main style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
+        {/* HEADER */}
+        <header style={{
+          background: "rgba(8,8,8,0.85)", backdropFilter: "blur(20px)",
+          borderBottom: "1px solid rgba(255,255,255,0.06)",
+          padding: "16px 28px", display: "flex", alignItems: "center", justifyContent: "space-between",
+          position: "sticky", top: 0, zIndex: 50,
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <button onClick={() => setSidebarOpen(true)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.5)", cursor: "pointer", display: "flex" }}>
+              <Menu size={20} />
+            </button>
+            <div>
+              <h1 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 20, color: "#fff", margin: 0 }}>Team Lead Dashboard</h1>
+              <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: 0, marginTop: 2 }}>Monitor ticket flow and team productivity</p>
+            </div>
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            {/* Time Range */}
+            <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: "7px 12px" }}>
+              <Calendar size={14} style={{ color: "rgba(255,255,255,0.4)" }} />
+              <select value={timeRange} onChange={e => setTimeRange(e.target.value)}
+                style={{ background: "transparent", border: "none", color: "rgba(255,255,255,0.7)", fontSize: 13, outline: "none", cursor: "pointer", fontFamily: "'Nunito Sans', sans-serif" }}>
+                <option value="today">Today</option>
+                <option value="7days">Last 7 Days</option>
+                <option value="30days">Last 30 Days</option>
+              </select>
             </div>
 
-            {/* Right Actions */}
-            <div className="flex items-center gap-3">
-              {/* Time Range Selector */}
-              <div className="hidden sm:flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2 border border-gray-200">
-                <Calendar className="w-4 h-4 text-gray-500" />
-                <select
-                  value={timeRange}
-                  onChange={(e) => setTimeRange(e.target.value)}
-                  className="bg-transparent text-sm font-medium text-gray-700 outline-none cursor-pointer"
-                >
-                  <option value="today">Today</option>
-                  <option value="7days">Last 7 Days</option>
-                  <option value="30days">Last 30 Days</option>
-                  <option value="90days">Last 90 Days</option>
-                </select>
-              </div>
+            {/* Refresh */}
+            <button style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: "8px", cursor: "pointer", display: "flex", color: "rgba(255,255,255,0.5)", transition: "color 0.2s" }}>
+              <RefreshCw size={16} />
+            </button>
 
-              {/* Refresh Button */}
-              <button className="p-2 hover:bg-gray-100 rounded-lg transition">
-                <RefreshCw className="w-5 h-5 text-gray-600" />
+            {/* Bell */}
+            <div style={{ position: "relative" }}>
+              <button onClick={() => setShowNotifications(!showNotifications)}
+                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: "8px", cursor: "pointer", display: "flex", color: "rgba(255,255,255,0.5)" }}>
+                <Bell size={16} />
+                <span style={{ position: "absolute", top: 8, right: 8, width: 7, height: 7, background: "#f87171", borderRadius: "50%", border: "1px solid #080808" }} />
               </button>
-
-              {/* Notifications */}
-              <div className="relative">
-                <button
-                  onClick={() => setShowNotifications(!showNotifications)}
-                  className="p-2 hover:bg-gray-100 rounded-lg transition relative"
-                >
-                  <Bell className="w-5 h-5 text-gray-600" />
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                </button>
-
-                {showNotifications && (
-                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 p-4 z-50">
-                    <h3 className="font-semibold text-gray-800 mb-3">
-                      Notifications
-                    </h3>
-                    <div className="space-y-3">
-                      <div className="p-3 bg-orange-50 rounded-lg border border-orange-100">
-                        <p className="text-sm font-medium text-gray-800">
-                          High Priority Ticket
-                        </p>
-                        <p className="text-xs text-gray-600 mt-1">
-                          TCK-1045 requires immediate attention
-                        </p>
-                        <p className="text-xs text-gray-400 mt-1">
-                          2 minutes ago
-                        </p>
-                      </div>
-                      <div className="p-3 bg-green-50 rounded-lg border border-green-100">
-                        <p className="text-sm font-medium text-gray-800">
-                          Ticket Resolved
-                        </p>
-                        <p className="text-xs text-gray-600 mt-1">
-                          Sarah resolved TCK-1040
-                        </p>
-                        <p className="text-xs text-gray-400 mt-1">
-                          15 minutes ago
-                        </p>
-                      </div>
+              {showNotifications && (
+                <div style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", width: 300, background: "#111", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 14, padding: 16, zIndex: 100 }}>
+                  <p style={{ color: "#fff", fontWeight: 700, marginBottom: 12, fontSize: 14 }}>Notifications</p>
+                  {[
+                    { title: "High Priority Ticket", desc: "TCK-1045 requires immediate attention", time: "2 min ago", color: "rgba(248,113,113,0.1)", border: "rgba(248,113,113,0.2)" },
+                    { title: "Ticket Resolved", desc: "Sarah resolved TCK-1040", time: "15 min ago", color: "rgba(74,222,128,0.1)", border: "rgba(74,222,128,0.2)" },
+                  ].map((n, i) => (
+                    <div key={i} style={{ background: n.color, border: `1px solid ${n.border}`, borderRadius: 10, padding: "10px 12px", marginBottom: 8 }}>
+                      <p style={{ color: "#fff", fontSize: 13, fontWeight: 600, margin: 0 }}>{n.title}</p>
+                      <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, margin: "4px 0 0" }}>{n.desc}</p>
+                      <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 11, margin: "4px 0 0" }}>{n.time}</p>
                     </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Export Button */}
-              <button className="hidden sm:flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition font-medium">
-                <Download className="w-4 h-4" />
-                Export
-              </button>
+                  ))}
+                </div>
+              )}
             </div>
+
+            <button className="export-btn"><Download size={14} /> Export</button>
           </div>
         </header>
 
-        {/* CONTENT AREA */}
-        <div className="px-4 py-6 md:px-8 md:py-6">
-          {/* KPI CARDS */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
-            {/* Total Tickets */}
-            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition border border-gray-100">
-              <div className="flex items-start justify-between mb-3">
-                <div className="p-3 bg-blue-100 rounded-lg">
-                  <Ticket className="w-6 h-6 text-blue-600" />
-                </div>
-                <div
-                  className={`flex items-center gap-1 text-xs font-medium ${
-                    totalTicketsTrend.isPositive
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  {totalTicketsTrend.isPositive ? (
-                    <TrendingUp className="w-4 h-4" />
-                  ) : (
-                    <TrendingDown className="w-4 h-4" />
-                  )}
-                  {totalTicketsTrend.value}%
-                </div>
+        {/* CONTENT */}
+        <div style={{ padding: "28px 28px", flex: 1 }}>
+
+          {/* ═══════════════════════════════════════════════
+              SECTION 1: TICKETS (moved to top)
+          ═══════════════════════════════════════════════ */}
+          <div className="chart-card" style={{ marginBottom: 24, animation: "fadeSlideIn 0.4s ease both" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
+              <div>
+                <h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 16, color: "#fff", margin: 0 }}>Recent Tickets</h3>
+                <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 13, margin: "4px 0 0" }}>Latest ticket activity — assign and manage</p>
               </div>
-              <p className="text-sm text-gray-500 mb-1">Total Tickets</p>
-              <h2 className="text-3xl font-bold text-gray-800">142</h2>
-              <p className="text-xs text-gray-400 mt-2">+14 from last week</p>
+              <div style={{ position: "relative" }}>
+                <Search size={14} style={{ position: "absolute", left: 11, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.3)" }} />
+                <input type="text" placeholder="Search tickets..." value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)} className="search-input" style={{ width: 240 }} />
+              </div>
             </div>
 
-            {/* Avg Response Time */}
-            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition border border-gray-100">
-              <div className="flex items-start justify-between mb-3">
-                <div className="p-3 bg-orange-100 rounded-lg">
-                  <Clock className="w-6 h-6 text-orange-600" />
-                </div>
-                <div className="flex items-center gap-1 text-xs font-medium text-green-600">
-                  <TrendingDown className="w-4 h-4" />
-                  {responseTrend.value}%
-                </div>
-              </div>
-              <p className="text-sm text-gray-500 mb-1">Avg Response Time</p>
-              <h2 className="text-3xl font-bold text-orange-500">1.8h</h2>
-              <p className="text-xs text-gray-400 mt-2">Better than target</p>
-            </div>
-
-            {/* Avg Resolution */}
-            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition border border-gray-100">
-              <div className="flex items-start justify-between mb-3">
-                <div className="p-3 bg-green-100 rounded-lg">
-                  <CheckCircle className="w-6 h-6 text-green-600" />
-                </div>
-                <div className="flex items-center gap-1 text-xs font-medium text-green-600">
-                  <TrendingDown className="w-4 h-4" />
-                  {resolutionTrend.value}%
-                </div>
-              </div>
-              <p className="text-sm text-gray-500 mb-1">Avg Resolution</p>
-              <h2 className="text-3xl font-bold text-green-600">6.2h</h2>
-              <p className="text-xs text-gray-400 mt-2">Improved efficiency</p>
-            </div>
-
-            {/* Pending Tickets */}
-            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition border border-gray-100">
-              <div className="flex items-start justify-between mb-3">
-                <div className="p-3 bg-red-100 rounded-lg">
-                  <AlertCircle className="w-6 h-6 text-red-600" />
-                </div>
-                <div className="flex items-center gap-1 text-xs font-medium text-red-600">
-                  <TrendingUp className="w-4 h-4" />
-                  {pendingTrend.value}%
-                </div>
-              </div>
-              <p className="text-sm text-gray-500 mb-1">Pending Tickets</p>
-              <h2 className="text-3xl font-bold text-red-500">23</h2>
-              <p className="text-xs text-gray-400 mt-2">Requires attention</p>
+            <div style={{ overflowX: "auto" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                <thead>
+                  <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                    {["Ticket ID", "Title", "Priority", "Category", "Status", "Response", "Assigned To", "Created", "Assign", "Actions"].map(h => (
+                      <th key={h} style={{ padding: "10px 14px", textAlign: h === "Title" || h === "Ticket ID" || h === "Created" ? "left" : "center" }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredTickets.map((ticket, i) => (
+                    <tr key={ticket.id} className="ticket-row" style={{ borderBottom: "1px solid rgba(255,255,255,0.04)", animationDelay: `${i * 0.05}s` }}>
+                      <td style={{ padding: "14px", color: "#94a3b8", fontFamily: "monospace", fontSize: 12, fontWeight: 700 }}>{ticket.id}</td>
+                      <td style={{ padding: "14px", color: "#fff", fontWeight: 500, maxWidth: 200 }}>
+                        <span style={{ display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{ticket.title}</span>
+                      </td>
+                      <td style={{ padding: "14px", textAlign: "center" }}>
+                        <span style={{ ...getPriorityStyle(ticket.priority), padding: "3px 10px", borderRadius: 6, fontSize: 11, fontWeight: 700, textTransform: "capitalize" }}>
+                          {ticket.priority}
+                        </span>
+                      </td>
+                      <td style={{ padding: "14px", textAlign: "center" }}>
+                        <span style={{ background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.5)", padding: "3px 10px", borderRadius: 6, fontSize: 11 }}>{ticket.category}</span>
+                      </td>
+                      <td style={{ padding: "14px", textAlign: "center" }}>
+                        <span style={{ ...getStatusStyle(ticket.status), padding: "3px 10px", borderRadius: 6, fontSize: 11, fontWeight: 600, textTransform: "capitalize" }}>
+                          {ticket.status}
+                        </span>
+                      </td>
+                      <td style={{ padding: "14px", textAlign: "center", color: "rgba(255,255,255,0.5)", fontSize: 12 }}>{ticket.response}</td>
+                      <td style={{ padding: "14px", textAlign: "center" }}>
+                        {ticket.assigned ? (
+                          <div style={{ display: "flex", alignItems: "center", gap: 7, justifyContent: "center" }}>
+                            <div style={{ width: 26, height: 26, borderRadius: "50%", background: "#fff", color: "#080808", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 800, flexShrink: 0 }}>
+                              {ticket.assigned.split(" ").map(n => n[0]).join("")}
+                            </div>
+                            <span style={{ color: "rgba(255,255,255,0.65)", fontSize: 12 }}>{ticket.assigned}</span>
+                          </div>
+                        ) : (
+                          <span style={{ color: "rgba(255,255,255,0.2)", fontSize: 12 }}>Unassigned</span>
+                        )}
+                      </td>
+                      <td style={{ padding: "14px", color: "rgba(255,255,255,0.3)", fontSize: 12, whiteSpace: "nowrap" }}>{ticket.created}</td>
+                      <td style={{ padding: "14px", textAlign: "center" }}>
+                        <button className="assign-btn" onClick={() => { setAssignModal(ticket.id); setSelectedAgent(ticket.assigned || ""); }}>
+                          <UserPlus size={11} />
+                          {ticket.assigned ? "Reassign" : "Assign"}
+                        </button>
+                      </td>
+                      <td style={{ padding: "14px", textAlign: "center" }}>
+                        <button style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.2)", display: "flex", margin: "0 auto" }}>
+                          <MoreVertical size={16} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {filteredTickets.length === 0 && (
+                <div style={{ textAlign: "center", padding: "48px 0", color: "rgba(255,255,255,0.2)", fontSize: 14 }}>No tickets found</div>
+              )}
             </div>
           </div>
 
-          {/* CHARTS ROW */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            {/* Weekly Ticket Volume - Enhanced */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800">
-                    Weekly Ticket Volume
-                  </h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Tickets vs Resolved
-                  </p>
+          {/* ═══════════════════════════════════════════════
+              SECTION 2: KPI CARDS
+          ═══════════════════════════════════════════════ */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16, marginBottom: 24 }}>
+            {[
+              { label: "Total Tickets",     value: "142", sub: "+14 from last week",     trend: totalTicketsTrend.value + "%",  trendUp: true,  icon: Ticket,       iconBg: "rgba(148,163,184,0.1)", iconColor: "#94a3b8" },
+              { label: "Avg Response Time", value: "1.8h", sub: "Better than target",    trend: responseTrend.value + "%",      trendUp: false, icon: Clock,        iconBg: "rgba(251,191,36,0.1)",  iconColor: "#fbbf24" },
+              { label: "Avg Resolution",    value: "6.2h", sub: "Improved efficiency",   trend: resolutionTrend.value + "%",    trendUp: false, icon: CheckCircle,  iconBg: "rgba(74,222,128,0.1)",  iconColor: "#4ade80" },
+              { label: "Pending Tickets",   value: "23",  sub: "Requires attention",     trend: pendingTrend.value + "%",       trendUp: true,  icon: AlertCircle,  iconBg: "rgba(248,113,113,0.1)", iconColor: "#f87171" },
+            ].map(({ label, value, sub, trend, trendUp, icon: Icon, iconBg, iconColor }, i) => (
+              <div key={label} className="kpi-card" style={{ animationDelay: `${i * 0.08}s` }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
+                  <div style={{ width: 42, height: 42, borderRadius: 12, background: iconBg, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Icon size={20} style={{ color: iconColor }} />
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 11, fontWeight: 700, color: trendUp ? "#f87171" : "#4ade80" }}>
+                    {trendUp ? <TrendingUp size={13} /> : <TrendingDown size={13} />}
+                    {trend}
+                  </div>
                 </div>
-                <button className="p-2 hover:bg-gray-100 rounded-lg transition">
-                  <MoreVertical className="w-5 h-5 text-gray-400" />
-                </button>
+                <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 12, margin: "0 0 6px", fontWeight: 500 }}>{label}</p>
+                <h2 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 32, color: "#fff", margin: 0, lineHeight: 1 }}>{value}</h2>
+                <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 11, margin: "8px 0 0" }}>{sub}</p>
               </div>
+            ))}
+          </div>
 
-              <ResponsiveContainer width="100%" height={280}>
+          {/* ═══════════════════════════════════════════════
+              SECTION 3: CHARTS
+          ═══════════════════════════════════════════════ */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 24 }}>
+            {/* Area Chart */}
+            <div className="chart-card">
+              <h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", margin: "0 0 4px" }}>Weekly Ticket Volume</h3>
+              <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: "0 0 20px" }}>Tickets vs Resolved</p>
+              <ResponsiveContainer width="100%" height={240}>
                 <AreaChart data={responseData}>
                   <defs>
-                    <linearGradient id="ticketsGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#f97316" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#f97316" stopOpacity={0} />
+                    <linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#ffffff" stopOpacity={0.15} />
+                      <stop offset="95%" stopColor="#ffffff" stopOpacity={0} />
                     </linearGradient>
-                    <linearGradient id="resolvedGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#22c55e" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#22c55e" stopOpacity={0} />
+                    <linearGradient id="rg" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#94a3b8" stopOpacity={0.15} />
+                      <stop offset="95%" stopColor="#94a3b8" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <XAxis
-                    dataKey="name"
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: "#6b7280", fontSize: 12 }}
-                  />
-                  <YAxis
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: "#6b7280", fontSize: 12 }}
-                  />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 11 }} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 11 }} />
                   <Tooltip content={<CustomTooltip />} />
-                  <Legend
-                    wrapperStyle={{ paddingTop: "20px" }}
-                    iconType="circle"
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="tickets"
-                    stroke="#f97316"
-                    strokeWidth={2}
-                    fill="url(#ticketsGradient)"
-                    name="Total Tickets"
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="resolved"
-                    stroke="#22c55e"
-                    strokeWidth={2}
-                    fill="url(#resolvedGradient)"
-                    name="Resolved"
-                  />
+                  <Legend wrapperStyle={{ paddingTop: 16, fontSize: 12, color: "rgba(255,255,255,0.5)" }} iconType="circle" />
+                  <Area type="monotone" dataKey="tickets"  stroke="#ffffff" strokeWidth={2} fill="url(#tg)" name="Total Tickets" />
+                  <Area type="monotone" dataKey="resolved" stroke="#94a3b8" strokeWidth={2} fill="url(#rg)" name="Resolved" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
 
-            {/* Priority Distribution */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800">
-                    Ticket Priority Distribution
-                  </h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Current breakdown
-                  </p>
-                </div>
-                <button className="p-2 hover:bg-gray-100 rounded-lg transition">
-                  <MoreVertical className="w-5 h-5 text-gray-400" />
-                </button>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <ResponsiveContainer width="50%" height={220}>
+            {/* Pie Chart */}
+            <div className="chart-card">
+              <h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", margin: "0 0 4px" }}>Priority Distribution</h3>
+              <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: "0 0 20px" }}>Current breakdown</p>
+              <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+                <ResponsiveContainer width="50%" height={200}>
                   <PieChart>
-                    <Pie
-                      data={priorityData}
-                      dataKey="value"
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={50}
-                      outerRadius={80}
-                      paddingAngle={5}
-                    >
-                      {priorityData.map((entry, index) => (
-                        <Cell key={index} fill={entry.color} />
-                      ))}
+                    <Pie data={priorityData} dataKey="value" cx="50%" cy="50%" innerRadius={48} outerRadius={78} paddingAngle={5}>
+                      {priorityData.map((e, i) => <Cell key={i} fill={e.color} />)}
                     </Pie>
-                    <Tooltip />
+                    <Tooltip content={<CustomTooltip />} />
                   </PieChart>
                 </ResponsiveContainer>
-
-                {/* Legend */}
-                <div className="flex-1 space-y-4">
-                  {priorityData.map((item, index) => (
-                    <div key={index} className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="w-4 h-4 rounded"
-                          style={{ backgroundColor: item.color }}
-                        ></div>
-                        <span className="text-sm font-medium text-gray-700">
-                          {item.name}
-                        </span>
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 16 }}>
+                  {priorityData.map((item, i) => (
+                    <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                        <div style={{ width: 10, height: 10, borderRadius: 3, background: item.color, flexShrink: 0 }} />
+                        <span style={{ fontSize: 13, color: "rgba(255,255,255,0.6)" }}>{item.name}</span>
                       </div>
-                      <div className="text-right">
-                        <p className="text-lg font-bold text-gray-800">
-                          {item.value}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          {((item.value / 52) * 100).toFixed(0)}%
-                        </p>
+                      <div style={{ textAlign: "right" }}>
+                        <p style={{ color: "#fff", fontWeight: 700, fontSize: 16, margin: 0 }}>{item.value}</p>
+                        <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 11, margin: 0 }}>{((item.value / 52) * 100).toFixed(0)}%</p>
                       </div>
                     </div>
                   ))}
@@ -661,155 +547,62 @@ export default function ImprovedTeamLeadDashboard() {
             </div>
           </div>
 
-          {/* CATEGORY PERFORMANCE */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-8">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-800">
-                  Tickets by Category
-                </h3>
-                <p className="text-sm text-gray-500 mt-1">
-                  Distribution across departments
-                </p>
-              </div>
-              <button className="p-2 hover:bg-gray-100 rounded-lg transition">
-                <MoreVertical className="w-5 h-5 text-gray-400" />
-              </button>
-            </div>
-
-            <ResponsiveContainer width="100%" height={300}>
+          {/* Category Bar Chart */}
+          <div className="chart-card" style={{ marginBottom: 24 }}>
+            <h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", margin: "0 0 4px" }}>Tickets by Category</h3>
+            <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: "0 0 20px" }}>Distribution across departments</p>
+            <ResponsiveContainer width="100%" height={260}>
               <BarChart data={categoryData} layout="vertical">
-                <XAxis type="number" axisLine={false} tickLine={false} />
-                <YAxis
-                  type="category"
-                  dataKey="name"
-                  axisLine={false}
-                  tickLine={false}
-                  width={120}
-                />
+                <XAxis type="number" axisLine={false} tickLine={false} tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 11 }} />
+                <YAxis type="category" dataKey="name" axisLine={false} tickLine={false} width={110} tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 12 }} />
                 <Tooltip content={<CustomTooltip />} />
-                <Bar
-                  dataKey="tickets"
-                  fill="#f97316"
-                  radius={[0, 8, 8, 0]}
-                  name="Tickets"
-                />
+                <Bar dataKey="tickets" fill="rgba(255,255,255,0.15)" radius={[0, 8, 8, 0]} name="Tickets"
+                  background={{ fill: "rgba(255,255,255,0.03)", radius: [0, 8, 8, 0] }} />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
-          {/* TEAM PERFORMANCE TABLE */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-8">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-800">
-                  Team Performance
-                </h3>
-                <p className="text-sm text-gray-500 mt-1">
-                  Individual agent metrics
-                </p>
-              </div>
-              <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-orange-600 hover:bg-orange-50 rounded-lg transition">
-                View All
-                <ChevronDown className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div className="overflow-x-auto">
-              <table className="w-full">
+          {/* ═══════════════════════════════════════════════
+              SECTION 4: TEAM PERFORMANCE
+          ═══════════════════════════════════════════════ */}
+          <div className="chart-card">
+            <h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", margin: "0 0 4px" }}>Team Performance</h3>
+            <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: "0 0 20px" }}>Individual agent metrics</p>
+            <div style={{ overflowX: "auto" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">
-                      Agent
-                    </th>
-                    <th className="text-center py-3 px-4 text-sm font-semibold text-gray-600">
-                      Status
-                    </th>
-                    <th className="text-center py-3 px-4 text-sm font-semibold text-gray-600">
-                      Assigned
-                    </th>
-                    <th className="text-center py-3 px-4 text-sm font-semibold text-gray-600">
-                      Resolved
-                    </th>
-                    <th className="text-center py-3 px-4 text-sm font-semibold text-gray-600">
-                      Pending
-                    </th>
-                    <th className="text-center py-3 px-4 text-sm font-semibold text-gray-600">
-                      Avg Response
-                    </th>
-                    <th className="text-center py-3 px-4 text-sm font-semibold text-gray-600">
-                      Avg Resolution
-                    </th>
-                    <th className="text-center py-3 px-4 text-sm font-semibold text-gray-600">
-                      Rating
-                    </th>
+                  <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                    {["Agent", "Status", "Assigned", "Resolved", "Pending", "Avg Response", "Avg Resolution", "Rating"].map(h => (
+                      <th key={h} style={{ padding: "10px 14px", textAlign: h === "Agent" ? "left" : "center" }}>{h}</th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {teamPerformance.map((member) => (
-                    <tr
-                      key={member.id}
-                      className="border-b border-gray-100 hover:bg-gray-50 transition"
-                    >
-                      <td className="py-4 px-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-semibold text-sm">
-                            {member.avatar}
-                          </div>
+                  {teamPerformance.map((m) => (
+                    <tr key={m.id} className="ticket-row" style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+                      <td style={{ padding: "14px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                          <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#fff", color: "#080808", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800, flexShrink: 0 }}>{m.avatar}</div>
                           <div>
-                            <p className="font-medium text-gray-800">
-                              {member.name}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              Support Agent
-                            </p>
+                            <p style={{ color: "#fff", fontWeight: 600, margin: 0, fontSize: 13 }}>{m.name}</p>
+                            <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 11, margin: 0 }}>Support Agent</p>
                           </div>
                         </div>
                       </td>
-                      <td className="py-4 px-4 text-center">
-                        <span
-                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${
-                            member.status === "online"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-yellow-100 text-yellow-700"
-                          }`}
-                        >
-                          <span
-                            className={`w-2 h-2 rounded-full ${
-                              member.status === "online"
-                                ? "bg-green-500"
-                                : "bg-yellow-500"
-                            }`}
-                          ></span>
-                          {member.status}
+                      <td style={{ padding: "14px", textAlign: "center" }}>
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "3px 10px", borderRadius: 20, fontSize: 11, fontWeight: 600, background: m.status === "online" ? "rgba(74,222,128,0.1)" : "rgba(251,191,36,0.1)", color: m.status === "online" ? "#4ade80" : "#fbbf24" }}>
+                          <span style={{ width: 6, height: 6, borderRadius: "50%", background: m.status === "online" ? "#4ade80" : "#fbbf24", animation: "pulse-dot 2s infinite" }} />
+                          {m.status}
                         </span>
                       </td>
-                      <td className="py-4 px-4 text-center font-semibold text-gray-800">
-                        {member.assigned}
-                      </td>
-                      <td className="py-4 px-4 text-center">
-                        <span className="text-green-600 font-semibold">
-                          {member.resolved}
-                        </span>
-                      </td>
-                      <td className="py-4 px-4 text-center">
-                        <span className="text-orange-600 font-semibold">
-                          {member.pending}
-                        </span>
-                      </td>
-                      <td className="py-4 px-4 text-center text-gray-700">
-                        {member.avgResponse}
-                      </td>
-                      <td className="py-4 px-4 text-center text-gray-700">
-                        {member.avgResolution}
-                      </td>
-                      <td className="py-4 px-4 text-center">
-                        <div className="flex items-center justify-center gap-1">
-                          <span className="text-yellow-500">★</span>
-                          <span className="font-semibold text-gray-800">
-                            {member.satisfaction}
-                          </span>
-                        </div>
+                      <td style={{ padding: "14px", textAlign: "center", color: "#fff", fontWeight: 700 }}>{m.assigned}</td>
+                      <td style={{ padding: "14px", textAlign: "center", color: "#4ade80", fontWeight: 700 }}>{m.resolved}</td>
+                      <td style={{ padding: "14px", textAlign: "center", color: "#fbbf24", fontWeight: 700 }}>{m.pending}</td>
+                      <td style={{ padding: "14px", textAlign: "center", color: "rgba(255,255,255,0.5)" }}>{m.avgResponse}</td>
+                      <td style={{ padding: "14px", textAlign: "center", color: "rgba(255,255,255,0.5)" }}>{m.avgResolution}</td>
+                      <td style={{ padding: "14px", textAlign: "center" }}>
+                        <span style={{ color: "#fbbf24" }}>★</span>
+                        <span style={{ color: "#fff", fontWeight: 700, marginLeft: 4 }}>{m.satisfaction}</span>
                       </td>
                     </tr>
                   ))}
@@ -818,145 +611,6 @@ export default function ImprovedTeamLeadDashboard() {
             </div>
           </div>
 
-          {/* RECENT TICKETS TABLE */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-800">
-                  Recent Tickets
-                </h3>
-                <p className="text-sm text-gray-500 mt-1">
-                  Latest ticket activities
-                </p>
-              </div>
-
-              {/* Search Bar */}
-              <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search tickets..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
-                />
-              </div>
-            </div>
-
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 font-semibold text-gray-600">
-                      Ticket ID
-                    </th>
-                    <th className="text-left py-3 px-4 font-semibold text-gray-600">
-                      Title
-                    </th>
-                    <th className="text-center py-3 px-4 font-semibold text-gray-600">
-                      Priority
-                    </th>
-                    <th className="text-center py-3 px-4 font-semibold text-gray-600">
-                      Category
-                    </th>
-                    <th className="text-center py-3 px-4 font-semibold text-gray-600">
-                      Status
-                    </th>
-                    <th className="text-center py-3 px-4 font-semibold text-gray-600">
-                      Response
-                    </th>
-                    <th className="text-left py-3 px-4 font-semibold text-gray-600">
-                      Assigned
-                    </th>
-                    <th className="text-left py-3 px-4 font-semibold text-gray-600">
-                      Created
-                    </th>
-                    <th className="text-center py-3 px-4 font-semibold text-gray-600">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredTickets.map((ticket) => (
-                    <tr
-                      key={ticket.id}
-                      className="border-b border-gray-100 hover:bg-gray-50 transition"
-                    >
-                      <td className="py-4 px-4">
-                        <span className="font-mono text-xs font-semibold text-blue-600">
-                          {ticket.id}
-                        </span>
-                      </td>
-                      <td className="py-4 px-4">
-                        <p className="font-medium text-gray-800 max-w-xs truncate">
-                          {ticket.title}
-                        </p>
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="flex justify-center">
-                          <span
-                            className={`px-3 py-1 rounded-full text-xs font-semibold capitalize border ${getPriorityColor(
-                              ticket.priority
-                            )}`}
-                          >
-                            {ticket.priority}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="py-4 px-4 text-center">
-                        <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
-                          {ticket.category}
-                        </span>
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="flex justify-center">
-                          <span
-                            className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${getStatusColor(
-                              ticket.status
-                            )}`}
-                          >
-                            {ticket.status}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="py-4 px-4 text-center text-gray-700">
-                        {ticket.response}
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white text-xs font-semibold">
-                            {ticket.assigned
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")}
-                          </div>
-                          <span className="text-sm text-gray-700">
-                            {ticket.assigned}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="py-4 px-4 text-sm text-gray-500">
-                        {ticket.created}
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="flex justify-center">
-                          <button className="p-2 hover:bg-gray-100 rounded-lg transition">
-                            <MoreVertical className="w-4 h-4 text-gray-400" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {filteredTickets.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-gray-500">No tickets found</p>
-              </div>
-            )}
-          </div>
         </div>
       </main>
     </div>
