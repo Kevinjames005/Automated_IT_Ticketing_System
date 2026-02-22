@@ -6,7 +6,7 @@ def start_ticket(ticket_id: int, member_id: int):
     cur = conn.cursor()
 
     try:
-        # 1️⃣ Verify ticket is assigned to this member
+        # Verify ticket is assigned to this member
         cur.execute(
             """
             SELECT t.status
@@ -26,11 +26,11 @@ def start_ticket(ticket_id: int, member_id: int):
 
         current_status = result[0]
 
-        # 2️⃣ Only Assigned tickets can be started
+        # Only Assigned tickets can be started
         if current_status != "Assigned":
             raise Exception("Only assigned tickets can be started")
 
-        # 3️⃣ Update ticket status → In Progress
+        # Update ticket status → In Progress
         cur.execute(
             """
             UPDATE tickets
@@ -40,7 +40,7 @@ def start_ticket(ticket_id: int, member_id: int):
             (ticket_id,)
         )
 
-        # 4️⃣ Log status history
+        # Log status history
         cur.execute(
             """
             INSERT INTO ticket_status_history
@@ -66,7 +66,7 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
     cur = conn.cursor()
 
     try:
-        # 1️⃣ Verify ticket assigned to this member and get status
+        # Verify ticket assigned to this member and get status
         cur.execute(
             """
             SELECT t.status
@@ -86,11 +86,11 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
 
         current_status = result[0]
 
-        # 2️⃣ Only In Progress tickets can be resolved
+        # Only In Progress tickets can be resolved
         if current_status != "In Progress":
             raise Exception("Only In Progress tickets can be resolved")
 
-        # 3️⃣ Insert resolution document
+        # nsert resolution document
         cur.execute(
             """
             INSERT INTO resolution_documents (ticket_id, content)
@@ -102,7 +102,7 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
 
         resolution_id = cur.fetchone()[0]
 
-        # 4️⃣ Update ticket status → Resolved
+        # Update ticket status → Resolved
         cur.execute(
             """
             UPDATE tickets
@@ -112,7 +112,7 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
             (ticket_id,)
         )
 
-        # 5️⃣ Insert status history
+        # Insert status history
         cur.execute(
             """
             INSERT INTO ticket_status_history

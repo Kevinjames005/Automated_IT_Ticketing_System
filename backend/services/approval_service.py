@@ -8,7 +8,7 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
     cur = conn.cursor()
 
     try:
-        # 1️⃣ Check ticket status
+        # Check ticket status
         cur.execute(
             "SELECT status FROM tickets WHERE ticket_id = %s;",
             (ticket_id,)
@@ -24,7 +24,7 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
         if current_status != "Resolved":
             raise Exception("Only resolved tickets can be approved")
 
-        # 2️⃣ Update ticket → Closed
+        # Update ticket → Closed
         cur.execute(
             """
             UPDATE tickets
@@ -34,7 +34,7 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
             (ticket_id,)
         )
 
-        # 3️⃣ Get resolution content
+        # Get resolution content
         cur.execute(
             """
             SELECT resolution_id, content
@@ -51,7 +51,7 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
 
         resolution_id, content = resolution
 
-        # 4️⃣ Update resolution → approved_by
+        # Update resolution → approved_by
         cur.execute(
             """
             UPDATE resolution_documents
@@ -61,7 +61,7 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
             (lead_id, resolution_id)
         )
 
-        # 5️⃣ If Lead chooses to add to Knowledge Base
+        # If Lead chooses to add to Knowledge Base
         if add_to_kb:
 
             # Generate embedding
@@ -82,7 +82,7 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
                 )
             )
 
-        # 6️⃣ Insert status history
+        # Insert status history
         cur.execute(
             """
             INSERT INTO ticket_status_history
@@ -108,7 +108,7 @@ def reject_resolution(ticket_id: int, lead_id: int):
     cur = conn.cursor()
 
     try:
-        # 1️⃣ Check ticket status
+        # Check ticket status
         cur.execute(
             "SELECT status FROM tickets WHERE ticket_id = %s;",
             (ticket_id,)
@@ -124,7 +124,7 @@ def reject_resolution(ticket_id: int, lead_id: int):
         if current_status != "Resolved":
             raise Exception("Only resolved tickets can be rejected")
 
-        # 2️⃣ Update ticket back to Assigned
+        # Update ticket back to Assigned
         cur.execute(
             """
             UPDATE tickets
@@ -134,7 +134,7 @@ def reject_resolution(ticket_id: int, lead_id: int):
             (ticket_id,)
         )
 
-        # 3️⃣ Log history
+        # Log history
         cur.execute(
             """
             INSERT INTO ticket_status_history

@@ -6,7 +6,7 @@ def assign_ticket(ticket_id: int, member_id: int, lead_id: int):
     cur = conn.cursor()
 
     try:
-        # 1️⃣ Check ticket exists
+        # Check ticket exists
         cur.execute(
             "SELECT status FROM tickets WHERE ticket_id = %s;",
             (ticket_id,)
@@ -18,11 +18,11 @@ def assign_ticket(ticket_id: int, member_id: int, lead_id: int):
 
         current_status = ticket[0]
 
-        # 2️⃣ Only Pending tickets can be assigned
+        # Only Pending tickets can be assigned
         if current_status != "Pending":
             raise Exception("Only pending tickets can be assigned")
 
-        # 3️⃣ Check member belongs to this lead
+        # Check member belongs to this lead
         cur.execute(
             """
             SELECT member_id
@@ -37,7 +37,7 @@ def assign_ticket(ticket_id: int, member_id: int, lead_id: int):
         if not member:
             raise Exception("This member does not belong to this team lead")
 
-        # 4️⃣ Ensure ticket is not already assigned
+        # Ensure ticket is not already assigned
         cur.execute(
             """
             SELECT 1 FROM ticket_assignments
@@ -49,7 +49,7 @@ def assign_ticket(ticket_id: int, member_id: int, lead_id: int):
         if cur.fetchone():
             raise Exception("Ticket already assigned")
 
-        # 5️⃣ Insert assignment
+        # Insert assignment
         cur.execute(
             """
             INSERT INTO ticket_assignments (ticket_id, member_id, assigned_by)
@@ -58,7 +58,7 @@ def assign_ticket(ticket_id: int, member_id: int, lead_id: int):
             (ticket_id, member_id, lead_id)
         )
 
-        # 6️⃣ Update ticket status
+        # Update ticket status
         cur.execute(
             """
             UPDATE tickets
@@ -68,7 +68,7 @@ def assign_ticket(ticket_id: int, member_id: int, lead_id: int):
             (ticket_id,)
         )
 
-        # 7️⃣ Insert status history
+        # Insert status history
         cur.execute(
             """
             INSERT INTO ticket_status_history
