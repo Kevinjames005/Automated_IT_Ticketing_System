@@ -1,84 +1,88 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, BarChart, Bar, Legend,
 } from "recharts";
 import {
   TrendingUp, TrendingDown, Clock, CheckCircle, AlertCircle,
-  Users, Download, Calendar, Search, MoreVertical, ChevronDown,
+  Users, Download, Calendar, Search, MoreVertical,
   RefreshCw, Bell, Settings, LayoutDashboard, Ticket, BarChart3,
   LogOut, Menu, X, UserPlus,
 } from "lucide-react";
 
 const priorityData = [
-  { name: "High", value: 14, color: "#f87171" },
+  { name: "High",   value: 14, color: "#f87171" },
   { name: "Medium", value: 28, color: "#94a3b8" },
-  { name: "Low", value: 10, color: "#e2e8f0" },
+  { name: "Low",    value: 10, color: "#e2e8f0" },
 ];
 
 const responseData = [
-  { name: "Mon", tickets: 12, resolved: 8 },
+  { name: "Mon", tickets: 12, resolved: 8  },
   { name: "Tue", tickets: 18, resolved: 12 },
-  { name: "Wed", tickets: 10, resolved: 9 },
+  { name: "Wed", tickets: 10, resolved: 9  },
   { name: "Thu", tickets: 22, resolved: 15 },
   { name: "Fri", tickets: 15, resolved: 11 },
-  { name: "Sat", tickets: 8, resolved: 6 },
-  { name: "Sun", tickets: 5, resolved: 4 },
+  { name: "Sat", tickets: 8,  resolved: 6  },
+  { name: "Sun", tickets: 5,  resolved: 4  },
 ];
 
 const categoryData = [
-  { name: "Network", tickets: 24 },
-  { name: "Hardware", tickets: 18 },
-  { name: "Software", tickets: 32 },
-  { name: "Account", tickets: 15 },
+  { name: "Network",       tickets: 24 },
+  { name: "Hardware",      tickets: 18 },
+  { name: "Software",      tickets: 32 },
+  { name: "Account",       tickets: 15 },
   { name: "Communication", tickets: 21 },
-  { name: "Security", tickets: 12 },
+  { name: "Security",      tickets: 12 },
 ];
 
 const teamMembers = ["John Doe", "Sarah Smith", "Mike Johnson", "Emily Chen"];
 
 const teamPerformance = [
-  { id: 1, name: "John Doe",    avatar: "JD", assigned: 18, resolved: 15, pending: 3, avgResponse: "1.2h", avgResolution: "4.5h", satisfaction: 4.8, status: "online" },
-  { id: 2, name: "Sarah Smith", avatar: "SS", assigned: 22, resolved: 20, pending: 2, avgResponse: "0.8h", avgResolution: "3.2h", satisfaction: 4.9, status: "online" },
-  { id: 3, name: "Mike Johnson",avatar: "MJ", assigned: 15, resolved: 12, pending: 3, avgResponse: "2.1h", avgResolution: "5.8h", satisfaction: 4.6, status: "away"   },
-  { id: 4, name: "Emily Chen",  avatar: "EC", assigned: 20, resolved: 18, pending: 2, avgResponse: "1.5h", avgResolution: "4.0h", satisfaction: 4.7, status: "online" },
+  { id: 1, name: "John Doe",     avatar: "JD", assigned: 18, resolved: 15, pending: 3, avgResponse: "1.2h", avgResolution: "4.5h", satisfaction: 4.8, status: "online" },
+  { id: 2, name: "Sarah Smith",  avatar: "SS", assigned: 22, resolved: 20, pending: 2, avgResponse: "0.8h", avgResolution: "3.2h", satisfaction: 4.9, status: "online" },
+  { id: 3, name: "Mike Johnson", avatar: "MJ", assigned: 15, resolved: 12, pending: 3, avgResponse: "2.1h", avgResolution: "5.8h", satisfaction: 4.6, status: "away"   },
+  { id: 4, name: "Emily Chen",   avatar: "EC", assigned: 20, resolved: 18, pending: 2, avgResponse: "1.5h", avgResolution: "4.0h", satisfaction: 4.7, status: "online" },
 ];
 
 const initialTickets = [
-  { id: "TCK-1045", title: "Email not syncing with mobile",  priority: "high",   category: "Communication", response: "45 mins", assigned: "John Doe",    status: "in-progress", created: "2 hours ago" },
-  { id: "TCK-1044", title: "VPN connection timeout",         priority: "high",   category: "Network",       response: "1 hr",    assigned: "Sarah Smith", status: "in-progress", created: "4 hours ago" },
-  { id: "TCK-1043", title: "Password reset request",         priority: "low",    category: "Account",       response: "15 mins", assigned: "Mike Johnson",status: "resolved",    created: "5 hours ago" },
-  { id: "TCK-1042", title: "Software installation needed",   priority: "medium", category: "Software",      response: "30 mins", assigned: "Emily Chen",  status: "in-progress", created: "6 hours ago" },
-  { id: "TCK-1041", title: "Printer not responding",         priority: "medium", category: "Hardware",      response: "1.5 hrs", assigned: "",            status: "open",        created: "8 hours ago" },
+  { id: "TCK-1045", title: "Email not syncing with mobile",  priority: "high",   category: "Communication", response: "45 mins", assigned: "John Doe",     status: "in-progress", created: "2 hours ago" },
+  { id: "TCK-1044", title: "VPN connection timeout",         priority: "high",   category: "Network",       response: "1 hr",    assigned: "Sarah Smith",  status: "in-progress", created: "4 hours ago" },
+  { id: "TCK-1043", title: "Password reset request",         priority: "low",    category: "Account",       response: "15 mins", assigned: "Mike Johnson", status: "resolved",    created: "5 hours ago" },
+  { id: "TCK-1042", title: "Software installation needed",   priority: "medium", category: "Software",      response: "30 mins", assigned: "Emily Chen",   status: "in-progress", created: "6 hours ago" },
+  { id: "TCK-1041", title: "Printer not responding",         priority: "medium", category: "Hardware",      response: "1.5 hrs", assigned: "",             status: "open",        created: "8 hours ago" },
 ];
 
 export default function TeamLeadDashboard() {
-  const [timeRange, setTimeRange] = useState("7days");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("overview");
-  const [tickets, setTickets] = useState(initialTickets);
-  const [assignModal, setAssignModal] = useState(null); // ticket id
-  const [selectedAgent, setSelectedAgent] = useState("");
+  const navigate = useNavigate();
 
-  const totalTicketsTrend = { value: "10.9", isPositive: true };
-  const responseTrend = { value: "21.7" };
-  const resolutionTrend = { value: "12.7" };
-  const pendingTrend = { value: "27.8", isPositive: true };
+  const [timeRange,          setTimeRange]          = useState("7days");
+  const [searchQuery,        setSearchQuery]        = useState("");
+  const [showNotifications,  setShowNotifications]  = useState(false);
+  const [sidebarOpen,        setSidebarOpen]        = useState(false);
+  const [activeTab,          setActiveTab]          = useState("overview");
+  const [tickets,            setTickets]            = useState(initialTickets);
+  const [assignModal,        setAssignModal]        = useState(null);
+  const [selectedAgent,      setSelectedAgent]      = useState("");
 
-  const filteredTickets = tickets.filter(
-    (t) =>
-      t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (t.assigned && t.assigned.toLowerCase().includes(searchQuery.toLowerCase()))
+  const totalTicketsTrend = { value: "10.9", isPositive: true  };
+  const responseTrend     = { value: "21.7"                    };
+  const resolutionTrend   = { value: "12.7"                    };
+  const pendingTrend      = { value: "27.8", isPositive: true  };
+
+  const filteredTickets = tickets.filter(t =>
+    t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    t.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (t.assigned && t.assigned.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const handleAssign = (ticketId) => {
     if (!selectedAgent) return;
-    setTickets((prev) =>
-      prev.map((t) =>
-        t.id === ticketId ? { ...t, assigned: selectedAgent, status: t.status === "open" ? "in-progress" : t.status } : t
+    setTickets(prev =>
+      prev.map(t =>
+        t.id === ticketId
+          ? { ...t, assigned: selectedAgent, status: t.status === "open" ? "in-progress" : t.status }
+          : t
       )
     );
     setAssignModal(null);
@@ -92,9 +96,9 @@ export default function TeamLeadDashboard() {
   }[p] || {});
 
   const getStatusStyle = (s) => ({
-    open:        { background: "rgba(148,163,184,0.1)", color: "#94a3b8" },
+    open:          { background: "rgba(148,163,184,0.1)", color: "#94a3b8" },
     "in-progress": { background: "rgba(251,191,36,0.1)",  color: "#fbbf24" },
-    resolved:    { background: "rgba(74,222,128,0.1)",  color: "#4ade80" },
+    resolved:      { background: "rgba(74,222,128,0.1)",  color: "#4ade80" },
   }[s] || {});
 
   const CustomTooltip = ({ active, payload, label }) => {
@@ -111,12 +115,21 @@ export default function TeamLeadDashboard() {
     return null;
   };
 
+  // Nav items — "tickets" navigates to /tickets, others set activeTab
   const navItems = [
-    { id: "overview", label: "Dashboard",        icon: LayoutDashboard },
-    { id: "tickets",  label: "Tickets",           icon: Ticket },
-    { id: "team",     label: "Team Performance",  icon: Users },
-    { id: "analytics",label: "Analytics",         icon: BarChart3 },
-  ];
+  { id: "overview",  label: "Dashboard",       icon: LayoutDashboard, path: null               },
+  { id: "tickets",   label: "Tickets",          icon: Ticket,          path: "/tickets"         },
+  { id: "team",      label: "Team Performance", icon: Users,           path: "/team-performance" }, 
+  { id: "analytics", label: "Analytics",        icon: BarChart3,       path: null               },
+];
+
+  const handleNavClick = (item) => {
+    if (item.path) {
+      navigate(item.path);
+    } else {
+      setActiveTab(item.id);
+    }
+  };
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", background: "#080808", fontFamily: "'Nunito Sans', sans-serif" }}>
@@ -152,7 +165,7 @@ export default function TeamLeadDashboard() {
           color: rgba(255,255,255,0.4); transition: all 0.2s;
           text-align: left;
         }
-        .nav-btn:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.8); }
+        .nav-btn:hover  { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.8); }
         .nav-btn.active { background: rgba(255,255,255,0.08); color: #ffffff; font-weight: 600; }
 
         .kpi-card {
@@ -224,7 +237,8 @@ export default function TeamLeadDashboard() {
         }
         .modal-confirm:hover { opacity: 0.88; }
         .modal-cancel {
-          width: 100%; padding: 11px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);
+          width: 100%; padding: 11px; border-radius: 10px;
+          border: 1px solid rgba(255,255,255,0.1);
           background: transparent; color: rgba(255,255,255,0.5);
           font-family: 'Nunito Sans', sans-serif; font-size: 14px;
           cursor: pointer; margin-top: 8px; transition: color 0.2s;
@@ -246,15 +260,21 @@ export default function TeamLeadDashboard() {
           .mobile-overlay { display: block; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99; }
         }
 
-        th { font-family: 'Nunito Sans', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.3); font-weight: 600; }
+        th {
+          font-family: 'Nunito Sans', sans-serif; font-size: 11px;
+          letter-spacing: 0.08em; text-transform: uppercase;
+          color: rgba(255,255,255,0.3); font-weight: 600;
+        }
       `}</style>
 
-      {/* ASSIGN MODAL */}
+      {/* ── ASSIGN MODAL ── */}
       {assignModal && (
         <div className="modal-overlay" onClick={() => setAssignModal(null)}>
           <div className="modal-box" onClick={e => e.stopPropagation()}>
-            <h3 style={{ color: "#fff", fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 18, marginBottom: 4 }}>Assign Ticket</h3>
-            <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 13 }}>{assignModal}</p>
+            <h3 style={{ color: "#fff", fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 18, marginBottom: 4 }}>
+              Assign Ticket
+            </h3>
+            <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 13, margin: 0 }}>{assignModal}</p>
             <select className="modal-select" value={selectedAgent} onChange={e => setSelectedAgent(e.target.value)}>
               <option value="">Select an agent...</option>
               {teamMembers.map(m => <option key={m} value={m}>{m}</option>)}
@@ -265,12 +285,13 @@ export default function TeamLeadDashboard() {
         </div>
       )}
 
-      {/* SIDEBAR OVERLAY (mobile) */}
+      {/* ── SIDEBAR MOBILE OVERLAY ── */}
       {sidebarOpen && <div className="mobile-overlay" onClick={() => setSidebarOpen(false)} />}
 
-      {/* SIDEBAR */}
+      {/* ── SIDEBAR ── */}
       <aside className="sidebar" style={{
-        width: 240, background: "#0d0d0d", borderRight: "1px solid rgba(255,255,255,0.06)",
+        width: 240, background: "#0d0d0d",
+        borderRight: "1px solid rgba(255,255,255,0.06)",
         display: "flex", flexDirection: "column", padding: "24px 16px",
         transform: sidebarOpen ? "translateX(0)" : undefined,
         transition: "transform 0.3s",
@@ -279,21 +300,35 @@ export default function TeamLeadDashboard() {
         {/* Logo */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 36, padding: "0 6px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 8, height: 8, background: "#fff", borderRadius: "50%", boxShadow: "0 0 10px 3px rgba(255,255,255,0.3)", animation: "pulse-dot 2.5s ease infinite" }} />
-            <span style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", letterSpacing: "0.05em" }}>AI Ticket</span>
+            <div style={{
+              width: 8, height: 8, background: "#fff", borderRadius: "50%",
+              boxShadow: "0 0 10px 3px rgba(255,255,255,0.3)",
+              animation: "pulse-dot 2.5s ease infinite",
+            }} />
+            <span style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", letterSpacing: "0.05em" }}>
+              AI Ticket
+            </span>
           </div>
-          <button onClick={() => setSidebarOpen(false)} style={{ display: "none", background: "none", border: "none", color: "rgba(255,255,255,0.4)", cursor: "pointer" }}>
+          <button onClick={() => setSidebarOpen(false)}
+            style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", cursor: "pointer" }}>
             <X size={16} />
           </button>
         </div>
 
         {/* Nav */}
         <nav style={{ flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
-          {navItems.map(({ id, label, icon: Icon }) => (
-            <button key={id} className={`nav-btn ${activeTab === id ? "active" : ""}`} onClick={() => setActiveTab(id)}>
-              <Icon size={16} /> {label}
-            </button>
-          ))}
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.id}
+                className={`nav-btn ${activeTab === item.id ? "active" : ""}`}
+                onClick={() => handleNavClick(item)}
+              >
+                <Icon size={16} /> {item.label}
+              </button>
+            );
+          })}
           <button className="nav-btn" style={{ marginTop: 8 }}>
             <Settings size={16} /> Settings
           </button>
@@ -302,7 +337,11 @@ export default function TeamLeadDashboard() {
         {/* User */}
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 16, marginTop: 16 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12, padding: "0 6px" }}>
-            <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", color: "#080808", fontWeight: 700, fontSize: 13, flexShrink: 0 }}>TL</div>
+            <div style={{
+              width: 36, height: 36, borderRadius: "50%", background: "#fff",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              color: "#080808", fontWeight: 700, fontSize: 13, flexShrink: 0,
+            }}>TL</div>
             <div>
               <p style={{ color: "#fff", fontSize: 13, fontWeight: 600, margin: 0 }}>Team Lead</p>
               <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, margin: 0 }}>admin@company.com</p>
@@ -312,8 +351,9 @@ export default function TeamLeadDashboard() {
         </div>
       </aside>
 
-      {/* MAIN */}
+      {/* ── MAIN ── */}
       <main style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
+
         {/* HEADER */}
         <header style={{
           background: "rgba(8,8,8,0.85)", backdropFilter: "blur(20px)",
@@ -322,18 +362,27 @@ export default function TeamLeadDashboard() {
           position: "sticky", top: 0, zIndex: 50,
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <button onClick={() => setSidebarOpen(true)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.5)", cursor: "pointer", display: "flex" }}>
+            <button onClick={() => setSidebarOpen(true)}
+              style={{ background: "none", border: "none", color: "rgba(255,255,255,0.5)", cursor: "pointer", display: "flex" }}>
               <Menu size={20} />
             </button>
             <div>
-              <h1 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 20, color: "#fff", margin: 0 }}>Team Lead Dashboard</h1>
-              <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: 0, marginTop: 2 }}>Monitor ticket flow and team productivity</p>
+              <h1 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 20, color: "#fff", margin: 0 }}>
+                Team Lead Dashboard
+              </h1>
+              <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: 0, marginTop: 2 }}>
+                Monitor ticket flow and team productivity
+              </p>
             </div>
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             {/* Time Range */}
-            <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: "7px 12px" }}>
+            <div style={{
+              display: "flex", alignItems: "center", gap: 8,
+              background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
+              borderRadius: 10, padding: "7px 12px",
+            }}>
               <Calendar size={14} style={{ color: "rgba(255,255,255,0.4)" }} />
               <select value={timeRange} onChange={e => setTimeRange(e.target.value)}
                 style={{ background: "transparent", border: "none", color: "rgba(255,255,255,0.7)", fontSize: 13, outline: "none", cursor: "pointer", fontFamily: "'Nunito Sans', sans-serif" }}>
@@ -344,14 +393,14 @@ export default function TeamLeadDashboard() {
             </div>
 
             {/* Refresh */}
-            <button style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: "8px", cursor: "pointer", display: "flex", color: "rgba(255,255,255,0.5)", transition: "color 0.2s" }}>
+            <button style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: "8px", cursor: "pointer", display: "flex", color: "rgba(255,255,255,0.5)" }}>
               <RefreshCw size={16} />
             </button>
 
             {/* Bell */}
             <div style={{ position: "relative" }}>
               <button onClick={() => setShowNotifications(!showNotifications)}
-                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: "8px", cursor: "pointer", display: "flex", color: "rgba(255,255,255,0.5)" }}>
+                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: "8px", cursor: "pointer", display: "flex", color: "rgba(255,255,255,0.5)", position: "relative" }}>
                 <Bell size={16} />
                 <span style={{ position: "absolute", top: 8, right: 8, width: 7, height: 7, background: "#f87171", borderRadius: "50%", border: "1px solid #080808" }} />
               </button>
@@ -359,8 +408,8 @@ export default function TeamLeadDashboard() {
                 <div style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", width: 300, background: "#111", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 14, padding: 16, zIndex: 100 }}>
                   <p style={{ color: "#fff", fontWeight: 700, marginBottom: 12, fontSize: 14 }}>Notifications</p>
                   {[
-                    { title: "High Priority Ticket", desc: "TCK-1045 requires immediate attention", time: "2 min ago", color: "rgba(248,113,113,0.1)", border: "rgba(248,113,113,0.2)" },
-                    { title: "Ticket Resolved", desc: "Sarah resolved TCK-1040", time: "15 min ago", color: "rgba(74,222,128,0.1)", border: "rgba(74,222,128,0.2)" },
+                    { title: "High Priority Ticket", desc: "TCK-1045 requires immediate attention", time: "2 min ago",  color: "rgba(248,113,113,0.1)", border: "rgba(248,113,113,0.2)" },
+                    { title: "Ticket Resolved",      desc: "Sarah resolved TCK-1040",              time: "15 min ago", color: "rgba(74,222,128,0.1)",  border: "rgba(74,222,128,0.2)"  },
                   ].map((n, i) => (
                     <div key={i} style={{ background: n.color, border: `1px solid ${n.border}`, borderRadius: 10, padding: "10px 12px", marginBottom: 8 }}>
                       <p style={{ color: "#fff", fontSize: 13, fontWeight: 600, margin: 0 }}>{n.title}</p>
@@ -377,21 +426,38 @@ export default function TeamLeadDashboard() {
         </header>
 
         {/* CONTENT */}
-        <div style={{ padding: "28px 28px", flex: 1 }}>
+        <div style={{ padding: "28px", flex: 1 }}>
 
-          {/* ═══════════════════════════════════════════════
-              SECTION 1: TICKETS (moved to top)
-          ═══════════════════════════════════════════════ */}
+          {/* ══════════════════════════════════════════
+              SECTION 1 — RECENT TICKETS
+          ══════════════════════════════════════════ */}
           <div className="chart-card" style={{ marginBottom: 24, animation: "fadeSlideIn 0.4s ease both" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
               <div>
                 <h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 16, color: "#fff", margin: 0 }}>Recent Tickets</h3>
                 <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 13, margin: "4px 0 0" }}>Latest ticket activity — assign and manage</p>
               </div>
-              <div style={{ position: "relative" }}>
-                <Search size={14} style={{ position: "absolute", left: 11, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.3)" }} />
-                <input type="text" placeholder="Search tickets..." value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)} className="search-input" style={{ width: 240 }} />
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ position: "relative" }}>
+                  <Search size={14} style={{ position: "absolute", left: 11, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.3)" }} />
+                  <input type="text" placeholder="Search tickets..." value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)} className="search-input" style={{ width: 220 }} />
+                </div>
+                <button
+                  onClick={() => navigate("/tickets")}
+                  style={{
+                    display: "flex", alignItems: "center", gap: 6,
+                    padding: "8px 14px", borderRadius: 10,
+                    border: "1px solid rgba(255,255,255,0.12)",
+                    background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.7)",
+                    fontFamily: "'Nunito Sans', sans-serif", fontSize: 13, fontWeight: 600,
+                    cursor: "pointer", transition: "all 0.2s",
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.1)"; e.currentTarget.style.color = "#fff"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.color = "rgba(255,255,255,0.7)"; }}
+                >
+                  <Ticket size={13} /> View All Tickets
+                </button>
               </div>
             </div>
 
@@ -400,13 +466,13 @@ export default function TeamLeadDashboard() {
                 <thead>
                   <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                     {["Ticket ID", "Title", "Priority", "Category", "Status", "Response", "Assigned To", "Created", "Assign", "Actions"].map(h => (
-                      <th key={h} style={{ padding: "10px 14px", textAlign: h === "Title" || h === "Ticket ID" || h === "Created" ? "left" : "center" }}>{h}</th>
+                      <th key={h} style={{ padding: "10px 14px", textAlign: ["Title","Ticket ID","Created"].includes(h) ? "left" : "center" }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {filteredTickets.map((ticket, i) => (
-                    <tr key={ticket.id} className="ticket-row" style={{ borderBottom: "1px solid rgba(255,255,255,0.04)", animationDelay: `${i * 0.05}s` }}>
+                    <tr key={ticket.id} className="ticket-row" style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
                       <td style={{ padding: "14px", color: "#94a3b8", fontFamily: "monospace", fontSize: 12, fontWeight: 700 }}>{ticket.id}</td>
                       <td style={{ padding: "14px", color: "#fff", fontWeight: 500, maxWidth: 200 }}>
                         <span style={{ display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{ticket.title}</span>
@@ -417,7 +483,9 @@ export default function TeamLeadDashboard() {
                         </span>
                       </td>
                       <td style={{ padding: "14px", textAlign: "center" }}>
-                        <span style={{ background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.5)", padding: "3px 10px", borderRadius: 6, fontSize: 11 }}>{ticket.category}</span>
+                        <span style={{ background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.5)", padding: "3px 10px", borderRadius: 6, fontSize: 11 }}>
+                          {ticket.category}
+                        </span>
                       </td>
                       <td style={{ padding: "14px", textAlign: "center" }}>
                         <span style={{ ...getStatusStyle(ticket.status), padding: "3px 10px", borderRadius: 6, fontSize: 11, fontWeight: 600, textTransform: "capitalize" }}>
@@ -459,15 +527,15 @@ export default function TeamLeadDashboard() {
             </div>
           </div>
 
-          {/* ═══════════════════════════════════════════════
-              SECTION 2: KPI CARDS
-          ═══════════════════════════════════════════════ */}
+          {/* ══════════════════════════════════════════
+              SECTION 2 — KPI CARDS
+          ══════════════════════════════════════════ */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16, marginBottom: 24 }}>
             {[
-              { label: "Total Tickets",     value: "142", sub: "+14 from last week",     trend: totalTicketsTrend.value + "%",  trendUp: true,  icon: Ticket,       iconBg: "rgba(148,163,184,0.1)", iconColor: "#94a3b8" },
-              { label: "Avg Response Time", value: "1.8h", sub: "Better than target",    trend: responseTrend.value + "%",      trendUp: false, icon: Clock,        iconBg: "rgba(251,191,36,0.1)",  iconColor: "#fbbf24" },
-              { label: "Avg Resolution",    value: "6.2h", sub: "Improved efficiency",   trend: resolutionTrend.value + "%",    trendUp: false, icon: CheckCircle,  iconBg: "rgba(74,222,128,0.1)",  iconColor: "#4ade80" },
-              { label: "Pending Tickets",   value: "23",  sub: "Requires attention",     trend: pendingTrend.value + "%",       trendUp: true,  icon: AlertCircle,  iconBg: "rgba(248,113,113,0.1)", iconColor: "#f87171" },
+              { label: "Total Tickets",     value: "142", sub: "+14 from last week",   trend: totalTicketsTrend.value + "%", trendUp: true,  icon: Ticket,      iconBg: "rgba(148,163,184,0.1)", iconColor: "#94a3b8" },
+              { label: "Avg Response Time", value: "1.8h", sub: "Better than target",  trend: responseTrend.value + "%",     trendUp: false, icon: Clock,       iconBg: "rgba(251,191,36,0.1)",  iconColor: "#fbbf24" },
+              { label: "Avg Resolution",    value: "6.2h", sub: "Improved efficiency", trend: resolutionTrend.value + "%",   trendUp: false, icon: CheckCircle, iconBg: "rgba(74,222,128,0.1)",  iconColor: "#4ade80" },
+              { label: "Pending Tickets",   value: "23",  sub: "Requires attention",   trend: pendingTrend.value + "%",      trendUp: true,  icon: AlertCircle, iconBg: "rgba(248,113,113,0.1)", iconColor: "#f87171" },
             ].map(({ label, value, sub, trend, trendUp, icon: Icon, iconBg, iconColor }, i) => (
               <div key={label} className="kpi-card" style={{ animationDelay: `${i * 0.08}s` }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
@@ -486,10 +554,11 @@ export default function TeamLeadDashboard() {
             ))}
           </div>
 
-          {/* ═══════════════════════════════════════════════
-              SECTION 3: CHARTS
-          ═══════════════════════════════════════════════ */}
+          {/* ══════════════════════════════════════════
+              SECTION 3 — CHARTS
+          ══════════════════════════════════════════ */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 24 }}>
+
             {/* Area Chart */}
             <div className="chart-card">
               <h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", margin: "0 0 4px" }}>Weekly Ticket Volume</h3>
@@ -498,12 +567,12 @@ export default function TeamLeadDashboard() {
                 <AreaChart data={responseData}>
                   <defs>
                     <linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#ffffff" stopOpacity={0.15} />
-                      <stop offset="95%" stopColor="#ffffff" stopOpacity={0} />
+                      <stop offset="5%"  stopColor="#ffffff" stopOpacity={0.15} />
+                      <stop offset="95%" stopColor="#ffffff" stopOpacity={0}    />
                     </linearGradient>
                     <linearGradient id="rg" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#94a3b8" stopOpacity={0.15} />
-                      <stop offset="95%" stopColor="#94a3b8" stopOpacity={0} />
+                      <stop offset="5%"  stopColor="#94a3b8" stopOpacity={0.15} />
+                      <stop offset="95%" stopColor="#94a3b8" stopOpacity={0}    />
                     </linearGradient>
                   </defs>
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 11 }} />
@@ -562,9 +631,9 @@ export default function TeamLeadDashboard() {
             </ResponsiveContainer>
           </div>
 
-          {/* ═══════════════════════════════════════════════
-              SECTION 4: TEAM PERFORMANCE
-          ═══════════════════════════════════════════════ */}
+          {/* ══════════════════════════════════════════
+              SECTION 4 — TEAM PERFORMANCE
+          ══════════════════════════════════════════ */}
           <div className="chart-card">
             <h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", margin: "0 0 4px" }}>Team Performance</h3>
             <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: "0 0 20px" }}>Individual agent metrics</p>
@@ -590,12 +659,16 @@ export default function TeamLeadDashboard() {
                         </div>
                       </td>
                       <td style={{ padding: "14px", textAlign: "center" }}>
-                        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "3px 10px", borderRadius: 20, fontSize: 11, fontWeight: 600, background: m.status === "online" ? "rgba(74,222,128,0.1)" : "rgba(251,191,36,0.1)", color: m.status === "online" ? "#4ade80" : "#fbbf24" }}>
+                        <span style={{
+                          display: "inline-flex", alignItems: "center", gap: 6, padding: "3px 10px", borderRadius: 20, fontSize: 11, fontWeight: 600,
+                          background: m.status === "online" ? "rgba(74,222,128,0.1)"  : "rgba(251,191,36,0.1)",
+                          color:      m.status === "online" ? "#4ade80"               : "#fbbf24",
+                        }}>
                           <span style={{ width: 6, height: 6, borderRadius: "50%", background: m.status === "online" ? "#4ade80" : "#fbbf24", animation: "pulse-dot 2s infinite" }} />
                           {m.status}
                         </span>
                       </td>
-                      <td style={{ padding: "14px", textAlign: "center", color: "#fff", fontWeight: 700 }}>{m.assigned}</td>
+                      <td style={{ padding: "14px", textAlign: "center", color: "#fff",    fontWeight: 700 }}>{m.assigned}</td>
                       <td style={{ padding: "14px", textAlign: "center", color: "#4ade80", fontWeight: 700 }}>{m.resolved}</td>
                       <td style={{ padding: "14px", textAlign: "center", color: "#fbbf24", fontWeight: 700 }}>{m.pending}</td>
                       <td style={{ padding: "14px", textAlign: "center", color: "rgba(255,255,255,0.5)" }}>{m.avgResponse}</td>
