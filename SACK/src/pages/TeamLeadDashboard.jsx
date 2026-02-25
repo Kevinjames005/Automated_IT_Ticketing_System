@@ -530,29 +530,7 @@ export default function TeamLeadDashboard() {
           {/* ══════════════════════════════════════════
               SECTION 2 — KPI CARDS
           ══════════════════════════════════════════ */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16, marginBottom: 24 }}>
-            {[
-              { label: "Total Tickets",     value: "142", sub: "+14 from last week",   trend: totalTicketsTrend.value + "%", trendUp: true,  icon: Ticket,      iconBg: "rgba(148,163,184,0.1)", iconColor: "#94a3b8" },
-              { label: "Avg Response Time", value: "1.8h", sub: "Better than target",  trend: responseTrend.value + "%",     trendUp: false, icon: Clock,       iconBg: "rgba(251,191,36,0.1)",  iconColor: "#fbbf24" },
-              { label: "Avg Resolution",    value: "6.2h", sub: "Improved efficiency", trend: resolutionTrend.value + "%",   trendUp: false, icon: CheckCircle, iconBg: "rgba(74,222,128,0.1)",  iconColor: "#4ade80" },
-              { label: "Pending Tickets",   value: "23",  sub: "Requires attention",   trend: pendingTrend.value + "%",      trendUp: true,  icon: AlertCircle, iconBg: "rgba(248,113,113,0.1)", iconColor: "#f87171" },
-            ].map(({ label, value, sub, trend, trendUp, icon: Icon, iconBg, iconColor }, i) => (
-              <div key={label} className="kpi-card" style={{ animationDelay: `${i * 0.08}s` }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
-                  <div style={{ width: 42, height: 42, borderRadius: 12, background: iconBg, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <Icon size={20} style={{ color: iconColor }} />
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 11, fontWeight: 700, color: trendUp ? "#f87171" : "#4ade80" }}>
-                    {trendUp ? <TrendingUp size={13} /> : <TrendingDown size={13} />}
-                    {trend}
-                  </div>
-                </div>
-                <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 12, margin: "0 0 6px", fontWeight: 500 }}>{label}</p>
-                <h2 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 32, color: "#fff", margin: 0, lineHeight: 1 }}>{value}</h2>
-                <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 11, margin: "8px 0 0" }}>{sub}</p>
-              </div>
-            ))}
-          </div>
+          
 
           {/* ══════════════════════════════════════════
               SECTION 3 — CHARTS
@@ -560,129 +538,19 @@ export default function TeamLeadDashboard() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 24 }}>
 
             {/* Area Chart */}
-            <div className="chart-card">
-              <h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", margin: "0 0 4px" }}>Weekly Ticket Volume</h3>
-              <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: "0 0 20px" }}>Tickets vs Resolved</p>
-              <ResponsiveContainer width="100%" height={240}>
-                <AreaChart data={responseData}>
-                  <defs>
-                    <linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%"  stopColor="#ffffff" stopOpacity={0.15} />
-                      <stop offset="95%" stopColor="#ffffff" stopOpacity={0}    />
-                    </linearGradient>
-                    <linearGradient id="rg" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%"  stopColor="#94a3b8" stopOpacity={0.15} />
-                      <stop offset="95%" stopColor="#94a3b8" stopOpacity={0}    />
-                    </linearGradient>
-                  </defs>
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 11 }} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 11 }} />
-                  <Tooltip content={<CustomTooltip />} />
-                  <Legend wrapperStyle={{ paddingTop: 16, fontSize: 12, color: "rgba(255,255,255,0.5)" }} iconType="circle" />
-                  <Area type="monotone" dataKey="tickets"  stroke="#ffffff" strokeWidth={2} fill="url(#tg)" name="Total Tickets" />
-                  <Area type="monotone" dataKey="resolved" stroke="#94a3b8" strokeWidth={2} fill="url(#rg)" name="Resolved" />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
+            
 
             {/* Pie Chart */}
-            <div className="chart-card">
-              <h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", margin: "0 0 4px" }}>Priority Distribution</h3>
-              <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: "0 0 20px" }}>Current breakdown</p>
-              <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
-                <ResponsiveContainer width="50%" height={200}>
-                  <PieChart>
-                    <Pie data={priorityData} dataKey="value" cx="50%" cy="50%" innerRadius={48} outerRadius={78} paddingAngle={5}>
-                      {priorityData.map((e, i) => <Cell key={i} fill={e.color} />)}
-                    </Pie>
-                    <Tooltip content={<CustomTooltip />} />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 16 }}>
-                  {priorityData.map((item, i) => (
-                    <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <div style={{ width: 10, height: 10, borderRadius: 3, background: item.color, flexShrink: 0 }} />
-                        <span style={{ fontSize: 13, color: "rgba(255,255,255,0.6)" }}>{item.name}</span>
-                      </div>
-                      <div style={{ textAlign: "right" }}>
-                        <p style={{ color: "#fff", fontWeight: 700, fontSize: 16, margin: 0 }}>{item.value}</p>
-                        <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 11, margin: 0 }}>{((item.value / 52) * 100).toFixed(0)}%</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            
           </div>
 
           {/* Category Bar Chart */}
-          <div className="chart-card" style={{ marginBottom: 24 }}>
-            <h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", margin: "0 0 4px" }}>Tickets by Category</h3>
-            <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: "0 0 20px" }}>Distribution across departments</p>
-            <ResponsiveContainer width="100%" height={260}>
-              <BarChart data={categoryData} layout="vertical">
-                <XAxis type="number" axisLine={false} tickLine={false} tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 11 }} />
-                <YAxis type="category" dataKey="name" axisLine={false} tickLine={false} width={110} tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 12 }} />
-                <Tooltip content={<CustomTooltip />} />
-                <Bar dataKey="tickets" fill="rgba(255,255,255,0.15)" radius={[0, 8, 8, 0]} name="Tickets"
-                  background={{ fill: "rgba(255,255,255,0.03)", radius: [0, 8, 8, 0] }} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          
 
           {/* ══════════════════════════════════════════
               SECTION 4 — TEAM PERFORMANCE
           ══════════════════════════════════════════ */}
-          <div className="chart-card">
-            <h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", margin: "0 0 4px" }}>Team Performance</h3>
-            <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: "0 0 20px" }}>Individual agent metrics</p>
-            <div style={{ overflowX: "auto" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-                <thead>
-                  <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                    {["Agent", "Status", "Assigned", "Resolved", "Pending", "Avg Response", "Avg Resolution", "Rating"].map(h => (
-                      <th key={h} style={{ padding: "10px 14px", textAlign: h === "Agent" ? "left" : "center" }}>{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {teamPerformance.map((m) => (
-                    <tr key={m.id} className="ticket-row" style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
-                      <td style={{ padding: "14px" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                          <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#fff", color: "#080808", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800, flexShrink: 0 }}>{m.avatar}</div>
-                          <div>
-                            <p style={{ color: "#fff", fontWeight: 600, margin: 0, fontSize: 13 }}>{m.name}</p>
-                            <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 11, margin: 0 }}>Support Agent</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td style={{ padding: "14px", textAlign: "center" }}>
-                        <span style={{
-                          display: "inline-flex", alignItems: "center", gap: 6, padding: "3px 10px", borderRadius: 20, fontSize: 11, fontWeight: 600,
-                          background: m.status === "online" ? "rgba(74,222,128,0.1)"  : "rgba(251,191,36,0.1)",
-                          color:      m.status === "online" ? "#4ade80"               : "#fbbf24",
-                        }}>
-                          <span style={{ width: 6, height: 6, borderRadius: "50%", background: m.status === "online" ? "#4ade80" : "#fbbf24", animation: "pulse-dot 2s infinite" }} />
-                          {m.status}
-                        </span>
-                      </td>
-                      <td style={{ padding: "14px", textAlign: "center", color: "#fff",    fontWeight: 700 }}>{m.assigned}</td>
-                      <td style={{ padding: "14px", textAlign: "center", color: "#4ade80", fontWeight: 700 }}>{m.resolved}</td>
-                      <td style={{ padding: "14px", textAlign: "center", color: "#fbbf24", fontWeight: 700 }}>{m.pending}</td>
-                      <td style={{ padding: "14px", textAlign: "center", color: "rgba(255,255,255,0.5)" }}>{m.avgResponse}</td>
-                      <td style={{ padding: "14px", textAlign: "center", color: "rgba(255,255,255,0.5)" }}>{m.avgResolution}</td>
-                      <td style={{ padding: "14px", textAlign: "center" }}>
-                        <span style={{ color: "#fbbf24" }}>★</span>
-                        <span style={{ color: "#fff", fontWeight: 700, marginLeft: 4 }}>{m.satisfaction}</span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          
 
         </div>
       </main>
