@@ -8,21 +8,67 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
     cur = conn.cursor()
 
     try:
-        # Check ticket status
+        # 🔒 Lock ticket row
         cur.execute(
-            "SELECT status FROM tickets WHERE ticket_id = %s;",
+            """
+            SELECT status
+            FROM tickets
+            WHERE ticket_id = %s
+            FOR UPDATE;
+            """,
             (ticket_id,)
         )
 
-        result = cur.fetchone()
-
-        if not result:
+        ticket = cur.fetchone()
+        if not ticket:
             raise Exception("Ticket not found")
 
-        current_status = result[0]
+        current_status = ticket[0]
 
         if current_status != "Resolved":
             raise Exception("Only resolved tickets can be approved")
+
+        # 🔒 Lock resolution row
+        cur.execute(
+            """
+            SELECT resolution_id, content
+            FROM resolution_documents
+            WHERE ticket_id = %s
+            FOR UPDATE;
+            """,
+            (ticket_id,)
+        )
+
+        resolution = cur.fetchone()
+        if not resolution:
+            raise Exception("Resolution document not found")
+
+        resolution_id, content = resolution
+
+        # Update resolution approved_by
+        cur.execute(
+            """
+            UPDATE resolution_documents
+            SET approved_by = %s
+            WHERE resolution_id = %s;
+            """,
+            (lead_id, resolution_id)
+        )
+
+        # Optional KB insert (async embedding)
+        if add_to_kb:
+            cur.execute(
+                """
+                INSERT INTO knowledge_base_articles
+                (title, content, source_resolution_id, embedding, embedding_status)
+                VALUES (%s, %s, %s, NULL, 'pending');
+                """,
+                (
+                    f"Resolution for Ticket {ticket_id}",
+                    content,
+                    resolution_id,
+                )
+            )
 
         # Update ticket → Closed
         cur.execute(
@@ -34,62 +80,14 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
             (ticket_id,)
         )
 
-        # Get resolution content
-        cur.execute(
-            """
-            SELECT resolution_id, content
-            FROM resolution_documents
-            WHERE ticket_id = %s;
-            """,
-            (ticket_id,)
-        )
-
-        resolution = cur.fetchone()
-
-        if not resolution:
-            raise Exception("Resolution document not found")
-
-        resolution_id, content = resolution
-
-        # Update resolution → approved_by
-        cur.execute(
-            """
-            UPDATE resolution_documents
-            SET approved_by = %s
-            WHERE resolution_id = %s;
-            """,
-            (lead_id, resolution_id)
-        )
-
-        # If Lead chooses to add to Knowledge Base
-        if add_to_kb:
-
-            # Generate embedding
-            embedding = get_embedding(content)
-
-            # Insert into knowledge_base_articles
-            cur.execute(
-                """
-                INSERT INTO knowledge_base_articles
-                (title, content, source_resolution_id, embedding)
-                VALUES (%s, %s, %s, %s);
-                """,
-                (
-                    f"Resolution for Ticket {ticket_id}",
-                    content,
-                    resolution_id,
-                    embedding
-                )
-            )
-
-        # Insert status history
+        # Log history
         cur.execute(
             """
             INSERT INTO ticket_status_history
             (ticket_id, old_status, new_status, changed_by)
             VALUES (%s, %s, %s, %s);
             """,
-            (ticket_id, "Resolved", "Closed", lead_id)
+            (ticket_id, current_status, "Closed", lead_id)
         )
 
         conn.commit()
@@ -108,18 +106,23 @@ def reject_resolution(ticket_id: int, lead_id: int):
     cur = conn.cursor()
 
     try:
-        # Check ticket status
+        # 🔒 Lock ticket row
         cur.execute(
-            "SELECT status FROM tickets WHERE ticket_id = %s;",
+            """
+            SELECT status
+            FROM tickets
+            WHERE ticket_id = %s
+            FOR UPDATE;
+            """,
             (ticket_id,)
         )
 
-        result = cur.fetchone()
+        ticket = cur.fetchone()
 
-        if not result:
+        if not ticket:
             raise Exception("Ticket not found")
 
-        current_status = result[0]
+        current_status = ticket[0]
 
         if current_status != "Resolved":
             raise Exception("Only resolved tickets can be rejected")
@@ -141,7 +144,7 @@ def reject_resolution(ticket_id: int, lead_id: int):
             (ticket_id, old_status, new_status, changed_by)
             VALUES (%s, %s, %s, %s);
             """,
-            (ticket_id, "Resolved", "Assigned", lead_id)
+            (ticket_id, current_status, "Assigned", lead_id)
         )
 
         conn.commit()
