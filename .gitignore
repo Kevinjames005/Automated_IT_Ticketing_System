@@ -1,3 +1,9 @@
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
 # Ignore datasets
 Datasets/
 *.csv
@@ -6,7 +12,7 @@ classified_tickets.csv
 dataset_creation.ipynb
 
 # Environment variables
-/.env
+.env
 /backend/.env
 
 # Virtual environment
@@ -14,5 +20,11 @@ venv/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Testing
 test.py
 test_insert_article.py
+
+# OS files
+.DS_Store
+Thumbs.db
