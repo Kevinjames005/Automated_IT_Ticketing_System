@@ -28,6 +28,8 @@ def create_ticket(email_id: int, category_id: int, priority: str):
     conn = get_conn()
     cur = conn.cursor()
 
+    priority = priority.lower()
+
     try:
         cur.execute(
             """

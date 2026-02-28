@@ -6,7 +6,7 @@ from services.member_service import start_ticket , resolve_ticket
 from services.approval_service import approve_resolution, reject_resolution
 from services.intake_service import process_email
 from security.auth import require_api_key
-
+from services.query_service import get_tickets
 
 load_dotenv()
 
@@ -138,6 +138,26 @@ def reject_resolution_endpoint():
 
     except Exception as e:
         return {"error": str(e)}, 400
+    
+@app.route("/tickets", methods=["GET"])
+def get_tickets_endpoint():
+    try:
+        status = request.args.get("status")
+        priority = request.args.get("priority")
+        page = int(request.args.get("page", 1))
+        limit = int(request.args.get("limit", 20))
+
+        data = get_tickets(
+            status=status,
+            priority=priority,
+            page=page,
+            limit=limit
+        )
+
+        return jsonify(data), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
     
 if __name__ == "__main__":
     app.run(host="0.0.0.0",port=8000)
