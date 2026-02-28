@@ -66,7 +66,8 @@ def assign_ticket(ticket_id: int, member_id: int, lead_id: int):
         cur.execute(
             """
             UPDATE tickets
-            SET status = 'Assigned'
+            SET status = 'Assigned',
+                assigned_at = COALESCE(assigned_at, NOW())
             WHERE ticket_id = %s;
             """,
             (ticket_id,)

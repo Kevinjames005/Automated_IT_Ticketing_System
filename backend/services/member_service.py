@@ -34,7 +34,8 @@ def start_ticket(ticket_id: int, member_id: int):
         cur.execute(
             """
             UPDATE tickets
-            SET status = 'In Progress'
+            SET status = 'In Progress',
+                started_at = COALESCE(started_at, NOW())
             WHERE ticket_id = %s;
             """,
             (ticket_id,)
@@ -66,7 +67,7 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
     cur = conn.cursor()
 
     try:
-        # 🔒 STEP 1: Lock the ticket row
+        # Lock the ticket row
         cur.execute(
             """
             SELECT status
@@ -84,7 +85,7 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
 
         current_status = ticket[0]
 
-        # 🔎 STEP 2: Validate assignment (no lock needed here)
+        # Validate assignment (no lock needed here)
         cur.execute(
             """
             SELECT 1
@@ -98,11 +99,11 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
         if not cur.fetchone():
             raise Exception("Ticket is not assigned to this member")
 
-        # 🔎 STEP 3: Validate state AFTER locking
+        # Validate state AFTER locking
         if current_status != "In Progress":
             raise Exception("Only In Progress tickets can be resolved")
 
-        # ✏️ STEP 4: Insert resolution
+        # Insert resolution
         cur.execute(
             """
             INSERT INTO resolution_documents (ticket_id, content)
@@ -114,17 +115,18 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
 
         resolution_id = cur.fetchone()[0]
 
-        # 🔄 STEP 5: Update ticket state
+        # Update ticket state
         cur.execute(
             """
             UPDATE tickets
-            SET status = 'Resolved'
+            SET status = 'Resolved',
+                resolved_at = COALESCE(resolved_at, NOW())
             WHERE ticket_id = %s;
             """,
             (ticket_id,)
         )
 
-        # 📝 STEP 6: Insert history
+        # Insert history
         cur.execute(
             """
             INSERT INTO ticket_status_history

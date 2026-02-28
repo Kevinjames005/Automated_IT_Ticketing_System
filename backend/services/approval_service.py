@@ -8,7 +8,7 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
     cur = conn.cursor()
 
     try:
-        # 🔒 Lock ticket row
+        # Lock ticket row
         cur.execute(
             """
             SELECT status
@@ -28,7 +28,7 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
         if current_status != "Resolved":
             raise Exception("Only resolved tickets can be approved")
 
-        # 🔒 Lock resolution row
+        # Lock resolution row
         cur.execute(
             """
             SELECT resolution_id, content
@@ -74,7 +74,8 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
         cur.execute(
             """
             UPDATE tickets
-            SET status = 'Closed'
+            SET status = 'Closed',
+                closed_at = COALESCE(closed_at, NOW())
             WHERE ticket_id = %s;
             """,
             (ticket_id,)
@@ -106,7 +107,7 @@ def reject_resolution(ticket_id: int, lead_id: int):
     cur = conn.cursor()
 
     try:
-        # 🔒 Lock ticket row
+        # Lock ticket row
         cur.execute(
             """
             SELECT status
@@ -131,7 +132,9 @@ def reject_resolution(ticket_id: int, lead_id: int):
         cur.execute(
             """
             UPDATE tickets
-            SET status = 'Assigned'
+            SET status = 'Assigned',
+                reopen_count = reopen_count + 1,
+                reopened_at = NOW()
             WHERE ticket_id = %s;
             """,
             (ticket_id,)
