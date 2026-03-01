@@ -7,6 +7,11 @@ from services.approval_service import approve_resolution, reject_resolution
 from services.intake_service import process_email
 from security.auth import require_api_key
 from services.query_service import get_tickets
+from services.ticket_detail_service import get_ticket_detail
+from services.analytics_service import get_analytics
+from datetime import datetime, timedelta
+from services.member_analytics_service import get_member_performance
+from services.breakdown_analytics_service import get_priority_breakdown, get_category_breakdown
 
 load_dotenv()
 
@@ -158,6 +163,61 @@ def get_tickets_endpoint():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+    
+from services.analytics_service import get_analytics
+from datetime import datetime, timedelta
+
+@app.route("/analytics", methods=["GET"])
+def analytics_endpoint():
+    range_param = request.args.get("range")
+    start = request.args.get("start")
+    end = request.args.get("end")
+
+    start_date = None
+    end_date = None
+
+    if range_param == "7days":
+        start_date = datetime.utcnow() - timedelta(days=7)
+
+    elif range_param == "30days":
+        start_date = datetime.utcnow() - timedelta(days=30)
+
+    elif start and end:
+        start_date = datetime.fromisoformat(start)
+        end_date = datetime.fromisoformat(end)
+
+    result = get_analytics(start_date, end_date)
+    return result, 200
+    
+from services.member_analytics_service import get_member_performance
+
+@app.route("/analytics/members", methods=["GET"])
+def analytics_members():
+    range_param = request.args.get("range")
+
+    from datetime import datetime, timedelta
+
+    start_date = None
+    end_date = None
+
+    if range_param == "7days":
+        start_date = datetime.utcnow() - timedelta(days=7)
+
+    elif range_param == "30days":
+        start_date = datetime.utcnow() - timedelta(days=30)
+
+    result = get_member_performance(start_date, end_date)
+    return {"members": result}, 200
+
+@app.route("/analytics/priority", methods=["GET"])
+def analytics_priority():
+    result = get_priority_breakdown()
+    return {"priority_breakdown": result}, 200
+
+@app.route("/analytics/categories", methods=["GET"])
+def analytics_categories():
+    result = get_category_breakdown()
+    return {"category_breakdown": result}, 200
     
 if __name__ == "__main__":
     app.run(host="0.0.0.0",port=8000)
