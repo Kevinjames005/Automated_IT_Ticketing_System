@@ -91,3 +91,5 @@ export function fetchSlaTrend(days = 7) {
 export function fetchSlaComparison(days = 7) {
   return apiFetch(`/analytics/sla-comparison?days=${days}`);
 }
+
+export { apiFetch };

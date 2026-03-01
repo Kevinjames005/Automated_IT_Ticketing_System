@@ -21,9 +21,10 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-@require_api_key
+
 
 @app.route("/classify", methods=["POST"])
+@require_api_key
 def classify():
 
     data = request.get_json()
@@ -198,6 +199,7 @@ from services.analytics_service import get_analytics
 from datetime import datetime, timedelta
 
 @app.route("/analytics", methods=["GET"])
+@require_auth
 def analytics_endpoint():
     range_param = request.args.get("range")
     start = request.args.get("start")
@@ -222,6 +224,7 @@ def analytics_endpoint():
 from services.member_analytics_service import get_member_performance
 
 @app.route("/analytics/members", methods=["GET"])
+@require_auth
 def analytics_members():
     range_param = request.args.get("range")
 
@@ -240,26 +243,62 @@ def analytics_members():
     return {"members": result}, 200
 
 @app.route("/analytics/priority", methods=["GET"])
+@require_auth
 def analytics_priority():
     result = get_priority_breakdown()
     return {"priority_breakdown": result}, 200
 
 @app.route("/analytics/categories", methods=["GET"])
+@require_auth
 def analytics_categories():
     result = get_category_breakdown()
     return {"category_breakdown": result}, 200
 
 @app.route("/analytics/sla-trend", methods=["GET"])
+@require_auth
 def analytics_sla_trend():
     days = int(request.args.get("days", 7))
     result = get_sla_trend(days)
     return {"sla_trend": result}, 200
 
 @app.route("/analytics/sla-comparison", methods=["GET"])
+@require_auth
 def analytics_sla_comparison():
     days = int(request.args.get("days", 7))
     result = get_sla_comparison(days)
     return result, 200
+
+@app.route("/me", methods=["GET"])
+@require_auth
+def get_me():
+    try:
+        from db import get_conn, release_conn
+        conn = get_conn()
+        cur = conn.cursor()
+
+        user_id = request.user.get("id")
+
+        # 🔥 IMPORTANT — use supabase_user_id
+        cur.execute("SELECT lead_id FROM team_leads WHERE supabase_user_id = %s", (user_id,))
+        if cur.fetchone():
+            cur.close()
+            release_conn(conn)
+            return {"role": "teamlead"}, 200
+
+        cur.execute("SELECT member_id FROM team_members WHERE supabase_user_id = %s", (user_id,))
+        if cur.fetchone():
+            cur.close()
+            release_conn(conn)
+            return {"role": "member"}, 200
+
+        cur.close()
+        release_conn(conn)
+        return {"role": "unknown"}, 403
+
+    except Exception as e:
+        print("ERROR IN /me:", str(e))
+        return {"error": str(e)}, 400
+    
     
 if __name__ == "__main__":
     app.run(host="0.0.0.0",port=8000)

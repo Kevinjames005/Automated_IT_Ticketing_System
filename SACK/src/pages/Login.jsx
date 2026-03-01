@@ -3,6 +3,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import * as THREE from "three";
 import supabase from "./supabaseClient"; // 👈 import your supabase client
+import { apiFetch } from "./api";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -180,10 +181,18 @@ export default function Login() {
     console.log("Logged in! Access Token:", data.session.access_token);
 
     // Keep your existing routing logic
-    if (email.includes("lead")) {
-      navigate("/teamlead");
-    } else {
-      navigate("/teammember");
+    try {
+      const res = await apiFetch("/me");
+
+      if (res.role === "teamlead") {
+        navigate("/teamlead");
+      } else if (res.role === "member") {
+        navigate("/teammember");
+      } else {
+        setError("Unauthorized user role.");
+      }
+    } catch (err) {
+      setError("Failed to fetch user role.");
     }
   };
 
