@@ -2,12 +2,14 @@ import { useState, useEffect, useRef } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import * as THREE from "three";
+import supabase from "./supabaseClient"; // 👈 import your supabase client
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(""); // 👈 new: for showing login errors
   const mountRef = useRef(null);
   const navigate = useNavigate();
 
@@ -156,14 +158,33 @@ export default function Login() {
     };
   }, []);
 
-  const handleSubmit = (e) => {
+  // 👇 Replaced fake setTimeout with real Supabase login
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      if (email.includes("lead")) navigate("/teamlead");
-      else navigate("/teammember");
-    }, 1200);
+    setError(""); // clear any previous error
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      // Show error on the card instead of just console
+      setError(error.message);
+      return;
+    }
+
+    console.log("Logged in! Access Token:", data.session.access_token);
+
+    // Keep your existing routing logic
+    if (email.includes("lead")) {
+      navigate("/teamlead");
+    } else {
+      navigate("/teammember");
+    }
   };
 
   return (
@@ -219,12 +240,13 @@ export default function Login() {
             font-weight: 400;
             background: rgba(255,255,255,0.04);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 14px;
-            color: #f0f0f0;
-            padding: 14px 16px;
+            border-radius: 12px;
+            padding: 13px 16px;
+            color: #ffffff;
             width: 100%;
             outline: none;
-            transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
             font-size: 14px;
           }
           .field:focus {
@@ -319,6 +341,17 @@ export default function Login() {
             font-family: 'Nunito', sans-serif;
             font-weight: 300;
             letter-spacing: -0.01em;
+          }
+
+          .error-msg {
+            font-family: 'Nunito Sans', sans-serif;
+            font-size: 13px;
+            color: rgba(255, 100, 100, 0.9);
+            background: rgba(255, 60, 60, 0.08);
+            border: 1px solid rgba(255, 60, 60, 0.2);
+            border-radius: 10px;
+            padding: 10px 14px;
+            text-align: center;
           }
         `}</style>
 
@@ -419,8 +452,13 @@ export default function Login() {
               <button type="button" className="forgot-btn" style={{ fontSize: 14 }}>Forgot password?</button>
             </div>
 
+            {/* 👇 Error message — only shows if login fails */}
+            {error && (
+              <div className="error-msg">{error}</div>
+            )}
+
             {/* Submit */}
-            <button type="submit" disabled={loading} className="submit-btn" style={{ marginTop: 4 , fontSize: 17}}>
+            <button type="submit" disabled={loading} className="submit-btn" style={{ marginTop: 4, fontSize: 17 }}>
               {loading && <span className="spinner" />}
               {loading ? "Signing in..." : "Sign In"}
             </button>

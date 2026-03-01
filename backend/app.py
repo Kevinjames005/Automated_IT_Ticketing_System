@@ -11,12 +11,15 @@ from services.ticket_detail_service import get_ticket_detail
 from services.analytics_service import get_analytics
 from datetime import datetime, timedelta
 from services.member_analytics_service import get_member_performance
-from services.breakdown_analytics_service import get_priority_breakdown, get_category_breakdown
+from services.breakdown_analytics_service import get_priority_breakdown, get_category_breakdown, get_sla_trend,get_sla_comparison
+from security.supabase_auth import require_auth
+from flask_cors import CORS
 
 load_dotenv()
 
 
 app = Flask(__name__)
+CORS(app)
 
 @require_api_key
 
@@ -39,7 +42,7 @@ def classify():
 
 
 @app.route("/assign-ticket", methods=["POST"])
-@require_api_key
+@require_auth  # 👈 called from frontend with Supabase token
 def assign_ticket_endpoint():
 
     data = request.get_json()
@@ -58,6 +61,39 @@ def assign_ticket_endpoint():
 
     except Exception as e:
         return {"error": str(e)}, 400
+
+
+@app.route("/members", methods=["GET"])
+@require_auth  # 👈 returns all team members with their IDs
+def get_members_endpoint():
+    """
+    Returns all team members so the frontend can
+    show names in the dropdown and send member_id on assign.
+    """
+    try:
+        from db import get_conn, release_conn
+        conn = get_conn()
+        cur = conn.cursor()
+
+        cur.execute("""
+            SELECT member_id, name, lead_id
+            FROM team_members
+            ORDER BY name ASC;
+        """)
+
+        rows = cur.fetchall()
+        cur.close()
+        release_conn(conn)
+
+        members = [
+            {"member_id": row[0], "name": row[1], "lead_id": row[2]}
+            for row in rows
+        ]
+
+        return jsonify({"members": members}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
     
 @app.route("/start-ticket", methods=["POST"])
 @require_api_key
@@ -104,47 +140,41 @@ def resolve_ticket_endpoint():
         return {"error": str(e)}, 400
     
 @app.route("/approve-resolution", methods=["POST"])
-@require_api_key
+@require_auth
 def approve_resolution_endpoint():
-
     data = request.get_json()
-
-    if not data or "ticket_id" not in data or "lead_id" not in data:
+    if not data or "ticket_id" not in data:
         return {"error": "Invalid input"}, 400
-
     try:
+        # lead_id comes from the verified Supabase user attached by @require_auth
+        lead_id = request.user.get("id") or data.get("lead_id")
         approve_resolution(
             ticket_id=data["ticket_id"],
-            lead_id=data["lead_id"],
+            lead_id=lead_id,
             add_to_kb=data.get("add_to_kb", False)
         )
-
         return {"message": "Ticket approved successfully"}, 200
-
     except Exception as e:
         return {"error": str(e)}, 400
-    
+
 @app.route("/reject-resolution", methods=["POST"])
-@require_api_key
+@require_auth
 def reject_resolution_endpoint():
-
     data = request.get_json()
-
-    if not data or "ticket_id" not in data or "lead_id" not in data:
+    if not data or "ticket_id" not in data:
         return {"error": "Invalid input"}, 400
-
     try:
+        lead_id = request.user.get("id") or data.get("lead_id")
         reject_resolution(
             ticket_id=data["ticket_id"],
-            lead_id=data["lead_id"]
+            lead_id=lead_id
         )
-
         return {"message": "Resolution rejected. Ticket reassigned."}, 200
-
     except Exception as e:
         return {"error": str(e)}, 400
     
 @app.route("/tickets", methods=["GET"])
+@require_auth
 def get_tickets_endpoint():
     try:
         status = request.args.get("status")
@@ -218,6 +248,18 @@ def analytics_priority():
 def analytics_categories():
     result = get_category_breakdown()
     return {"category_breakdown": result}, 200
+
+@app.route("/analytics/sla-trend", methods=["GET"])
+def analytics_sla_trend():
+    days = int(request.args.get("days", 7))
+    result = get_sla_trend(days)
+    return {"sla_trend": result}, 200
+
+@app.route("/analytics/sla-comparison", methods=["GET"])
+def analytics_sla_comparison():
+    days = int(request.args.get("days", 7))
+    result = get_sla_comparison(days)
+    return result, 200
     
 if __name__ == "__main__":
     app.run(host="0.0.0.0",port=8000)

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer,
@@ -10,83 +10,195 @@ import {
   RefreshCw, Bell, Settings, LayoutDashboard, Ticket, BarChart3,
   LogOut, Menu, X, UserPlus,
 } from "lucide-react";
+import { fetchTickets, fetchAnalytics, fetchPriorityBreakdown, fetchCategoryBreakdown, fetchMemberAnalytics, fetchMembers, assignTicket, approveResolution, rejectResolution } from "./api";
+import { AlertTriangle, Flame, ShieldAlert, ThumbsUp, ThumbsDown } from "lucide-react";
 
-const priorityData = [
-  { name: "High",   value: 14, color: "#f87171" },
-  { name: "Medium", value: 28, color: "#94a3b8" },
-  { name: "Low",    value: 10, color: "#e2e8f0" },
-];
+function formatCreated(dateStr) {
+  if (!dateStr) return "—";
+  const diff = Math.floor((new Date() - new Date(dateStr)) / 3600000);
+  if (diff < 1) return "Just now";
+  if (diff < 24) return `${diff}h ago`;
+  const days = Math.floor(diff / 24);
+  return days < 7 ? `${days}d ago` : new Date(dateStr).toLocaleDateString();
+}
 
-const responseData = [
-  { name: "Mon", tickets: 12, resolved: 8  },
-  { name: "Tue", tickets: 18, resolved: 12 },
-  { name: "Wed", tickets: 10, resolved: 9  },
-  { name: "Thu", tickets: 22, resolved: 15 },
-  { name: "Fri", tickets: 15, resolved: 11 },
-  { name: "Sat", tickets: 8,  resolved: 6  },
-  { name: "Sun", tickets: 5,  resolved: 4  },
-];
-
-const categoryData = [
-  { name: "Network",       tickets: 24 },
-  { name: "Hardware",      tickets: 18 },
-  { name: "Software",      tickets: 32 },
-  { name: "Account",       tickets: 15 },
-  { name: "Communication", tickets: 21 },
-  { name: "Security",      tickets: 12 },
-];
-
-const teamMembers = ["John Doe", "Sarah Smith", "Mike Johnson", "Emily Chen"];
-
-const teamPerformance = [
-  { id: 1, name: "John Doe",     avatar: "JD", assigned: 18, resolved: 15, pending: 3, avgResponse: "1.2h", avgResolution: "4.5h", satisfaction: 4.8, status: "online" },
-  { id: 2, name: "Sarah Smith",  avatar: "SS", assigned: 22, resolved: 20, pending: 2, avgResponse: "0.8h", avgResolution: "3.2h", satisfaction: 4.9, status: "online" },
-  { id: 3, name: "Mike Johnson", avatar: "MJ", assigned: 15, resolved: 12, pending: 3, avgResponse: "2.1h", avgResolution: "5.8h", satisfaction: 4.6, status: "away"   },
-  { id: 4, name: "Emily Chen",   avatar: "EC", assigned: 20, resolved: 18, pending: 2, avgResponse: "1.5h", avgResolution: "4.0h", satisfaction: 4.7, status: "online" },
-];
-
-const initialTickets = [
-  { id: "TCK-1045", title: "Email not syncing with mobile",  priority: "high",   category: "Communication", response: "45 mins", assigned: "John Doe",     status: "in-progress", created: "2 hours ago" },
-  { id: "TCK-1044", title: "VPN connection timeout",         priority: "high",   category: "Network",       response: "1 hr",    assigned: "Sarah Smith",  status: "in-progress", created: "4 hours ago" },
-  { id: "TCK-1043", title: "Password reset request",         priority: "low",    category: "Account",       response: "15 mins", assigned: "Mike Johnson", status: "resolved",    created: "5 hours ago" },
-  { id: "TCK-1042", title: "Software installation needed",   priority: "medium", category: "Software",      response: "30 mins", assigned: "Emily Chen",   status: "in-progress", created: "6 hours ago" },
-  { id: "TCK-1041", title: "Printer not responding",         priority: "medium", category: "Hardware",      response: "1.5 hrs", assigned: "",             status: "open",        created: "8 hours ago" },
-];
+function fmtMinutes(mins) {
+  if (!mins || mins === 0) return "—";
+  if (mins < 60) return `${Math.round(mins)} mins`;
+  return `${(mins / 60).toFixed(1)} hrs`;
+}
 
 export default function TeamLeadDashboard() {
   const navigate = useNavigate();
 
-  const [timeRange,          setTimeRange]          = useState("7days");
-  const [searchQuery,        setSearchQuery]        = useState("");
-  const [showNotifications,  setShowNotifications]  = useState(false);
-  const [sidebarOpen,        setSidebarOpen]        = useState(false);
-  const [activeTab,          setActiveTab]          = useState("overview");
-  const [tickets,            setTickets]            = useState(initialTickets);
-  const [assignModal,        setAssignModal]        = useState(null);
-  const [selectedAgent,      setSelectedAgent]      = useState("");
+  const [timeRange,         setTimeRange]         = useState("7days");
+  const [showNotifications, setShowNotifications]  = useState(false);
+  const [sidebarOpen,       setSidebarOpen]        = useState(false);
+  const [activeTab,         setActiveTab]          = useState("overview");
+  const [analytics,         setAnalytics]          = useState(null);
+  const [priorityData,      setPriorityData]       = useState([]);
+  const [categoryData,      setCategoryData]       = useState([]);
+  const [loading,           setLoading]            = useState(true);
 
-  const totalTicketsTrend = { value: "10.9", isPositive: true  };
-  const responseTrend     = { value: "21.7"                    };
-  const resolutionTrend   = { value: "12.7"                    };
-  const pendingTrend      = { value: "27.8", isPositive: true  };
+  // Action Center — triage buckets
+  const [pendingTickets,    setPendingTickets]     = useState([]);
+  const [resolvedTickets,   setResolvedTickets]    = useState([]);
+  const [slaAtRisk,         setSlaAtRisk]          = useState([]);
+  const [highUnassigned,    setHighUnassigned]     = useState([]);
+  const [triageLoading,     setTriageLoading]      = useState(true);
+  const [activeSection,     setActiveSection]      = useState("unassigned"); // which triage tab is open
 
-  const filteredTickets = tickets.filter(t =>
-    t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    t.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (t.assigned && t.assigned.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  // Assign / approval state
+  const [assignModal,       setAssignModal]        = useState(null);
+  const [selectedAgent,     setSelectedAgent]      = useState("");
+  const [teamMembersList,   setTeamMembersList]    = useState([]);
+  const [detailTicket,      setDetailTicket]       = useState(null);
+  const [assignLoading,     setAssignLoading]      = useState(false);
+  const [assignError,       setAssignError]        = useState("");
+  const [approvalLoading,   setApprovalLoading]    = useState(null); // ticket_id being approved/rejected
+  const [approvalError,     setApprovalError]      = useState("");
 
-  const handleAssign = (ticketId) => {
+  // Fetch members once on mount
+  useEffect(() => {
+    fetchMembers()
+      .then(data => setTeamMembersList(data.members || []))
+      .catch(e => console.error("Failed to load members:", e.message));
+  }, []);
+
+  // Fetch triage buckets — always fresh, no time range filter
+  useEffect(() => {
+    async function loadTriage() {
+      setTriageLoading(true);
+      try {
+        const [pendingRes, resolvedRes, allRes] = await Promise.all([
+          fetchTickets({ status: "Pending", limit: 50 }),
+          fetchTickets({ status: "Resolved", limit: 50 }),
+          fetchTickets({ limit: 100 }),
+        ]);
+
+        const pending  = pendingRes.tickets  || [];
+        const resolved = resolvedRes.tickets || [];
+        const all      = allRes.tickets      || [];
+
+        // High priority + unassigned
+        const urgentUnassigned = pending.filter(t =>
+          t.priority === "high" && !t.assigned_at
+        );
+
+        // SLA at risk or breached (exclude already closed)
+        const atRisk = all.filter(t =>
+          t.status !== "Closed" &&
+          (t.response_sla_status === "at_risk"   || t.response_sla_status === "breached" ||
+           t.resolution_sla_status === "at_risk" || t.resolution_sla_status === "breached")
+        );
+
+        setHighUnassigned(urgentUnassigned);
+        setPendingTickets(pending);
+        setSlaAtRisk(atRisk);
+        setResolvedTickets(resolved);
+      } catch (e) {
+        console.error("Triage load error:", e.message);
+      } finally {
+        setTriageLoading(false);
+      }
+    }
+    loadTriage();
+  }, []);
+
+  // Fetch analytics + charts (time-range dependent)
+  useEffect(() => {
+    async function loadAnalytics() {
+      setLoading(true);
+      try {
+        const [analyticsData, priorityRes, categoryRes] = await Promise.all([
+          fetchAnalytics(timeRange),
+          fetchPriorityBreakdown(),
+          fetchCategoryBreakdown(),
+        ]);
+        setAnalytics(analyticsData);
+        setPriorityData(
+          (priorityRes.priority_breakdown || []).map(p => ({
+            name: p.priority.charAt(0).toUpperCase() + p.priority.slice(1),
+            value: p.total_tickets,
+            color: p.priority === "high" ? "#f87171" : p.priority === "medium" ? "#94a3b8" : "#e2e8f0",
+          }))
+        );
+        setCategoryData(
+          (categoryRes.category_breakdown || []).map(c => ({
+            name: c.category || "Unknown",
+            tickets: c.total_tickets,
+          }))
+        );
+      } catch (e) {
+        console.error("Analytics load error:", e.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadAnalytics();
+  }, [timeRange]);
+
+  // Helper — which SLA badge to show
+  const slaBadge = (t) => {
+    const worst = [t.response_sla_status, t.resolution_sla_status].includes("breached")
+      ? "breached"
+      : [t.response_sla_status, t.resolution_sla_status].includes("at_risk")
+      ? "at_risk"
+      : "healthy";
+    return worst;
+  };
+
+  const handleAssign = async (ticketId) => {
     if (!selectedAgent) return;
-    setTickets(prev =>
-      prev.map(t =>
-        t.id === ticketId
-          ? { ...t, assigned: selectedAgent, status: t.status === "open" ? "in-progress" : t.status }
-          : t
-      )
-    );
-    setAssignModal(null);
-    setSelectedAgent("");
+    const member = teamMembersList.find(m => m.member_id === parseInt(selectedAgent));
+    if (!member) return;
+
+    setAssignLoading(true);
+    setAssignError("");
+
+    try {
+      await assignTicket({
+        ticket_id: ticketId,
+        member_id: member.member_id,
+        lead_id:   member.lead_id,
+      });
+
+      // Remove from pending / highUnassigned buckets after assign
+      const removeTicket = (list) => list.filter(t => t.ticket_id !== ticketId);
+      setPendingTickets(removeTicket);
+      setHighUnassigned(removeTicket);
+
+      if (detailTicket?.ticket_id === ticketId) {
+        setDetailTicket(prev => ({ ...prev, _assignedName: member.name, assigned_at: new Date().toISOString(), status: "Assigned" }));
+      }
+
+      setAssignModal(null);
+      setSelectedAgent("");
+
+    } catch (e) {
+      setAssignError(e.message);
+    } finally {
+      setAssignLoading(false);
+    }
+  };
+
+  const handleApproval = async (ticketId, action) => {
+    setApprovalLoading(ticketId);
+    setApprovalError("");
+    try {
+      if (action === "approve") {
+        await approveResolution({ ticket_id: ticketId, add_to_kb: false });
+      } else {
+        await rejectResolution({ ticket_id: ticketId });
+      }
+      // Remove from approval queue
+      setResolvedTickets(prev => prev.filter(t => t.ticket_id !== ticketId));
+      if (detailTicket?.ticket_id === ticketId) setDetailTicket(null);
+    } catch (e) {
+      setApprovalError(e.message);
+    } finally {
+      setApprovalLoading(null);
+    }
   };
 
   const getPriorityStyle = (p) => ({
@@ -96,10 +208,18 @@ export default function TeamLeadDashboard() {
   }[p] || {});
 
   const getStatusStyle = (s) => ({
-    open:          { background: "rgba(148,163,184,0.1)", color: "#94a3b8" },
-    "in-progress": { background: "rgba(251,191,36,0.1)",  color: "#fbbf24" },
-    resolved:      { background: "rgba(74,222,128,0.1)",  color: "#4ade80" },
-  }[s] || {});
+    Pending:       { background: "rgba(148,163,184,0.1)", color: "#94a3b8" },
+    Assigned:      { background: "rgba(251,191,36,0.1)",  color: "#fbbf24" },
+    "In Progress": { background: "rgba(96,165,250,0.1)",  color: "#60a5fa" },
+    Resolved:      { background: "rgba(167,139,250,0.1)", color: "#a78bfa" },
+    Closed:        { background: "rgba(74,222,128,0.1)",  color: "#4ade80" },
+  }[s] || { background: "rgba(148,163,184,0.1)", color: "#94a3b8" });
+
+  const getSlaStyle = (status) => ({
+    healthy:  { color: "#4ade80" },
+    at_risk:  { color: "#fbbf24" },
+    breached: { color: "#f87171" },
+  }[status] || { color: "rgba(255,255,255,0.3)" });
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
@@ -120,7 +240,7 @@ export default function TeamLeadDashboard() {
   { id: "overview",  label: "Dashboard",       icon: LayoutDashboard, path: null               },
   { id: "tickets",   label: "Tickets",          icon: Ticket,          path: "/tickets"         },
   { id: "team",      label: "Team Performance", icon: Users,           path: "/team-performance" }, 
-  { id: "analytics", label: "Analytics",        icon: BarChart3,       path: null               },
+  { id: "analytics", label: "Analytics",        icon: BarChart3,       path: "/analytics"       },
 ];
 
   const handleNavClick = (item) => {
@@ -141,6 +261,7 @@ export default function TeamLeadDashboard() {
         ::-webkit-scrollbar-track { background: #111; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
 
+        @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes fadeSlideIn {
           from { opacity: 0; transform: translateY(16px); }
           to   { opacity: 1; transform: translateY(0); }
@@ -269,23 +390,179 @@ export default function TeamLeadDashboard() {
 
       {/* ── ASSIGN MODAL ── */}
       {assignModal && (
-        <div className="modal-overlay" onClick={() => setAssignModal(null)}>
+        <div className="modal-overlay" onClick={() => { setAssignModal(null); setAssignError(""); }}>
           <div className="modal-box" onClick={e => e.stopPropagation()}>
             <h3 style={{ color: "#fff", fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 18, marginBottom: 4 }}>
               Assign Ticket
             </h3>
-            <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 13, margin: 0 }}>{assignModal}</p>
-            <select className="modal-select" value={selectedAgent} onChange={e => setSelectedAgent(e.target.value)}>
-              <option value="">Select an agent...</option>
-              {teamMembers.map(m => <option key={m} value={m}>{m}</option>)}
+            <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 13, margin: 0 }}>TCK-{assignModal}</p>
+            <select
+              className="modal-select"
+              value={selectedAgent}
+              onChange={e => { setSelectedAgent(e.target.value); setAssignError(""); }}
+            >
+              <option value="">Select a team member...</option>
+              {teamMembersList.length > 0
+                ? teamMembersList.map(m => (
+                    <option key={m.member_id} value={m.member_id}>
+                      {m.name}
+                    </option>
+                  ))
+                : <option disabled>No members found</option>
+              }
             </select>
-            <button className="modal-confirm" onClick={() => handleAssign(assignModal)}>Confirm Assignment</button>
-            <button className="modal-cancel" onClick={() => setAssignModal(null)}>Cancel</button>
+
+            {/* Error message */}
+            {assignError && (
+              <div style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", borderRadius: 10, padding: "10px 14px", marginBottom: 12, color: "#f87171", fontSize: 13 }}>
+                ⚠ {assignError}
+              </div>
+            )}
+
+            <button
+              className="modal-confirm"
+              disabled={!selectedAgent || assignLoading}
+              style={{ opacity: (!selectedAgent || assignLoading) ? 0.5 : 1 }}
+              onClick={() => handleAssign(assignModal)}
+            >
+              {assignLoading ? "Assigning..." : "Confirm Assignment"}
+            </button>
+            <button className="modal-cancel" onClick={() => { setAssignModal(null); setAssignError(""); }}>Cancel</button>
           </div>
         </div>
       )}
 
-      {/* ── SIDEBAR MOBILE OVERLAY ── */}
+      {/* ── TICKET DETAIL MODAL (CENTERED) ── */}
+      {detailTicket && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 200, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.65)", backdropFilter: "blur(6px)", padding: 24 }} onClick={() => setDetailTicket(null)}>
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              width: "100%", maxWidth: 580, maxHeight: "88vh",
+              background: "#111", border: "1px solid rgba(255,255,255,0.1)",
+              borderRadius: 22, overflowY: "auto", padding: 32,
+              animation: "modalIn 0.28s cubic-bezier(0.22,1,0.36,1) both",
+              boxShadow: "0 40px 100px rgba(0,0,0,0.8)",
+            }}
+          >
+
+            {/* Header */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
+              <div>
+                <p style={{ fontFamily: "monospace", fontSize: 13, fontWeight: 700, color: "#94a3b8", margin: 0 }}>TCK-{detailTicket.ticket_id}</p>
+                <h2 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 18, color: "#fff", margin: "6px 0 0", lineHeight: 1.3 }}>{detailTicket.subject}</h2>
+              </div>
+              <button onClick={() => setDetailTicket(null)} style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: 8, cursor: "pointer", color: "rgba(255,255,255,0.5)", display: "flex", flexShrink: 0 }}>
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Badges */}
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 24 }}>
+              <span style={{ ...getPriorityStyle(detailTicket.priority), padding: "4px 12px", borderRadius: 8, fontSize: 12, fontWeight: 700, textTransform: "capitalize" }}>
+                {detailTicket.priority}
+              </span>
+              <span style={{ ...getStatusStyle(detailTicket.status), padding: "4px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600 }}>
+                {detailTicket.status}
+              </span>
+            </div>
+
+            {/* SLA */}
+            <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 14, padding: 18, marginBottom: 20 }}>
+              <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 14px" }}>SLA Status</p>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                {[
+                  { label: "Response",         val: detailTicket.response_sla_status,   status: detailTicket.response_sla_status,   elapsed: detailTicket.response_elapsed_minutes },
+                  { label: "Resolution",        val: detailTicket.resolution_sla_status, status: detailTicket.resolution_sla_status, elapsed: detailTicket.resolution_elapsed_minutes },
+                ].map(({ label, val, status, elapsed }) => (
+                  <div key={label} style={{ background: "rgba(255,255,255,0.03)", borderRadius: 10, padding: "12px 14px" }}>
+                    <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, margin: "0 0 6px", textTransform: "uppercase" }}>{label}</p>
+                    <p style={{ ...getSlaStyle(status), fontWeight: 700, fontSize: 14, margin: "0 0 4px" }}>
+                      {status === "breached" ? "⚠ Breached" : status === "at_risk" ? "⚡ At Risk" : "✓ Healthy"}
+                    </p>
+                    <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 11, margin: 0 }}>{fmtMinutes(elapsed)} elapsed</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Timestamps */}
+            <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 14, padding: 18, marginBottom: 20 }}>
+              <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 14px" }}>Timeline</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {[
+                  { label: "Created",    val: detailTicket.created_at  },
+                  { label: "Assigned",   val: detailTicket.assigned_at },
+                  { label: "Started",    val: detailTicket.started_at  },
+                  { label: "Resolved",   val: detailTicket.resolved_at },
+                  { label: "Closed",     val: detailTicket.closed_at   },
+                ].map(({ label, val }) => (
+                  <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ color: "rgba(255,255,255,0.35)", fontSize: 13 }}>{label}</span>
+                    <span style={{ color: val ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.2)", fontSize: 13, fontWeight: val ? 500 : 400 }}>
+                      {val ? new Date(val).toLocaleString() : "—"}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Reopen count */}
+            {detailTicket.reopen_count > 0 && (
+              <div style={{ background: "rgba(251,191,36,0.06)", border: "1px solid rgba(251,191,36,0.15)", borderRadius: 12, padding: "12px 16px", marginBottom: 20, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ color: "#fbbf24", fontSize: 13 }}>⚠ Reopened</span>
+                <span style={{ color: "#fbbf24", fontWeight: 700, fontSize: 14 }}>{detailTicket.reopen_count}×</span>
+              </div>
+            )}
+
+            {/* Assign from panel */}
+            <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 14, padding: 18 }}>
+              <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 14px" }}>
+                {detailTicket._assignedName || detailTicket.assigned_at ? "Reassign Ticket" : "Assign Ticket"}
+              </p>
+              {(detailTicket._assignedName || detailTicket.assigned_at) && (
+                <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", background: "rgba(255,255,255,0.04)", borderRadius: 10, marginBottom: 12 }}>
+                  <div style={{ width: 28, height: 28, borderRadius: "50%", background: "#fff", color: "#080808", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 800 }}>
+                    {(detailTicket._assignedName || "??").split(" ").map(n => n[0]).join("")}
+                  </div>
+                  <span style={{ color: "rgba(255,255,255,0.65)", fontSize: 13 }}>
+                    {detailTicket._assignedName || "Previously assigned"}
+                  </span>
+                </div>
+              )}
+              <select
+                className="modal-select"
+                style={{ margin: "0 0 12px" }}
+                value={selectedAgent}
+                onChange={e => { setSelectedAgent(e.target.value); setAssignError(""); }}
+              >
+                <option value="">Select a team member...</option>
+                {teamMembersList.map(m => (
+                  <option key={m.member_id} value={m.member_id}>
+                    {m.name}
+                  </option>
+                ))}
+              </select>
+
+              {/* Error inside panel */}
+              {assignError && (
+                <div style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", borderRadius: 10, padding: "10px 14px", marginBottom: 12, color: "#f87171", fontSize: 13 }}>
+                  ⚠ {assignError}
+                </div>
+              )}
+
+              <button
+                className="modal-confirm"
+                disabled={!selectedAgent || assignLoading}
+                style={{ opacity: (!selectedAgent || assignLoading) ? 0.4 : 1 }}
+                onClick={() => handleAssign(detailTicket.ticket_id)}
+              >
+                {assignLoading ? "Assigning..." : "Confirm Assignment"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {sidebarOpen && <div className="mobile-overlay" onClick={() => setSidebarOpen(false)} />}
 
       {/* ── SIDEBAR ── */}
@@ -429,102 +706,245 @@ export default function TeamLeadDashboard() {
         <div style={{ padding: "28px", flex: 1 }}>
 
           {/* ══════════════════════════════════════════
-              SECTION 1 — RECENT TICKETS
+              SECTION 1 — ACTION CENTER
           ══════════════════════════════════════════ */}
-          <div className="chart-card" style={{ marginBottom: 24, animation: "fadeSlideIn 0.4s ease both" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
-              <div>
-                <h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 16, color: "#fff", margin: 0 }}>Recent Tickets</h3>
-                <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 13, margin: "4px 0 0" }}>Latest ticket activity — assign and manage</p>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <div style={{ position: "relative" }}>
-                  <Search size={14} style={{ position: "absolute", left: 11, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.3)" }} />
-                  <input type="text" placeholder="Search tickets..." value={searchQuery}
-                    onChange={e => setSearchQuery(e.target.value)} className="search-input" style={{ width: 220 }} />
+
+          {/* Summary counters row */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14, marginBottom: 24 }}>
+            {[
+              { key: "unassigned", label: "Unassigned High Priority", count: highUnassigned.length, icon: Flame,        color: "#f87171", bg: "rgba(248,113,113,0.08)", border: "rgba(248,113,113,0.2)"  },
+              { key: "pending",    label: "Pending Tickets",          count: pendingTickets.length,  icon: Clock,         color: "#fbbf24", bg: "rgba(251,191,36,0.08)",  border: "rgba(251,191,36,0.2)"   },
+              { key: "sla",        label: "SLA At Risk / Breached",   count: slaAtRisk.length,       icon: ShieldAlert,   color: "#60a5fa", bg: "rgba(96,165,250,0.08)",  border: "rgba(96,165,250,0.2)"   },
+              { key: "approval",   label: "Awaiting Approval",        count: resolvedTickets.length, icon: CheckCircle,   color: "#a78bfa", bg: "rgba(167,139,250,0.08)", border: "rgba(167,139,250,0.2)"  },
+            ].map(({ key, label, count, icon: Icon, color, bg, border }) => (
+              <button
+                key={key}
+                onClick={() => setActiveSection(key)}
+                style={{
+                  background: activeSection === key ? bg : "rgba(255,255,255,0.02)",
+                  border: `1px solid ${activeSection === key ? border : "rgba(255,255,255,0.07)"}`,
+                  borderRadius: 16, padding: "18px 20px", cursor: "pointer",
+                  textAlign: "left", transition: "all 0.2s",
+                  animation: "fadeSlideIn 0.4s ease both",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                  <div style={{ width: 36, height: 36, borderRadius: 10, background: bg, border: `1px solid ${border}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Icon size={16} style={{ color }} />
+                  </div>
+                  {triageLoading
+                    ? <div style={{ width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,0.06)" }} />
+                    : <span style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 800, fontSize: 26, color: count > 0 ? color : "rgba(255,255,255,0.2)" }}>{count}</span>
+                  }
                 </div>
-                <button
-                  onClick={() => navigate("/tickets")}
-                  style={{
-                    display: "flex", alignItems: "center", gap: 6,
-                    padding: "8px 14px", borderRadius: 10,
-                    border: "1px solid rgba(255,255,255,0.12)",
-                    background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.7)",
-                    fontFamily: "'Nunito Sans', sans-serif", fontSize: 13, fontWeight: 600,
-                    cursor: "pointer", transition: "all 0.2s",
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.1)"; e.currentTarget.style.color = "#fff"; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.color = "rgba(255,255,255,0.7)"; }}
-                >
-                  <Ticket size={13} /> View All Tickets
-                </button>
+                <p style={{ color: activeSection === key ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.35)", fontSize: 12, fontWeight: 600, margin: 0 }}>{label}</p>
+              </button>
+            ))}
+          </div>
+
+          {/* Active triage table */}
+          <div className="chart-card" style={{ marginBottom: 24, animation: "fadeSlideIn 0.4s ease both" }}>
+
+            {/* Section header */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                {activeSection === "unassigned" && <><Flame size={18} style={{ color: "#f87171" }} /><div><h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 16, color: "#fff", margin: 0 }}>Unassigned High Priority</h3><p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: "3px 0 0" }}>High priority tickets with no assigned agent — assign immediately</p></div></>}
+                {activeSection === "pending"    && <><Clock size={18} style={{ color: "#fbbf24" }} /><div><h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 16, color: "#fff", margin: 0 }}>Pending Tickets</h3><p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: "3px 0 0" }}>All tickets waiting to be assigned to an agent</p></div></>}
+                {activeSection === "sla"        && <><ShieldAlert size={18} style={{ color: "#60a5fa" }} /><div><h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 16, color: "#fff", margin: 0 }}>SLA At Risk / Breached</h3><p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: "3px 0 0" }}>Tickets approaching or past SLA deadline</p></div></>}
+                {activeSection === "approval"   && <><CheckCircle size={18} style={{ color: "#a78bfa" }} /><div><h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 16, color: "#fff", margin: 0 }}>Awaiting Approval</h3><p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: "3px 0 0" }}>Resolved tickets waiting for your approval or rejection</p></div></>}
               </div>
+              <button
+                onClick={() => navigate("/tickets")}
+                style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)", fontFamily: "'Nunito Sans', sans-serif", fontSize: 13, fontWeight: 600, cursor: "pointer" }}
+              >
+                <Ticket size={13} /> View All
+              </button>
             </div>
 
-            <div style={{ overflowX: "auto" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-                <thead>
-                  <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                    {["Ticket ID", "Title", "Priority", "Category", "Status", "Response", "Assigned To", "Created", "Assign", "Actions"].map(h => (
-                      <th key={h} style={{ padding: "10px 14px", textAlign: ["Title","Ticket ID","Created"].includes(h) ? "left" : "center" }}>{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredTickets.map((ticket, i) => (
-                    <tr key={ticket.id} className="ticket-row" style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
-                      <td style={{ padding: "14px", color: "#94a3b8", fontFamily: "monospace", fontSize: 12, fontWeight: 700 }}>{ticket.id}</td>
-                      <td style={{ padding: "14px", color: "#fff", fontWeight: 500, maxWidth: 200 }}>
-                        <span style={{ display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{ticket.title}</span>
-                      </td>
-                      <td style={{ padding: "14px", textAlign: "center" }}>
-                        <span style={{ ...getPriorityStyle(ticket.priority), padding: "3px 10px", borderRadius: 6, fontSize: 11, fontWeight: 700, textTransform: "capitalize" }}>
-                          {ticket.priority}
-                        </span>
-                      </td>
-                      <td style={{ padding: "14px", textAlign: "center" }}>
-                        <span style={{ background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.5)", padding: "3px 10px", borderRadius: 6, fontSize: 11 }}>
-                          {ticket.category}
-                        </span>
-                      </td>
-                      <td style={{ padding: "14px", textAlign: "center" }}>
-                        <span style={{ ...getStatusStyle(ticket.status), padding: "3px 10px", borderRadius: 6, fontSize: 11, fontWeight: 600, textTransform: "capitalize" }}>
-                          {ticket.status}
-                        </span>
-                      </td>
-                      <td style={{ padding: "14px", textAlign: "center", color: "rgba(255,255,255,0.5)", fontSize: 12 }}>{ticket.response}</td>
-                      <td style={{ padding: "14px", textAlign: "center" }}>
-                        {ticket.assigned ? (
-                          <div style={{ display: "flex", alignItems: "center", gap: 7, justifyContent: "center" }}>
-                            <div style={{ width: 26, height: 26, borderRadius: "50%", background: "#fff", color: "#080808", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 800, flexShrink: 0 }}>
-                              {ticket.assigned.split(" ").map(n => n[0]).join("")}
-                            </div>
-                            <span style={{ color: "rgba(255,255,255,0.65)", fontSize: 12 }}>{ticket.assigned}</span>
-                          </div>
-                        ) : (
-                          <span style={{ color: "rgba(255,255,255,0.2)", fontSize: 12 }}>Unassigned</span>
-                        )}
-                      </td>
-                      <td style={{ padding: "14px", color: "rgba(255,255,255,0.3)", fontSize: 12, whiteSpace: "nowrap" }}>{ticket.created}</td>
-                      <td style={{ padding: "14px", textAlign: "center" }}>
-                        <button className="assign-btn" onClick={() => { setAssignModal(ticket.id); setSelectedAgent(ticket.assigned || ""); }}>
-                          <UserPlus size={11} />
-                          {ticket.assigned ? "Reassign" : "Assign"}
-                        </button>
-                      </td>
-                      <td style={{ padding: "14px", textAlign: "center" }}>
-                        <button style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.2)", display: "flex", margin: "0 auto" }}>
-                          <MoreVertical size={16} />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              {filteredTickets.length === 0 && (
-                <div style={{ textAlign: "center", padding: "48px 0", color: "rgba(255,255,255,0.2)", fontSize: 14 }}>No tickets found</div>
-              )}
-            </div>
+            {/* Approval error banner */}
+            {approvalError && (
+              <div style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", borderRadius: 10, padding: "10px 16px", marginBottom: 16, color: "#f87171", fontSize: 13 }}>
+                ⚠ {approvalError}
+                <button onClick={() => setApprovalError("")} style={{ float: "right", background: "none", border: "none", color: "#f87171", cursor: "pointer" }}>✕</button>
+              </div>
+            )}
+
+            {triageLoading ? (
+              <div style={{ textAlign: "center", padding: "48px 0", color: "rgba(255,255,255,0.2)", fontSize: 14 }}>
+                <RefreshCw size={22} style={{ margin: "0 auto 10px", display: "block", animation: "spin 1s linear infinite" }} />
+                Loading action items...
+              </div>
+            ) : (
+              <div style={{ overflowX: "auto" }}>
+
+                {/* ── UNASSIGNED HIGH PRIORITY ── */}
+                {activeSection === "unassigned" && (
+                  <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                    <thead>
+                      <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                        {["Ticket ID", "Subject", "Priority", "SLA Status", "Created", "Assign To"].map(h => (
+                          <th key={h} style={{ padding: "10px 14px", textAlign: h === "Ticket ID" || h === "Subject" || h === "Created" ? "left" : "center", fontFamily: "'Nunito Sans', sans-serif", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", fontWeight: 600 }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {highUnassigned.length === 0
+                        ? <tr><td colSpan={6} style={{ padding: "48px 0", textAlign: "center", color: "rgba(255,255,255,0.2)", fontSize: 14 }}>🎉 No unassigned high priority tickets</td></tr>
+                        : highUnassigned.map(t => (
+                          <tr key={t.ticket_id} className="ticket-row" style={{ borderBottom: "1px solid rgba(255,255,255,0.04)", cursor: "pointer" }} onClick={() => { setDetailTicket(t); setSelectedAgent(""); }}>
+                            <td style={{ padding: "14px", color: "#94a3b8", fontFamily: "monospace", fontSize: 12, fontWeight: 700 }}>TCK-{t.ticket_id}</td>
+                            <td style={{ padding: "14px", color: "#fff", fontWeight: 500, maxWidth: 240 }}>
+                              <span style={{ display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{t.subject}</span>
+                            </td>
+                            <td style={{ padding: "14px", textAlign: "center" }}>
+                              <span style={{ ...getPriorityStyle(t.priority), padding: "3px 10px", borderRadius: 6, fontSize: 11, fontWeight: 700, textTransform: "capitalize" }}>{t.priority}</span>
+                            </td>
+                            <td style={{ padding: "14px", textAlign: "center" }}>
+                              {(() => { const s = slaBadge(t); return <span style={{ ...getSlaStyle(s), fontSize: 12, fontWeight: 600 }}>{s === "breached" ? "⚠ Breached" : s === "at_risk" ? "⚡ At Risk" : "✓ Healthy"}</span>; })()}
+                            </td>
+                            <td style={{ padding: "14px", color: "rgba(255,255,255,0.3)", fontSize: 12, whiteSpace: "nowrap" }}>{formatCreated(t.created_at)}</td>
+                            <td style={{ padding: "14px", textAlign: "center" }}>
+                              <button className="assign-btn" onClick={e => { e.stopPropagation(); setAssignModal(t.ticket_id); setSelectedAgent(""); }}>
+                                <UserPlus size={11} /> Assign
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      }
+                    </tbody>
+                  </table>
+                )}
+
+                {/* ── PENDING TICKETS ── */}
+                {activeSection === "pending" && (
+                  <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                    <thead>
+                      <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                        {["Ticket ID", "Subject", "Priority", "SLA Status", "Created", "Assign To"].map(h => (
+                          <th key={h} style={{ padding: "10px 14px", textAlign: h === "Ticket ID" || h === "Subject" || h === "Created" ? "left" : "center", fontFamily: "'Nunito Sans', sans-serif", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", fontWeight: 600 }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {pendingTickets.length === 0
+                        ? <tr><td colSpan={6} style={{ padding: "48px 0", textAlign: "center", color: "rgba(255,255,255,0.2)", fontSize: 14 }}>🎉 No pending tickets</td></tr>
+                        : pendingTickets.map(t => (
+                          <tr key={t.ticket_id} className="ticket-row" style={{ borderBottom: "1px solid rgba(255,255,255,0.04)", cursor: "pointer" }} onClick={() => { setDetailTicket(t); setSelectedAgent(""); }}>
+                            <td style={{ padding: "14px", color: "#94a3b8", fontFamily: "monospace", fontSize: 12, fontWeight: 700 }}>TCK-{t.ticket_id}</td>
+                            <td style={{ padding: "14px", color: "#fff", fontWeight: 500, maxWidth: 240 }}>
+                              <span style={{ display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{t.subject}</span>
+                            </td>
+                            <td style={{ padding: "14px", textAlign: "center" }}>
+                              <span style={{ ...getPriorityStyle(t.priority), padding: "3px 10px", borderRadius: 6, fontSize: 11, fontWeight: 700, textTransform: "capitalize" }}>{t.priority}</span>
+                            </td>
+                            <td style={{ padding: "14px", textAlign: "center" }}>
+                              {(() => { const s = slaBadge(t); return <span style={{ ...getSlaStyle(s), fontSize: 12, fontWeight: 600 }}>{s === "breached" ? "⚠ Breached" : s === "at_risk" ? "⚡ At Risk" : "✓ Healthy"}</span>; })()}
+                            </td>
+                            <td style={{ padding: "14px", color: "rgba(255,255,255,0.3)", fontSize: 12, whiteSpace: "nowrap" }}>{formatCreated(t.created_at)}</td>
+                            <td style={{ padding: "14px", textAlign: "center" }}>
+                              <button className="assign-btn" onClick={e => { e.stopPropagation(); setAssignModal(t.ticket_id); setSelectedAgent(""); }}>
+                                <UserPlus size={11} /> Assign
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      }
+                    </tbody>
+                  </table>
+                )}
+
+                {/* ── SLA AT RISK ── */}
+                {activeSection === "sla" && (
+                  <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                    <thead>
+                      <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                        {["Ticket ID", "Subject", "Priority", "Status", "Response SLA", "Resolution SLA", "Created"].map(h => (
+                          <th key={h} style={{ padding: "10px 14px", textAlign: h === "Ticket ID" || h === "Subject" || h === "Created" ? "left" : "center", fontFamily: "'Nunito Sans', sans-serif", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", fontWeight: 600 }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {slaAtRisk.length === 0
+                        ? <tr><td colSpan={7} style={{ padding: "48px 0", textAlign: "center", color: "rgba(255,255,255,0.2)", fontSize: 14 }}>✅ All tickets within SLA</td></tr>
+                        : slaAtRisk.map(t => (
+                          <tr key={t.ticket_id} className="ticket-row" style={{ borderBottom: "1px solid rgba(255,255,255,0.04)", cursor: "pointer" }} onClick={() => { setDetailTicket(t); setSelectedAgent(""); }}>
+                            <td style={{ padding: "14px", color: "#94a3b8", fontFamily: "monospace", fontSize: 12, fontWeight: 700 }}>TCK-{t.ticket_id}</td>
+                            <td style={{ padding: "14px", color: "#fff", fontWeight: 500, maxWidth: 200 }}>
+                              <span style={{ display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{t.subject}</span>
+                            </td>
+                            <td style={{ padding: "14px", textAlign: "center" }}>
+                              <span style={{ ...getPriorityStyle(t.priority), padding: "3px 10px", borderRadius: 6, fontSize: 11, fontWeight: 700, textTransform: "capitalize" }}>{t.priority}</span>
+                            </td>
+                            <td style={{ padding: "14px", textAlign: "center" }}>
+                              <span style={{ ...getStatusStyle(t.status), padding: "3px 10px", borderRadius: 6, fontSize: 11, fontWeight: 600 }}>{t.status}</span>
+                            </td>
+                            <td style={{ padding: "14px", textAlign: "center" }}>
+                              <span style={{ ...getSlaStyle(t.response_sla_status), fontSize: 12, fontWeight: 600 }}>{t.response_sla_status === "breached" ? "⚠ Breached" : t.response_sla_status === "at_risk" ? "⚡ At Risk" : "✓ OK"}</span>
+                            </td>
+                            <td style={{ padding: "14px", textAlign: "center" }}>
+                              <span style={{ ...getSlaStyle(t.resolution_sla_status), fontSize: 12, fontWeight: 600 }}>{t.resolution_sla_status === "breached" ? "⚠ Breached" : t.resolution_sla_status === "at_risk" ? "⚡ At Risk" : "✓ OK"}</span>
+                            </td>
+                            <td style={{ padding: "14px", color: "rgba(255,255,255,0.3)", fontSize: 12, whiteSpace: "nowrap" }}>{formatCreated(t.created_at)}</td>
+                          </tr>
+                        ))
+                      }
+                    </tbody>
+                  </table>
+                )}
+
+                {/* ── APPROVAL QUEUE ── */}
+                {activeSection === "approval" && (
+                  <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                    <thead>
+                      <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                        {["Ticket ID", "Subject", "Priority", "SLA Status", "Resolved", "Actions"].map(h => (
+                          <th key={h} style={{ padding: "10px 14px", textAlign: h === "Ticket ID" || h === "Subject" || h === "Resolved" ? "left" : "center", fontFamily: "'Nunito Sans', sans-serif", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", fontWeight: 600 }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {resolvedTickets.length === 0
+                        ? <tr><td colSpan={6} style={{ padding: "48px 0", textAlign: "center", color: "rgba(255,255,255,0.2)", fontSize: 14 }}>🎉 No tickets awaiting approval</td></tr>
+                        : resolvedTickets.map(t => (
+                          <tr key={t.ticket_id} className="ticket-row" style={{ borderBottom: "1px solid rgba(255,255,255,0.04)", cursor: "pointer" }} onClick={() => { setDetailTicket(t); setSelectedAgent(""); }}>
+                            <td style={{ padding: "14px", color: "#94a3b8", fontFamily: "monospace", fontSize: 12, fontWeight: 700 }}>TCK-{t.ticket_id}</td>
+                            <td style={{ padding: "14px", color: "#fff", fontWeight: 500, maxWidth: 200 }}>
+                              <span style={{ display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{t.subject}</span>
+                            </td>
+                            <td style={{ padding: "14px", textAlign: "center" }}>
+                              <span style={{ ...getPriorityStyle(t.priority), padding: "3px 10px", borderRadius: 6, fontSize: 11, fontWeight: 700, textTransform: "capitalize" }}>{t.priority}</span>
+                            </td>
+                            <td style={{ padding: "14px", textAlign: "center" }}>
+                              {(() => { const s = slaBadge(t); return <span style={{ ...getSlaStyle(s), fontSize: 12, fontWeight: 600 }}>{s === "breached" ? "⚠ Breached" : s === "at_risk" ? "⚡ At Risk" : "✓ Healthy"}</span>; })()}
+                            </td>
+                            <td style={{ padding: "14px", color: "rgba(255,255,255,0.3)", fontSize: 12, whiteSpace: "nowrap" }}>{formatCreated(t.resolved_at || t.created_at)}</td>
+                            <td style={{ padding: "14px", textAlign: "center" }} onClick={e => e.stopPropagation()}>
+                              <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
+                                <button
+                                  disabled={approvalLoading === t.ticket_id}
+                                  onClick={() => handleApproval(t.ticket_id, "approve")}
+                                  style={{ display: "flex", alignItems: "center", gap: 5, padding: "5px 12px", borderRadius: 8, border: "1px solid rgba(74,222,128,0.3)", background: "rgba(74,222,128,0.08)", color: "#4ade80", fontSize: 11, fontWeight: 700, cursor: "pointer", opacity: approvalLoading === t.ticket_id ? 0.5 : 1, fontFamily: "'Nunito Sans', sans-serif" }}
+                                >
+                                  <ThumbsUp size={11} /> {approvalLoading === t.ticket_id ? "…" : "Approve"}
+                                </button>
+                                <button
+                                  disabled={approvalLoading === t.ticket_id}
+                                  onClick={() => handleApproval(t.ticket_id, "reject")}
+                                  style={{ display: "flex", alignItems: "center", gap: 5, padding: "5px 12px", borderRadius: 8, border: "1px solid rgba(248,113,113,0.3)", background: "rgba(248,113,113,0.08)", color: "#f87171", fontSize: 11, fontWeight: 700, cursor: "pointer", opacity: approvalLoading === t.ticket_id ? 0.5 : 1, fontFamily: "'Nunito Sans', sans-serif" }}
+                                >
+                                  <ThumbsDown size={11} /> {approvalLoading === t.ticket_id ? "…" : "Reject"}
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      }
+                    </tbody>
+                  </table>
+                )}
+
+              </div>
+            )}
           </div>
 
           {/* ══════════════════════════════════════════

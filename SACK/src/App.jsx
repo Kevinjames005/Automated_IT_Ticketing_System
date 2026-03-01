@@ -4,6 +4,9 @@ import TeamLeadDashboard from "./pages/TeamLeadDashboard";
 import TeamMemberDashboard from "./pages/TeamMemberDashboard";
 import TicketsPage from "./pages/TicketsPage";
 import TeamPerformancePage from "./pages/TeamPerformancePage";
+import AnalyticsPage from "./pages/AnalyticsPage";
+
+
 
 function App() {
   return (
@@ -13,6 +16,7 @@ function App() {
       <Route path="/teammember" element={<TeamMemberDashboard />} />
       <Route path="/tickets"    element={<TicketsPage />} />
       <Route path="/team-performance" element={<TeamPerformancePage />} />
+      <Route path="/analytics" element={<AnalyticsPage />} />
     </Routes>
   );
 }
