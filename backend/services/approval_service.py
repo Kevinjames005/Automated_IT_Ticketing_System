@@ -1,13 +1,48 @@
 from db import get_conn, release_conn
-from db import get_conn, release_conn
 from ml.embeddings import get_embedding
 
-def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
+def approve_resolution(ticket_id: int, supabase_uuid: str, add_to_kb: bool):
 
     conn = get_conn()
     cur = conn.cursor()
 
+    
+
     try:
+
+            # Resolve supabase_uuid → lead_id
+        cur.execute(
+            """
+            SELECT lead_id
+            FROM team_leads
+            WHERE supabase_user_id = %s;
+            """,
+            (supabase_uuid,)
+        )
+
+        lead_row = cur.fetchone()
+
+        if not lead_row:
+            raise Exception("Unauthorized: not a team lead")
+
+        lead_id = lead_row[0]
+
+        # 🔐 STEP 2 — Ownership Check
+        cur.execute(
+            """
+            SELECT 1
+            FROM ticket_assignments ta
+            JOIN team_members tm ON ta.member_id = tm.member_id
+            WHERE ta.ticket_id = %s
+            AND tm.lead_id = %s;
+            """,
+            (ticket_id, lead_id)
+        )
+
+        ownership = cur.fetchone()
+
+        if not ownership:
+            raise Exception("Unauthorized: cannot modify this ticket")
         # Lock ticket row
         cur.execute(
             """
@@ -101,13 +136,51 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
         cur.close()
         release_conn(conn)
 
-def reject_resolution(ticket_id: int, lead_id: int):
+def reject_resolution(ticket_id: int, supabase_uuid: str):
 
     conn = get_conn()
     cur = conn.cursor()
 
+    
+
     try:
-        # Lock ticket row
+
+            # Resolve supabase_uuid → lead_id
+        cur.execute(
+            """
+            SELECT lead_id
+            FROM team_leads
+            WHERE supabase_user_id = %s;
+            """,
+            (supabase_uuid,)
+        )
+
+        lead_row = cur.fetchone()
+
+        if not lead_row:
+            raise Exception("Unauthorized: not a team lead")
+
+        lead_id = lead_row[0]
+
+
+        # 🔐 STEP 2 — Ownership Check
+        cur.execute(
+            """
+            SELECT 1
+            FROM ticket_assignments ta
+            JOIN team_members tm ON ta.member_id = tm.member_id
+            WHERE ta.ticket_id = %s
+            AND tm.lead_id = %s;
+            """,
+            (ticket_id, lead_id)
+        )
+
+        ownership = cur.fetchone()
+
+        if not ownership:
+            raise Exception("Unauthorized: cannot modify this ticket")
+        
+            # Lock ticket row
         cur.execute(
             """
             SELECT status

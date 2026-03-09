@@ -1,11 +1,30 @@
 from db import get_conn, release_conn
 
-def assign_ticket(ticket_id: int, member_id: int, lead_id: int):
+def assign_ticket(ticket_id: int, member_id: int, supabase_uuid: str):
 
     conn = get_conn()
     cur = conn.cursor()
 
     try:
+        # Resolve supabase_uuid → lead_id
+        cur.execute(
+            """
+            SELECT lead_id
+            FROM team_leads
+            WHERE supabase_user_id = %s;
+            """,
+            (supabase_uuid,)
+        )
+
+        lead_row = cur.fetchone()
+
+        if not lead_row:
+            raise Exception("Unauthorized: not a team lead")
+
+        lead_id = lead_row[0]
+
+        # 🔒 2. Lock ticket
+    
         
         cur.execute(
             """

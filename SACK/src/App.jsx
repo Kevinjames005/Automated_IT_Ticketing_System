@@ -1,11 +1,11 @@
 import { Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import TeamLeadDashboard from "./pages/TeamLeadDashboard";
-import TeamMemberDashboard from "./pages/TeamMemberDashboard";
-import TicketsPage from "./pages/TicketsPage";
-import TeamPerformancePage from "./pages/TeamPerformancePage";
-import AnalyticsPage from "./pages/AnalyticsPage";
-
+import TeamLeadDashboard   from "./pages/TeamLead/TeamLeadDashboard"
+import TeamPerformancePage from "./pages/TeamLead/TeamPerformancePage"
+import TicketsPage         from "./pages/TeamLead/TicketsPage"
+import AnalyticsPage       from "./pages/TeamLead/AnalyticsPage"
+import SettingsPage        from "./pages/TeamLead/SettingsPage"
+import TeamMemberDashboard from "./pages/TeamMember/TeamMemberDashboard"
+import Login               from "./pages/Login"
 
 
 function App() {
@@ -17,6 +17,7 @@ function App() {
       <Route path="/tickets"    element={<TicketsPage />} />
       <Route path="/team-performance" element={<TeamPerformancePage />} />
       <Route path="/analytics" element={<AnalyticsPage />} />
+      <Route path="/settings" element={<SettingsPage />} />
     </Routes>
   );
 }

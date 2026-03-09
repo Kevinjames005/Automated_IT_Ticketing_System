@@ -349,4 +349,4 @@ def get_sla_comparison(days=7):
 
     finally:
         cur.close()
-        release_conn(conn)
+        release_conn(conn)          

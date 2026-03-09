@@ -2,20 +2,13 @@ from ml.embeddings import get_embedding
 from db import get_conn, release_conn
 
 def semantic_search(text: str, threshold: float = 0.80):
-    """
-    Returns:
-        dict with:
-        {
-            resolved: bool,
-            content: str,
-            similarity: float
-        }
-    """
 
-    # Step 1: Generate embedding
     embedding = get_embedding(text)
 
-    # Step 2: Get DB connection
+    if embedding is None:
+        print("❌ Embedding generation failed")
+        return {"resolved": False}
+
     conn = get_conn()
     cur = conn.cursor()
 
@@ -36,7 +29,8 @@ def semantic_search(text: str, threshold: float = 0.80):
     if result:
         article_id, title, content, similarity = result
 
-        if similarity >= threshold:
+        # 🔐 Safety check
+        if similarity is not None and float(similarity) >= threshold:
             return {
                 "resolved": True,
                 "article_id": article_id,
@@ -44,6 +38,4 @@ def semantic_search(text: str, threshold: float = 0.80):
                 "similarity": float(similarity)
             }
 
-    return {
-        "resolved": False
-    }
+    return {"resolved": False}
