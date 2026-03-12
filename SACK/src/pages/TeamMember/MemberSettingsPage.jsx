@@ -4,10 +4,10 @@ import {
   User, Shield, Bell, ChevronRight,
   Save, Eye, EyeOff, LogOut, ArrowLeft,
   CheckCircle, AlertTriangle, X, Menu,
-  Activity, Target, Award, Settings,
+  Activity, Target, Award, Settings, Star,
 } from "lucide-react";
 import supabase from "../supabaseClient";
-import { apiFetch } from "../api";
+import { apiFetch, fetchTickets, fetchMemberAnalytics } from "../api";
 
 export default function MemberSettingsPage() {
   const navigate = useNavigate();
@@ -15,6 +15,11 @@ export default function MemberSettingsPage() {
   const [activeSection, setActiveSection] = useState("profile");
   const [sidebarOpen,   setSidebarOpen]   = useState(false);
   const [saveStatus,    setSaveStatus]    = useState(""); // "saving" | "saved" | "error"
+
+  // Sidebar performance card data (mirrors TeamMemberDashboard)
+  const [myPerf,          setMyPerf]          = useState(null);
+  const [activeCount,     setActiveCount]     = useState("…");
+  const [resolvedCount,   setResolvedCount]   = useState("…");
 
   // Identity
   const [currentUser, setCurrentUser] = useState(null);
@@ -63,6 +68,23 @@ export default function MemberSettingsPage() {
       setCurrentUser({ email, name, initials, member_id });
       setDisplayName(name);
       setProfileEmail(email);
+
+      // Load sidebar performance card data
+      try {
+        const [ticketRes, resolvedRes, perfRes] = await Promise.allSettled([
+          fetchTickets({ status: "Assigned",    limit: 100 }),
+          fetchTickets({ status: "Resolved",    limit: 100 }),
+          fetchMemberAnalytics("7days"),
+        ]);
+        if (ticketRes.status   === "fulfilled") setActiveCount(ticketRes.value?.tickets?.length ?? 0);
+        if (resolvedRes.status === "fulfilled") setResolvedCount(resolvedRes.value?.tickets?.length ?? 0);
+        if (perfRes.status     === "fulfilled" && member_id) {
+          const me = (perfRes.value?.members || []).find(m => m.member_id === member_id);
+          if (me) setMyPerf(me);
+        }
+      } catch (e) {
+        console.error("Sidebar perf load failed:", e.message);
+      }
     }
     loadIdentity();
   }, []);
@@ -115,10 +137,12 @@ export default function MemberSettingsPage() {
   ];
 
   const navItems = [
-    { id: "my-tickets",  label: "My Tickets",  icon: Activity },
-    { id: "performance", label: "Performance", icon: Target   },
-    { id: "settings",    label: "Settings",    icon: Settings },
+    { id: "my-tickets",  label: "My Tickets",  icon: Activity,    path: "/teammember",                  badge: activeCount,   badgeColor: "rgba(255,255,255,0.9)", badgeBg: "rgba(255,255,255,0.15)" },
+    { id: "resolved",    label: "Resolved",    icon: CheckCircle, path: "/teammember?tab=resolved",      badge: resolvedCount, badgeColor: "#4ade80",               badgeBg: "rgba(74,222,128,0.15)"  },
+    { id: "performance", label: "Performance", icon: Target,      path: "/teammember?tab=performance",   badge: null },
   ];
+
+  const gradeColor = (g) => ({ A:"#4ade80", B:"#ffffff", C:"#fbbf24", D:"#f87171" }[g] || "#fff");
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", background: "#080808", fontFamily: "'Nunito Sans', sans-serif" }}>
@@ -199,42 +223,82 @@ export default function MemberSettingsPage() {
         <div onClick={() => setSidebarOpen(false)}
           style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 99 }} />
       )}
-      <aside style={{ width: 240, background: "#0d0d0d", borderRight: "1px solid rgba(255,255,255,0.06)", display: "flex", flexDirection: "column", padding: "24px 16px", height: "100vh", position: "sticky", top: 0, flexShrink: 0 }}>
+      <aside style={{ width:240, background:"#0d0d0d", borderRight:"1px solid rgba(255,255,255,0.06)", display:"flex", flexDirection:"column", padding:"24px 16px", height:"100vh", position:"sticky", top:0, flexShrink:0 }}>
         {/* Logo */}
-        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 32, padding: "0 6px" }}>
-          <div style={{ width: 8, height: 8, background: "#fff", borderRadius: "50%", boxShadow: "0 0 10px 3px rgba(255,255,255,0.3)", animation: "pulse-d 2.5s infinite" }} />
-          <span style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", letterSpacing: "0.05em" }}>AI Ticket</span>
+        <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:32, padding:"0 6px" }}>
+          <div style={{ width:8, height:8, background:"#fff", borderRadius:"50%", boxShadow:"0 0 10px 3px rgba(255,255,255,0.3)", animation:"pulse-d 2.5s infinite" }} />
+          <span style={{ fontFamily:"'Nunito',sans-serif", fontWeight:700, fontSize:15, color:"#fff", letterSpacing:"0.05em" }}>AI Ticket</span>
         </div>
 
-        {/* Mini profile card */}
-        <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: 18, marginBottom: 24 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <div style={{ width: 44, height: 44, borderRadius: 13, background: "#fff", color: "#080808", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 15, fontFamily: "'Nunito', sans-serif", flexShrink: 0 }}>
-              {currentUser?.initials || "??"}
+        {/* Performance Card */}
+        <div style={{ background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:16, padding:18, marginBottom:24 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
+            <div style={{ width:40, height:40, borderRadius:12, background:"rgba(255,255,255,0.08)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+              <Award size={18} style={{ color:"rgba(255,255,255,0.7)" }} />
             </div>
             <div>
-              <p style={{ color: "#fff", fontWeight: 700, fontSize: 14, margin: 0, fontFamily: "'Nunito', sans-serif" }}>{currentUser?.name || "Loading..."}</p>
-              <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, margin: "3px 0 0" }}>Support Agent</p>
+              <p style={{ color:"rgba(255,255,255,0.35)", fontSize:11, margin:0, letterSpacing:"0.06em", textTransform:"uppercase" }}>Performance</p>
+              <div style={{ display:"flex", alignItems:"center", gap:5, marginTop:2 }}>
+                <Star size={14} style={{ color:"#fbbf24", fill:"#fbbf24" }} />
+                <span style={{ color: myPerf ? gradeColor(myPerf.performance_grade) : "#fff", fontWeight:700, fontSize:20, fontFamily:"'Nunito',sans-serif" }}>
+                  {myPerf ? myPerf.performance_grade : "—"}
+                </span>
+              </div>
             </div>
+          </div>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8 }}>
+            {[
+              { label:"Resolved", val: resolvedCount },
+              { label:"Active",   val: activeCount   },
+            ].map(({ label, val }) => (
+              <div key={label} style={{ background:"rgba(255,255,255,0.06)", borderRadius:10, padding:"10px 8px", textAlign:"center" }}>
+                <p style={{ color:"#fff", fontWeight:700, fontSize:22, margin:0, fontFamily:"'Nunito',sans-serif" }}>{val}</p>
+                <p style={{ color:"rgba(255,255,255,0.3)", fontSize:11, margin:0 }}>{label}</p>
+              </div>
+            ))}
           </div>
         </div>
 
         {/* Nav */}
-        <nav style={{ flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
-          {navItems.map(({ id, label, icon: Icon }) => (
-            <button key={id}
-              className={`nav-btn ${id === "settings" ? "active" : ""}`}
-              onClick={() => {
-                if (id === "my-tickets" || id === "performance") navigate("/teammember");
-              }}
-            >
-              <Icon size={16} /> {label}
+        <nav style={{ flex:1, display:"flex", flexDirection:"column", gap:4 }}>
+          {navItems.map(({ id, label, icon: Icon, path, badge, badgeColor, badgeBg }) => (
+            <button key={id} className="nav-btn" onClick={() => navigate(path)}>
+              <Icon size={16} />
+              <span style={{ flex:1 }}>{label}</span>
+              {badge !== null && badge !== "…" && (
+                <span style={{ background: badgeBg || "rgba(255,255,255,0.1)", color: badgeColor || "rgba(255,255,255,0.6)", fontSize:10, fontWeight:700, padding:"2px 7px", borderRadius:999 }}>
+                  {badge}
+                </span>
+              )}
             </button>
           ))}
+          <button className="nav-btn active" style={{ marginTop:8 }}><Settings size={16} /> Settings</button>
         </nav>
 
-        {/* Footer */}
-        <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 16, marginTop: 16 }}>
+        {/* User profile card */}
+        <div style={{ borderTop:"1px solid rgba(255,255,255,0.07)", paddingTop:16, marginTop:16 }}>
+          <div style={{ background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:14, padding:"14px 12px", marginBottom:10 }}>
+            <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:10 }}>
+              <div style={{ width:40, height:40, borderRadius:"50%", background:"linear-gradient(135deg,#059669,#10b981)", display:"flex", alignItems:"center", justifyContent:"center", color:"#fff", fontWeight:800, fontSize:14, flexShrink:0, boxShadow:"0 0 0 2px rgba(16,185,129,0.3)" }}>
+                {currentUser?.name ? currentUser.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0,2) : "SA"}
+              </div>
+              <div style={{ minWidth:0 }}>
+                <p style={{ color:"#fff", fontSize:13, fontWeight:700, margin:0, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
+                  {currentUser?.name || "Support Agent"}
+                </p>
+                <p style={{ color:"rgba(255,255,255,0.35)", fontSize:11, margin:"2px 0 0", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
+                  {currentUser?.email || "—"}
+                </p>
+              </div>
+            </div>
+            <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+              <span style={{ background:"rgba(16,185,129,0.15)", color:"#34d399", border:"1px solid rgba(16,185,129,0.25)", borderRadius:999, fontSize:10, fontWeight:700, padding:"2px 10px", letterSpacing:"0.05em", textTransform:"uppercase" }}>
+                Support Agent
+              </span>
+              <span style={{ width:6, height:6, borderRadius:"50%", background:"#4ade80", boxShadow:"0 0 6px #4ade80", display:"inline-block" }} />
+              <span style={{ color:"#4ade80", fontSize:10, fontWeight:600 }}>Online</span>
+            </div>
+          </div>
           <button className="nav-btn" onClick={handleLogout}><LogOut size={16} /> Logout</button>
         </div>
       </aside>
@@ -429,7 +493,7 @@ export default function MemberSettingsPage() {
                     {
                       key: "slaWarning",
                       label: "SLA Warning",
-                      desc: "Alert when one of your tickets is at risk of breaching SLA",
+                      desc: "Alert when your response or resolution time is at risk of breaching — your clock starts from when the ticket is assigned to you",
                       color: "#f87171",
                     },
                   ].map(({ key, label, desc, color }, i) => (

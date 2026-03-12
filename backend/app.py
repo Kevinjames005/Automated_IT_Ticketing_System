@@ -359,6 +359,7 @@ def get_tickets_endpoint():
     try:
         status   = request.args.get("status")
         priority = request.args.get("priority")
+        search   = request.args.get("search", "").strip() or None
         page     = int(request.args.get("page",  1))
         limit    = int(request.args.get("limit", 20))
 
@@ -370,6 +371,7 @@ def get_tickets_endpoint():
         result = get_tickets(
             status=status,
             priority=priority,
+            search=search,
             page=page,
             limit=limit,
             date_range=range_param,

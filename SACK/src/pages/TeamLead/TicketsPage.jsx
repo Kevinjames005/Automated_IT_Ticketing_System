@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Search, UserPlus, AlertCircle, RefreshCw, Download,
   Settings, LayoutDashboard, Ticket, BarChart3,
@@ -38,6 +38,7 @@ export default function TicketsPage() {
   const [loading,        setLoading]        = useState(true);
   const [error,          setError]          = useState("");
   const [searchQuery,    setSearchQuery]    = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [filterStatus,   setFilterStatus]   = useState("all");
   const [filterPriority, setFilterPriority] = useState("all");
   const [sortField,      setSortField]      = useState("created_at");
@@ -67,7 +68,16 @@ export default function TicketsPage() {
     { id: "analytics", label: "Analytics",        icon: BarChart3,       path: "/analytics"        },
   ];
 
-  useEffect(() => { loadTickets(); }, [filterStatus, filterPriority, currentPage]);
+  // Debounce search — wait 400 ms after the user stops typing before fetching
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery.trim());
+      setCurrentPage(1);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  useEffect(() => { loadTickets(); }, [filterStatus, filterPriority, currentPage, debouncedSearch]);
 
   useEffect(() => {
     fetchMembers()
@@ -84,6 +94,7 @@ export default function TicketsPage() {
       const data = await fetchTickets({
         status:   filterStatus   !== "all" ? filterStatus   : undefined,
         priority: filterPriority !== "all" ? filterPriority : undefined,
+        search:   debouncedSearch || undefined,
         page:     currentPage,
         limit:    ITEMS_PER_PAGE,
       });
@@ -178,12 +189,8 @@ export default function TicketsPage() {
   const getSlaStyle  = (s) => ({ healthy: { color: "#4ade80" }, at_risk: { color: "#fbbf24" }, breached: { color: "#f87171" } }[s] || { color: "rgba(255,255,255,0.2)" });
   const getSlaLabel  = (s) => s === "breached" ? "⚠ Breached" : s === "at_risk" ? "⚡ At Risk" : s === "healthy" ? "✓ Healthy" : "—";
 
-  // ── Filtering + sorting ───────────────────────────────────────────────────
+  // ── Sorting (search & status/priority filtering is handled server-side) ───
   const filtered = tickets
-    .filter(t => {
-      const q = searchQuery.toLowerCase();
-      return !q || t.subject?.toLowerCase().includes(q) || `tck-${t.ticket_id}`.includes(q.replace("tck-", ""));
-    })
     .sort((a, b) => {
       let va = a[sortField], vb = b[sortField];
       if (typeof va === "string") va = va.toLowerCase();
@@ -231,6 +238,46 @@ export default function TicketsPage() {
       </button>
     </>
   );
+
+  // ── Export CSV ────────────────────────────────────────────────────────────
+  const exportCSV = () => {
+    const headers = [
+      "Ticket ID", "Subject", "Priority", "Status",
+      "Lead SLA", "Member Response SLA", "Member Resolution SLA",
+      "Assigned", "Created At", "Resolved At", "Closed At",
+    ];
+
+    const escape = (val) => {
+      if (val == null) return "";
+      const str = String(val);
+      return str.includes(",") || str.includes('"') || str.includes("\n")
+        ? `"${str.replace(/"/g, '""')}"`
+        : str;
+    };
+
+    const rows = filtered.map(t => [
+      `TCK-${t.ticket_id}`,
+      t.subject || "",
+      t.priority || "",
+      t.status || "",
+      t.lead_sla_status || t.response_sla_status || "",
+      t.member_response_sla_status || "",
+      t.member_resolution_sla_status || t.resolution_sla_status || "",
+      t.assigned_at ? new Date(t.assigned_at).toLocaleString() : "Unassigned",
+      t.created_at  ? new Date(t.created_at).toLocaleString()  : "",
+      t.resolved_at ? new Date(t.resolved_at).toLocaleString() : "",
+      t.closed_at   ? new Date(t.closed_at).toLocaleString()   : "",
+    ].map(escape).join(","));
+
+    const csv = [headers.join(","), ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href     = url;
+    a.download = `tickets_export_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   // ─────────────────────────────────────────────────────────────────────────
   // RENDER
@@ -619,7 +666,7 @@ export default function TicketsPage() {
             <button onClick={() => { loadTickets(); loadCounts(); }} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: 8, cursor: "pointer", display: "flex", color: "rgba(255,255,255,0.5)" }}>
               <RefreshCw size={16} style={{ animation: loading ? "spin 1s linear infinite" : "none" }} />
             </button>
-            <button className="export-btn"><Download size={14} /> Export CSV</button>
+            <button className="export-btn" onClick={exportCSV}><Download size={14} /> Export CSV</button>
           </div>
         </header>
 
@@ -653,7 +700,7 @@ export default function TicketsPage() {
             <div style={{ position: "relative", flex: 1, minWidth: 200 }}>
               <Search size={14} style={{ position: "absolute", left: 11, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.3)" }} />
               <input type="text" placeholder="Search tickets..." value={searchQuery}
-                onChange={e => { setSearchQuery(e.target.value); setCurrentPage(1); }} className="search-input" />
+                onChange={e => setSearchQuery(e.target.value)} className="search-input" />
             </div>
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
               <select value={filterStatus} onChange={e => { setFilterStatus(e.target.value); setCurrentPage(1); }} className="filter-sel">

@@ -242,6 +242,60 @@ export default function TeamLeadDashboard() {
     { value: "30days", label: "30 Days"  },
   ];
 
+  // ── Export CSV ────────────────────────────────────────────────────────────
+  const exportCSV = () => {
+    const escape = (val) => {
+      if (val == null) return "";
+      const str = String(val);
+      return str.includes(",") || str.includes('"') || str.includes("\n")
+        ? `"${str.replace(/"/g, '""')}"`
+        : str;
+    };
+
+    // Pick the data set matching the active triage section
+    const sectionData = {
+      unassigned: highUnassigned,
+      pending:    pendingTickets,
+      sla:        slaAtRisk,
+      approval:   resolvedTickets,
+    }[activeSection] || [];
+
+    const sectionLabel = {
+      unassigned: "unassigned_high_priority",
+      pending:    "pending_tickets",
+      sla:        "sla_at_risk",
+      approval:   "awaiting_approval",
+    }[activeSection];
+
+    const headers = [
+      "Ticket ID", "Subject", "Priority", "Status",
+      "Lead SLA", "Member Response SLA", "Member Resolution SLA",
+      "Assigned", "Created At", "Resolved At",
+    ];
+
+    const rows = sectionData.map(t => [
+      `TCK-${t.ticket_id}`,
+      t.subject || "",
+      t.priority || "",
+      t.status || "",
+      t.lead_sla_status || t.response_sla_status || "",
+      t.member_response_sla_status || "",
+      t.member_resolution_sla_status || t.resolution_sla_status || "",
+      t.assigned_at ? new Date(t.assigned_at).toLocaleString() : "Unassigned",
+      t.created_at  ? new Date(t.created_at).toLocaleString()  : "",
+      t.resolved_at ? new Date(t.resolved_at).toLocaleString() : "",
+    ].map(escape).join(","));
+
+    const csv = [headers.join(","), ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href     = url;
+    a.download = `dashboard_${sectionLabel}_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   // ─────────────────────────────────────────────────────────────────────────
   // RENDER
   // ─────────────────────────────────────────────────────────────────────────
@@ -832,7 +886,7 @@ export default function TeamLeadDashboard() {
               )}
             </div>
 
-            <button className="export-btn"><Download size={14} /> Export</button>
+            <button className="export-btn" onClick={exportCSV}><Download size={14} /> Export</button>
           </div>
         </header>
 

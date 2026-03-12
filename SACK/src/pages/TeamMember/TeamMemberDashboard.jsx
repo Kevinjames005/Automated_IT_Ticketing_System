@@ -4,7 +4,7 @@ import {
   Search, Clock, CheckCircle, AlertCircle, Calendar, User,
   Bell, Settings, LogOut, Menu, X,
   Send, Star, TrendingUp, Activity, Award, Target, ChevronRight,
-  RefreshCw, AlertTriangle,
+  RefreshCw, AlertTriangle, MessageSquare, FileText,
 } from "lucide-react";
 import supabase from "../supabaseClient";
 
@@ -52,19 +52,34 @@ function normaliseTicket(t) {
     rawId:         t.ticket_id,
     rawStatus:     t.status,
     title:         t.subject || "(no subject)",
+    body:          t.body    || "",
     status:        statusMap[t.status] ?? "open",
     priority:      (t.priority || "low").toLowerCase(),
     category:      t.category || "General",
     createdAt:     t.created_at,
     assignedAt:    t.assigned_at,
+    startedAt:     t.started_at,
+    resolvedAt:    t.resolved_at,
     closedAt:      t.closed_at,
     reopen_count:  t.reopen_count || 0,
     sla: {
+      // Lead SLA (how fast the lead assigned)
+      lead_sla_status:                   t.lead_sla_status                   || t.response_sla_status        || "healthy",
+      lead_response_elapsed_minutes:     t.lead_response_elapsed_minutes     ?? t.response_elapsed_minutes   ?? null,
+      lead_response_remaining_minutes:   t.lead_response_remaining_minutes   ?? t.response_remaining_minutes ?? null,
+
+      // Member SLA (how fast the member resolves — clock starts at assigned_at)
+      member_response_sla_status:        t.member_response_sla_status        || "pending",
+      member_resolution_sla_status:      t.member_resolution_sla_status      || t.resolution_sla_status      || "healthy",
+      member_elapsed_minutes:            t.member_elapsed_minutes            ?? null,
+      member_response_remaining_minutes: t.member_response_remaining_minutes ?? null,
+      member_resolution_remaining_minutes: t.member_resolution_remaining_minutes ?? t.resolution_remaining_minutes ?? null,
+
+      // Legacy aliases (kept for safety)
       response_sla_status:        t.response_sla_status        || "healthy",
       resolution_sla_status:      t.resolution_sla_status      || "healthy",
       response_elapsed_minutes:   t.response_elapsed_minutes   ?? null,
       resolution_elapsed_minutes: t.resolution_elapsed_minutes ?? null,
-      response_remaining_minutes: t.response_remaining_minutes ?? null,
       resolution_remaining_minutes: t.resolution_remaining_minutes ?? null,
     },
     comments:    [],
@@ -93,12 +108,16 @@ export default function TeamMemberDashboard() {
   // ── Data state ────────────────────────────────────────────────────────────
   const [tickets,         setTickets]         = useState([]);
   const [resolvedTickets, setResolvedTickets] = useState([]);
+  const [rejectedTickets, setRejectedTickets] = useState([]);
   const [analytics,       setAnalytics]       = useState(null);
   const [memberPerf,      setMemberPerf]      = useState([]);
   const [currentUser,     setCurrentUser]     = useState(null);
 
+  // ── Per-rejected-ticket inline state ─────────────────────────────────────
+  const [rejectedState, setRejectedState]   = useState({});
+
   // ── Loading / error state ─────────────────────────────────────────────────
-  const [loading,       setLoading]       = useState({ tickets: true, resolved: true, analytics: true, perf: true });
+  const [loading,       setLoading]       = useState({ tickets: true, resolved: true, analytics: true, perf: true, rejected: true });
   const [errors,        setErrors]        = useState({});
   const [actionLoading, setActionLoading] = useState(false);
   const [actionError,   setActionError]   = useState("");
@@ -126,14 +145,15 @@ export default function TeamMemberDashboard() {
     })();
   }, []);
 
-  // ── Data fetchers ─────────────────────────────────────────────────────────
-  const loadActiveTickets = useCallback(async () => {
+  // ── Data fetchers (all require memberId so they only return that member's tickets) ──
+  const loadActiveTickets = useCallback(async (memberId) => {
+    if (!memberId) return;
     setLoading(l => ({ ...l, tickets: true }));
     setErrors(e => ({ ...e, tickets: null }));
     try {
       const [assigned, inProgress] = await Promise.all([
-        apiFetch("/tickets?status=Assigned&limit=100"),
-        apiFetch("/tickets?status=In%20Progress&limit=100"),
+        apiFetch(`/tickets?status=Assigned&member_id=${memberId}&limit=100`),
+        apiFetch(`/tickets?status=In%20Progress&member_id=${memberId}&limit=100`),
       ]);
       setTickets([
         ...(assigned.tickets    || []),
@@ -146,13 +166,14 @@ export default function TeamMemberDashboard() {
     }
   }, []);
 
-  const loadResolvedTickets = useCallback(async () => {
+  const loadResolvedTickets = useCallback(async (memberId) => {
+    if (!memberId) return;
     setLoading(l => ({ ...l, resolved: true }));
     setErrors(e => ({ ...e, resolved: null }));
     try {
       const [resolved, closed] = await Promise.all([
-        apiFetch("/tickets?status=Resolved&limit=100"),
-        apiFetch("/tickets?status=Closed&limit=100"),
+        apiFetch(`/tickets?status=Resolved&member_id=${memberId}&limit=100`),
+        apiFetch(`/tickets?status=Closed&member_id=${memberId}&limit=100`),
       ]);
       setResolvedTickets([
         ...(resolved.tickets || []),
@@ -189,18 +210,60 @@ export default function TeamMemberDashboard() {
     }
   }, []);
 
+  // ── Load rejected tickets ─────────────────────────────────────────────────
+  const loadRejectedTickets = useCallback(async (memberId) => {
+    if (!memberId) return;
+    setLoading(l => ({ ...l, rejected: true }));
+    setErrors(e => ({ ...e, rejected: null }));
+    try {
+      const data = await apiFetch(`/tickets?status=Assigned&member_id=${memberId}&limit=100`);
+      const assignedTickets = (data.tickets || []).map(normaliseTicket);
+
+      const withComments = await Promise.all(
+        assignedTickets.map(async (t) => {
+          try {
+            const cData = await apiFetch(`/tickets/${t.rawId}/comments`);
+            const allComments = cData.comments || [];
+            const rejComment  = allComments.find(c => c.comment_type === "rejection_reason");
+            if (!rejComment) return null;
+            return {
+              ...t,
+              rejectionReason: rejComment.body,
+              rejectedAt:      rejComment.created_at,
+              allComments,
+            };
+          } catch {
+            return null;
+          }
+        })
+      );
+
+      setRejectedTickets(withComments.filter(Boolean));
+    } catch (e) {
+      setErrors(prev => ({ ...prev, rejected: e.message }));
+    } finally {
+      setLoading(l => ({ ...l, rejected: false }));
+    }
+  }, []);
+
+  // ── Fire all data loads once member_id is known ───────────────────────────
   useEffect(() => {
-    loadActiveTickets();
-    loadResolvedTickets();
+    const memberId = currentUser?.member_id;
+    if (!memberId) return;           // wait until identity is resolved
+    loadActiveTickets(memberId);
+    loadResolvedTickets(memberId);
     loadAnalytics();
     loadPerformance();
-  }, [loadActiveTickets, loadResolvedTickets, loadAnalytics, loadPerformance]);
+    loadRejectedTickets(memberId);
+  }, [currentUser?.member_id]);      // eslint-disable-line react-hooks/exhaustive-deps
 
   const refreshAll = () => {
-    loadActiveTickets();
-    loadResolvedTickets();
+    const memberId = currentUser?.member_id;
+    loadActiveTickets(memberId);
+    loadResolvedTickets(memberId);
     loadAnalytics();
     loadPerformance();
+    loadRejectedTickets(memberId);
   };
 
   // ── Derived values ────────────────────────────────────────────────────────
@@ -225,7 +288,8 @@ export default function TeamMemberDashboard() {
   });
 
   const slaAlerts = tickets.filter(t =>
-    t.sla?.response_sla_status !== "healthy" || t.sla?.resolution_sla_status !== "healthy"
+    t.sla?.member_response_sla_status    === "breached" || t.sla?.member_response_sla_status    === "at_risk" ||
+    t.sla?.member_resolution_sla_status  === "breached" || t.sla?.member_resolution_sla_status  === "at_risk"
   );
 
   // ── Formatters ────────────────────────────────────────────────────────────
@@ -293,6 +357,46 @@ export default function TeamMemberDashboard() {
     setNewComment("");
   };
 
+  // ── Helpers for per-ticket state in Rejected tab ───────────────────────────
+  const getRejState = (rawId) => rejectedState[rawId] || { showResolve: false, resolveText: "", loading: false, error: "" };
+  const setRejState = (rawId, patch) => setRejectedState(prev => ({ ...prev, [rawId]: { ...getRejState(rawId), ...patch } }));
+
+  const handleRejectedStart = async (ticket) => {
+    if (!currentUser?.member_id) { setRejState(ticket.rawId, { error: "Cannot determine your member ID." }); return; }
+    setRejState(ticket.rawId, { loading: true, error: "" });
+    try {
+      await apiFetch("/start-ticket", {
+        method: "POST",
+        body: JSON.stringify({ ticket_id: ticket.rawId, member_id: currentUser.member_id }),
+      });
+      // Move ticket from rejected list into active tickets as in-progress
+      const updated = { ...ticket, status: "in-progress", rawStatus: "In Progress", startedAt: new Date().toISOString() };
+      setRejectedTickets(prev => prev.map(t => t.rawId === ticket.rawId ? updated : t));
+    } catch (e) {
+      setRejState(ticket.rawId, { error: e.message });
+    } finally {
+      setRejState(ticket.rawId, { loading: false });
+    }
+  };
+
+  const handleRejectedResolve = async (ticket) => {
+    const rs = getRejState(ticket.rawId);
+    if (!rs.resolveText.trim()) { setRejState(ticket.rawId, { error: "Please enter resolution notes." }); return; }
+    if (!currentUser?.member_id) { setRejState(ticket.rawId, { error: "Cannot determine your member ID." }); return; }
+    setRejState(ticket.rawId, { loading: true, error: "" });
+    try {
+      await apiFetch("/resolve-ticket", {
+        method: "POST",
+        body: JSON.stringify({ ticket_id: ticket.rawId, member_id: currentUser.member_id, resolution_text: rs.resolveText }),
+      });
+      // Remove from rejected list, add to resolved
+      setResolvedTickets(prev => [{ ...ticket, status: "pending-approval", rawStatus: "Resolved" }, ...prev]);
+      setRejectedTickets(prev => prev.filter(t => t.rawId !== ticket.rawId));
+    } catch (e) {
+      setRejState(ticket.rawId, { loading: false, error: e.message });
+    }
+  };
+
   const openModal = (t) => { setSelectedTicket(t); setShowResolveInput(false); setActionError(""); setResolveText(""); };
   const closeModal = () => { setSelectedTicket(null); setShowResolveInput(false); setActionError(""); setResolveText(""); };
 
@@ -319,8 +423,9 @@ export default function TeamMemberDashboard() {
   const gradeColor = (g) => ({ A: "#4ade80", B: "#fbbf24", C: "#fb923c", D: "#f87171" }[g] || "#94a3b8");
 
   const navItems = [
-    { id: "my-tickets",  label: "My Tickets",  icon: Activity,    badge: stats.assigned,         badgeColor: "rgba(255,255,255,0.9)", badgeBg: "rgba(255,255,255,0.15)" },
-    { id: "resolved",    label: "Resolved",     icon: CheckCircle, badge: resolvedTickets.length, badgeColor: "#4ade80",               badgeBg: "rgba(74,222,128,0.15)"  },
+    { id: "my-tickets",  label: "My Tickets",  icon: Activity,    badge: stats.assigned,                badgeColor: "rgba(255,255,255,0.9)", badgeBg: "rgba(255,255,255,0.15)" },
+    { id: "resolved",    label: "Resolved",     icon: CheckCircle, badge: resolvedTickets.length,        badgeColor: "#4ade80",               badgeBg: "rgba(74,222,128,0.15)"  },
+    { id: "reassign",    label: "Rejected",     icon: AlertCircle, badge: rejectedTickets.length || null, badgeColor: "#f87171",               badgeBg: "rgba(248,113,113,0.15)" },
     { id: "performance", label: "Performance",  icon: Target,      badge: null },
   ];
 
@@ -452,18 +557,31 @@ export default function TeamMemberDashboard() {
               )}
             </button>
           ))}
-          <button className="nav-btn" style={{ marginTop:8 }}><Settings size={16} /> Settings</button>
+          <button className="nav-btn" style={{ marginTop:8 }} onClick={() => navigate("/member-settings")}><Settings size={16} /> Settings</button>
         </nav>
 
-        {/* User info */}
+        {/* User profile card */}
         <div style={{ borderTop:"1px solid rgba(255,255,255,0.07)", paddingTop:16, marginTop:16 }}>
-          <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:10, padding:"0 6px" }}>
-            <div style={{ width:36, height:36, borderRadius:"50%", background:"#fff", color:"#080808", display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, fontSize:12, flexShrink:0 }}>
-              {currentUser?.name ? currentUser.name.slice(0, 2).toUpperCase() : "?"}
+          <div style={{ background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:14, padding:"14px 12px", marginBottom:10 }}>
+            <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:10 }}>
+              <div style={{ width:40, height:40, borderRadius:"50%", background:"linear-gradient(135deg,#059669,#10b981)", display:"flex", alignItems:"center", justifyContent:"center", color:"#fff", fontWeight:800, fontSize:14, flexShrink:0, boxShadow:"0 0 0 2px rgba(16,185,129,0.3)" }}>
+                {currentUser?.name ? currentUser.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0,2) : "SA"}
+              </div>
+              <div style={{ minWidth:0 }}>
+                <p style={{ color:"#fff", fontSize:13, fontWeight:700, margin:0, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
+                  {currentUser?.name || "Support Agent"}
+                </p>
+                <p style={{ color:"rgba(255,255,255,0.35)", fontSize:11, margin:"2px 0 0", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
+                  {currentUser?.email || "—"}
+                </p>
+              </div>
             </div>
-            <div>
-              <p style={{ color:"#fff", fontSize:13, fontWeight:600, margin:0 }}>{currentUser?.name || "Loading…"}</p>
-              <p style={{ color:"rgba(255,255,255,0.28)", fontSize:11, margin:0 }}>Support Agent</p>
+            <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+              <span style={{ background:"rgba(16,185,129,0.15)", color:"#34d399", border:"1px solid rgba(16,185,129,0.25)", borderRadius:999, fontSize:10, fontWeight:700, padding:"2px 10px", letterSpacing:"0.05em", textTransform:"uppercase" }}>
+                Support Agent
+              </span>
+              <span style={{ width:6, height:6, borderRadius:"50%", background:"#4ade80", boxShadow:"0 0 6px #4ade80", display:"inline-block" }} />
+              <span style={{ color:"#4ade80", fontSize:10, fontWeight:600 }}>Online</span>
             </div>
           </div>
           <button className="nav-btn" onClick={() => supabase.auth.signOut().then(() => navigate("/"))}><LogOut size={16} /> Logout</button>
@@ -483,11 +601,13 @@ export default function TeamMemberDashboard() {
               <h1 style={{ fontFamily:"'Nunito',sans-serif", fontWeight:700, fontSize:20, color:"#fff", margin:0 }}>
                 {activeTab === "my-tickets"  && "My Assigned Tickets"}
                 {activeTab === "resolved"    && "Resolved Tickets"}
+                {activeTab === "reassign"    && "Rejected — Needs Rework"}
                 {activeTab === "performance" && "My Performance"}
               </h1>
               <p style={{ color:"rgba(255,255,255,0.3)", fontSize:12, margin:"2px 0 0" }}>
                 {activeTab === "my-tickets"  && `${stats.assigned} active tickets assigned to you`}
                 {activeTab === "resolved"    && `${resolvedTickets.length} completed`}
+                {activeTab === "reassign"    && `${rejectedTickets.length} ticket${rejectedTickets.length !== 1 ? "s" : ""} rejected — review the reason and resubmit`}
                 {activeTab === "performance" && "Track your individual metrics"}
               </p>
             </div>
@@ -519,9 +639,9 @@ export default function TeamMemberDashboard() {
                       <p style={{ color:"#fff", fontSize:13, fontWeight:600, margin:0 }}>{t.id}</p>
                       <p style={{ color:"rgba(255,255,255,0.45)", fontSize:12, margin:"3px 0 0" }}>{t.title.slice(0, 45)}{t.title.length > 45 ? "…" : ""}</p>
                       <p style={{ color:"#f87171", fontSize:11, margin:"4px 0 0" }}>
-                        {t.sla.resolution_sla_status === "breached" ? "Resolution SLA breached" :
-                         t.sla.resolution_sla_status === "at_risk"  ? "Resolution SLA at risk"  :
-                         t.sla.response_sla_status   === "breached" ? "Response SLA breached"   : "Response SLA at risk"}
+                        {t.sla.member_resolution_sla_status === "breached" ? "⚠ Resolution SLA breached"  :
+                         t.sla.member_resolution_sla_status === "at_risk"  ? "⚡ Resolution SLA at risk"   :
+                         t.sla.member_response_sla_status   === "breached" ? "⚠ Response SLA breached"    : "⚡ Response SLA at risk"}
                       </p>
                     </div>
                   ))}
@@ -607,9 +727,9 @@ export default function TeamMemberDashboard() {
                             <span style={{ fontFamily:"monospace", fontSize:12, color:"rgba(255,255,255,0.3)", fontWeight:700 }}>{t.id}</span>
                             <span style={{ ...getPriorityStyle(t.priority), padding:"2px 8px", borderRadius:6, fontSize:11, fontWeight:700, textTransform:"capitalize" }}>{t.priority}</span>
                             <span style={{ ...getStatusStyle(t.status), padding:"2px 8px", borderRadius:6, fontSize:11, fontWeight:600, textTransform:"capitalize" }}>{t.status.replace("-"," ")}</span>
-                            {t.sla?.resolution_sla_status !== "healthy" && (
-                              <span style={{ background:`rgba(${t.sla.resolution_sla_status==="breached"?"248,113,113":"251,191,36"},0.12)`, color: getSlaColor(t.sla.resolution_sla_status), border:`1px solid rgba(${t.sla.resolution_sla_status==="breached"?"248,113,113":"251,191,36"},0.25)`, padding:"2px 8px", borderRadius:6, fontSize:11, fontWeight:700 }}>
-                                SLA {t.sla.resolution_sla_status.replace("_"," ")}
+                            {t.sla?.member_resolution_sla_status !== "healthy" && t.sla?.member_resolution_sla_status !== "pending" && (
+                              <span style={{ background:`rgba(${t.sla.member_resolution_sla_status==="breached"?"248,113,113":"251,191,36"},0.12)`, color: getSlaColor(t.sla.member_resolution_sla_status), border:`1px solid rgba(${t.sla.member_resolution_sla_status==="breached"?"248,113,113":"251,191,36"},0.25)`, padding:"2px 8px", borderRadius:6, fontSize:11, fontWeight:700 }}>
+                                SLA {t.sla.member_resolution_sla_status.replace("_"," ")}
                               </span>
                             )}
                           </div>
@@ -625,9 +745,9 @@ export default function TeamMemberDashboard() {
                             <span style={{ color:"rgba(255,255,255,0.3)", fontSize:12, display:"flex", alignItems:"center", gap:4 }}>
                               <User size={11} /> {t.category}
                             </span>
-                            {t.sla?.resolution_elapsed_minutes != null && (
-                              <span style={{ fontSize:12, display:"flex", alignItems:"center", gap:4, color: getSlaColor(t.sla.resolution_sla_status) }}>
-                                <Clock size={11} /> {fmtMins(t.sla.resolution_elapsed_minutes)} elapsed
+                            {t.sla?.member_elapsed_minutes != null && (
+                              <span style={{ fontSize:12, display:"flex", alignItems:"center", gap:4, color: getSlaColor(t.sla.member_resolution_sla_status) }}>
+                                <Clock size={11} /> {fmtMins(t.sla.member_elapsed_minutes)} elapsed
                               </span>
                             )}
                           </div>
@@ -695,6 +815,200 @@ export default function TeamMemberDashboard() {
                       ))}
                     </tbody>
                   </table>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ══════════ REJECTED TAB ═════════════════════════════════════════ */}
+          {activeTab === "reassign" && (
+            <div style={{ animation:"fadeUp .4s ease both" }}>
+              {errors.rejected && (
+                <div className="error-bar">
+                  <AlertTriangle size={14} style={{ color:"#f87171", flexShrink:0 }} />
+                  <span style={{ color:"#f87171", fontSize:13 }}>{errors.rejected}</span>
+                </div>
+              )}
+
+              {loading.rejected ? (
+                <div style={{ display:"flex", justifyContent:"center", padding:80 }}>
+                  <RefreshCw size={26} className="spin" style={{ color:"rgba(255,255,255,0.15)" }} />
+                </div>
+              ) : rejectedTickets.length === 0 ? (
+                <div style={{ textAlign:"center", padding:80 }}>
+                  <CheckCircle size={44} style={{ color:"rgba(255,255,255,0.08)", margin:"0 auto 14px", display:"block" }} />
+                  <p style={{ color:"rgba(255,255,255,0.22)", fontSize:14 }}>No rejected tickets — all clear!</p>
+                </div>
+              ) : (
+                <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
+                  {rejectedTickets.map((t, i) => {
+                    const rs = getRejState(t.rawId);
+                    const isInProgress = t.rawStatus === "In Progress" || t.status === "in-progress";
+                    const nonRejComments = (t.allComments || []).filter(c => c.comment_type !== "rejection_reason");
+
+                    return (
+                      <div key={t.id} className="card" style={{ padding:0, animationDelay:`${i*0.05}s`, animation:"fadeUp .4s ease both", overflow:"hidden" }}>
+
+                        {/* ── Card header ── */}
+                        <div style={{ padding:"18px 22px", borderBottom:"1px solid rgba(255,255,255,0.06)" }}>
+                          <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:12 }}>
+                            <div style={{ flex:1, minWidth:0 }}>
+                              <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:8, flexWrap:"wrap" }}>
+                                <span style={{ fontFamily:"monospace", fontSize:12, color:"rgba(255,255,255,0.3)", fontWeight:700 }}>{t.id}</span>
+                                <span style={{ ...getPriorityStyle(t.priority), padding:"2px 8px", borderRadius:6, fontSize:11, fontWeight:700, textTransform:"capitalize" }}>{t.priority}</span>
+                                <span style={{ background:"rgba(248,113,113,0.12)", color:"#f87171", border:"1px solid rgba(248,113,113,0.25)", padding:"2px 8px", borderRadius:6, fontSize:11, fontWeight:700 }}>
+                                  Rejected
+                                </span>
+                                {isInProgress && (
+                                  <span style={{ background:"rgba(251,191,36,0.1)", color:"#fbbf24", border:"1px solid rgba(251,191,36,0.2)", padding:"2px 8px", borderRadius:6, fontSize:11, fontWeight:700 }}>
+                                    In Progress
+                                  </span>
+                                )}
+                                <span style={{ background:"rgba(255,255,255,0.05)", color:"rgba(255,255,255,0.35)", padding:"2px 8px", borderRadius:6, fontSize:11 }}>{t.category}</span>
+                              </div>
+                              <p style={{ color:"#fff", fontWeight:700, fontSize:15, margin:"0 0 6px", fontFamily:"'Nunito',sans-serif" }}>{t.title}</p>
+                              <div style={{ display:"flex", gap:14, flexWrap:"wrap" }}>
+                                <span style={{ color:"rgba(255,255,255,0.3)", fontSize:12, display:"flex", alignItems:"center", gap:4 }}>
+                                  <Calendar size={11} /> Created {formatDate(t.createdAt)}
+                                </span>
+                                {t.rejectedAt && (
+                                  <span style={{ color:"rgba(248,113,113,0.6)", fontSize:12, display:"flex", alignItems:"center", gap:4 }}>
+                                    <AlertTriangle size={11} /> Rejected {formatDate(t.rejectedAt)}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            {/* View full details button */}
+                            <button onClick={() => openModal(t)}
+                              style={{ background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.09)", borderRadius:9, padding:"6px 13px", color:"rgba(255,255,255,0.45)", fontSize:12, cursor:"pointer", display:"flex", alignItems:"center", gap:6, whiteSpace:"nowrap", fontFamily:"'Nunito Sans',sans-serif", flexShrink:0 }}>
+                              <FileText size={13} /> View Details
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* ── Ticket body preview ── */}
+                        {t.body && (
+                          <div style={{ padding:"14px 22px", borderBottom:"1px solid rgba(255,255,255,0.05)", background:"rgba(255,255,255,0.015)" }}>
+                            <p style={{ color:"rgba(255,255,255,0.2)", fontSize:10, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.07em", margin:"0 0 6px" }}>Ticket Description</p>
+                            <p style={{ color:"rgba(255,255,255,0.5)", fontSize:13, margin:0, lineHeight:1.7, whiteSpace:"pre-wrap",
+                              display:"-webkit-box", WebkitLineClamp:3, WebkitBoxOrient:"vertical", overflow:"hidden" }}>
+                              {t.body}
+                            </p>
+                          </div>
+                        )}
+
+                        {/* ── Rejection reason ── */}
+                        <div style={{ padding:"14px 22px", borderBottom:"1px solid rgba(255,255,255,0.05)", background:"rgba(248,113,113,0.03)" }}>
+                          <p style={{ color:"#f87171", fontSize:10, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.07em", margin:"0 0 6px", display:"flex", alignItems:"center", gap:5 }}>
+                            <MessageSquare size={10} /> Lead's Rejection Reason
+                          </p>
+                          <p style={{ color:"rgba(255,255,255,0.6)", fontSize:13, margin:0, lineHeight:1.7 }}>
+                            {t.rejectionReason || "No reason provided."}
+                          </p>
+                        </div>
+
+                        {/* ── Comments thread ── */}
+                        {nonRejComments.length > 0 && (
+                          <div style={{ padding:"14px 22px", borderBottom:"1px solid rgba(255,255,255,0.05)" }}>
+                            <p style={{ color:"rgba(255,255,255,0.2)", fontSize:10, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.07em", margin:"0 0 10px" }}>
+                              Comments ({nonRejComments.length})
+                            </p>
+                            <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                              {nonRejComments.slice().reverse().map(c => (
+                                <div key={c.comment_id} style={{ padding:"10px 13px", borderRadius:10,
+                                  background: c.author_role === "lead" ? "rgba(167,139,250,0.06)" : "rgba(255,255,255,0.03)",
+                                  border: `1px solid ${c.author_role === "lead" ? "rgba(167,139,250,0.12)" : "rgba(255,255,255,0.06)"}` }}>
+                                  <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:5 }}>
+                                    <span style={{ color:"#fff", fontSize:12, fontWeight:600 }}>{c.author_name || "Unknown"}</span>
+                                    <span style={{ background: c.author_role === "lead" ? "rgba(167,139,250,0.15)" : "rgba(255,255,255,0.08)",
+                                      color: c.author_role === "lead" ? "#a78bfa" : "rgba(255,255,255,0.4)",
+                                      fontSize:10, padding:"1px 7px", borderRadius:999, fontWeight:600 }}>
+                                      {c.author_role === "lead" ? "Team Lead" : "Agent"}
+                                    </span>
+                                    <span style={{ color:"rgba(255,255,255,0.2)", fontSize:11, marginLeft:"auto" }}>
+                                      {formatDate(c.created_at)}
+                                    </span>
+                                  </div>
+                                  <p style={{ color:"rgba(255,255,255,0.55)", fontSize:13, margin:0, lineHeight:1.6 }}>{c.body}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* ── Action area ── */}
+                        <div style={{ padding:"16px 22px" }}>
+                          {rs.error && (
+                            <div style={{ background:"rgba(248,113,113,0.07)", border:"1px solid rgba(248,113,113,0.18)", borderRadius:10, padding:"9px 13px", marginBottom:12, display:"flex", gap:8, alignItems:"center" }}>
+                              <AlertTriangle size={13} style={{ color:"#f87171", flexShrink:0 }} />
+                              <span style={{ color:"#f87171", fontSize:12 }}>{rs.error}</span>
+                            </div>
+                          )}
+
+                          {/* Not started yet → show Start Work */}
+                          {!isInProgress && !rs.showResolve && (
+                            <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+                              <div style={{ flex:1, background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.07)", borderRadius:10, padding:"10px 14px" }}>
+                                <p style={{ color:"rgba(255,255,255,0.35)", fontSize:12, margin:0 }}>
+                                  Review the rejection reason above, make the necessary fixes, then start work and resubmit your resolution.
+                                </p>
+                              </div>
+                              <button className="start-btn" disabled={rs.loading} style={{ flexShrink:0 }}
+                                onClick={() => handleRejectedStart(t)}>
+                                {rs.loading ? "Starting…" : "Start Work"}
+                              </button>
+                            </div>
+                          )}
+
+                          {/* In Progress, resolve form not open → show Mark as Resolved */}
+                          {isInProgress && !rs.showResolve && (
+                            <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+                              <div style={{ flex:1, background:"rgba(74,222,128,0.03)", border:"1px solid rgba(74,222,128,0.1)", borderRadius:10, padding:"10px 14px" }}>
+                                <p style={{ color:"rgba(255,255,255,0.35)", fontSize:12, margin:0 }}>
+                                  You're working on this ticket. Once done, submit your revised resolution for lead approval.
+                                </p>
+                              </div>
+                              <button className="resolve-btn" disabled={rs.loading} style={{ flexShrink:0 }}
+                                onClick={() => setRejState(t.rawId, { showResolve: true, error: "" })}>
+                                Mark as Resolved
+                              </button>
+                            </div>
+                          )}
+
+                          {/* Resolve input panel */}
+                          {rs.showResolve && (
+                            <div style={{ background:"rgba(74,222,128,0.04)", border:"1px solid rgba(74,222,128,0.15)", borderRadius:14, padding:16 }}>
+                              <p style={{ color:"#4ade80", fontSize:11, fontWeight:700, margin:"0 0 3px", textTransform:"uppercase", letterSpacing:"0.06em" }}>
+                                Resolution Notes
+                              </p>
+                              <p style={{ color:"rgba(255,255,255,0.3)", fontSize:12, margin:"0 0 0" }}>
+                                Address the lead's rejection reason. Your resolution will go back to the lead for approval.
+                              </p>
+                              <textarea
+                                className="resolve-textarea"
+                                rows={4}
+                                placeholder="Describe exactly what you fixed based on the rejection feedback…"
+                                value={rs.resolveText}
+                                onChange={e => setRejState(t.rawId, { resolveText: e.target.value })}
+                              />
+                              <div style={{ display:"flex", gap:10, marginTop:12 }}>
+                                <button className="resolve-btn" disabled={rs.loading}
+                                  onClick={() => handleRejectedResolve(t)}>
+                                  {rs.loading ? "Submitting…" : "Submit for Approval"}
+                                </button>
+                                <button
+                                  onClick={() => setRejState(t.rawId, { showResolve: false, resolveText: "", error: "" })}
+                                  style={{ background:"none", border:"1px solid rgba(255,255,255,0.1)", borderRadius:9, padding:"7px 14px", color:"rgba(255,255,255,0.4)", fontSize:12, cursor:"pointer", fontFamily:"'Nunito Sans',sans-serif" }}>
+                                  Cancel
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -806,7 +1120,17 @@ export default function TeamMemberDashboard() {
             </div>
 
             <div className="modal-body">
-              <h2 style={{ fontFamily:"'Nunito',sans-serif", fontWeight:700, fontSize:22, color:"#fff", margin:"0 0 16px" }}>{selectedTicket.title}</h2>
+              <h2 style={{ fontFamily:"'Nunito',sans-serif", fontWeight:700, fontSize:22, color:"#fff", margin:"0 0 12px" }}>{selectedTicket.title}</h2>
+
+              {/* Ticket body */}
+              {selectedTicket.body && (
+                <div style={{ background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.07)", borderRadius:14, padding:"14px 18px", marginBottom:20 }}>
+                  <p style={{ color:"rgba(255,255,255,0.25)", fontSize:11, margin:"0 0 8px", textTransform:"uppercase", letterSpacing:"0.06em", display:"flex", alignItems:"center", gap:6 }}>
+                    <FileText size={11} /> Ticket Description
+                  </p>
+                  <p style={{ color:"rgba(255,255,255,0.65)", fontSize:14, margin:0, lineHeight:1.75, whiteSpace:"pre-wrap" }}>{selectedTicket.body}</p>
+                </div>
+              )}
 
               {/* Status + action buttons */}
               <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:20, flexWrap:"wrap" }}>
@@ -861,17 +1185,45 @@ export default function TeamMemberDashboard() {
                 </div>
               )}
 
+              {/* ── Timeline ── */}
+              <div style={{ marginBottom:22 }}>
+                <p style={{ color:"rgba(255,255,255,0.25)", fontSize:11, letterSpacing:"0.08em", textTransform:"uppercase", margin:"0 0 14px", display:"flex", alignItems:"center", gap:6 }}>
+                  <Clock size={11} /> Timeline
+                </p>
+                <div style={{ position:"relative", paddingLeft:20 }}>
+                  {/* vertical line */}
+                  <div style={{ position:"absolute", left:6, top:10, bottom:10, width:1, background:"rgba(255,255,255,0.07)" }} />
+                  {[
+                    { label:"Created",    time: selectedTicket.createdAt,  color:"#94a3b8", dot:"rgba(148,163,184,0.5)"  },
+                    { label:"Assigned",   time: selectedTicket.assignedAt, color:"#fbbf24", dot:"rgba(251,191,36,0.5)"   },
+                    { label:"Started",    time: selectedTicket.startedAt,  color:"#60a5fa", dot:"rgba(96,165,250,0.5)"   },
+                    { label:"Resolved",   time: selectedTicket.resolvedAt, color:"#4ade80", dot:"rgba(74,222,128,0.5)"   },
+                    { label:"Closed",     time: selectedTicket.closedAt,   color:"#a78bfa", dot:"rgba(167,139,250,0.5)"  },
+                  ].map(({ label, time, color, dot }) => (
+                    <div key={label} style={{ display:"flex", alignItems:"center", gap:12, marginBottom:10, opacity: time ? 1 : 0.3 }}>
+                      <div style={{ width:12, height:12, borderRadius:"50%", background: time ? dot : "rgba(255,255,255,0.08)", border:`2px solid ${time ? color : "rgba(255,255,255,0.1)"}`, flexShrink:0, marginLeft:-20+6, zIndex:1, position:"relative" }} />
+                      <div style={{ display:"flex", alignItems:"center", gap:10, flex:1 }}>
+                        <span style={{ color: time ? color : "rgba(255,255,255,0.2)", fontSize:12, fontWeight:600, minWidth:70 }}>{label}</span>
+                        <span style={{ color: time ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.15)", fontSize:12 }}>
+                          {time ? new Date(time).toLocaleString(undefined, { dateStyle:"medium", timeStyle:"short" }) : "Not yet"}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               {/* Ticket metadata */}
               <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:22, background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.06)", borderRadius:14, padding:18 }}>
                 {[
-                  { label:"Category",           val: selectedTicket.category },
-                  { label:"Created",             val: formatDate(selectedTicket.createdAt) },
-                  { label:"Assigned At",         val: formatDate(selectedTicket.assignedAt) },
-                  { label:"Reopen Count",        val: selectedTicket.reopen_count },
-                  { label:"Response SLA",        val: selectedTicket.sla?.response_sla_status?.replace("_"," ")    || "—" },
-                  { label:"Resolution SLA",      val: selectedTicket.sla?.resolution_sla_status?.replace("_"," ")  || "—" },
-                  { label:"Time Elapsed",        val: fmtMins(selectedTicket.sla?.resolution_elapsed_minutes) },
-                  { label:"Time Remaining",      val: fmtMins(selectedTicket.sla?.resolution_remaining_minutes) },
+                  { label:"Category",                val: selectedTicket.category },
+                  { label:"Reopen Count",            val: selectedTicket.reopen_count },
+                  { label:"Lead Assign SLA",         val: selectedTicket.sla?.lead_sla_status?.replace("_"," ") || "—" },
+                  { label:"Lead Time Elapsed",       val: fmtMins(selectedTicket.sla?.lead_response_elapsed_minutes) },
+                  { label:"My Response SLA",         val: selectedTicket.sla?.member_response_sla_status === "pending" ? "Pending assignment" : selectedTicket.sla?.member_response_sla_status?.replace("_"," ") || "—" },
+                  { label:"My Resolution SLA",       val: selectedTicket.sla?.member_resolution_sla_status === "pending" ? "Pending assignment" : selectedTicket.sla?.member_resolution_sla_status?.replace("_"," ") || "—" },
+                  { label:"My Time Elapsed",         val: selectedTicket.sla?.member_elapsed_minutes != null ? fmtMins(selectedTicket.sla.member_elapsed_minutes) : "—" },
+                  { label:"My Time Remaining",       val: fmtMins(selectedTicket.sla?.member_resolution_remaining_minutes) },
                 ].map(({ label, val }) => (
                   <div key={label}>
                     <p style={{ color:"rgba(255,255,255,0.25)", fontSize:11, margin:"0 0 3px", textTransform:"uppercase", letterSpacing:"0.06em" }}>{label}</p>

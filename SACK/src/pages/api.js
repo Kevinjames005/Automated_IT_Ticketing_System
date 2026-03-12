@@ -43,10 +43,11 @@ async function apiFetch(path, options = {}) {
 }
 
 // ── Tickets ──────────────────────────────────────────
-export function fetchTickets({ status, priority, page = 1, limit = 20 } = {}) {
+export function fetchTickets({ status, priority, search, page = 1, limit = 20 } = {}) {
   const params = new URLSearchParams();
   if (status)   params.append("status",   status);
   if (priority) params.append("priority", priority);
+  if (search)   params.append("search",   search);
   params.append("page",  page);
   params.append("limit", limit);
   return apiFetch(`/tickets?${params.toString()}`);

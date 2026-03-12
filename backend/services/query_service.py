@@ -3,7 +3,7 @@ from services.sla_service import calculate_sla_status
 from datetime import datetime, timedelta
 
 
-def get_tickets(status=None, priority=None, page=1, limit=20, member_id=None, date_range=None):
+def get_tickets(status=None, priority=None, search=None, page=1, limit=20, member_id=None, date_range=None):
     conn = get_conn()
     cur = conn.cursor()
 
@@ -24,6 +24,11 @@ def get_tickets(status=None, priority=None, page=1, limit=20, member_id=None, da
         if priority:
             filters.append("t.priority = %s")
             params.append(priority)
+
+        if search:
+            filters.append("(er.subject ILIKE %s OR CAST(t.ticket_id AS TEXT) ILIKE %s)")
+            params.append(f"%{search}%")
+            params.append(f"%{search}%")
 
         if date_range:
             now = datetime.utcnow()
@@ -70,12 +75,14 @@ def get_tickets(status=None, priority=None, page=1, limit=20, member_id=None, da
                 t.resolved_at,
                 t.closed_at,
                 t.reopen_count,
+                c.name AS category,
                 (SELECT content FROM resolution_documents
                  WHERE ticket_id = t.ticket_id
                  ORDER BY created_at DESC LIMIT 1) AS resolution_text
             FROM tickets t
             {assignment_join}
             JOIN email_requests er ON t.email_id = er.email_id
+            LEFT JOIN categories c ON t.category_id = c.category_id
             {where_clause}
             ORDER BY t.created_at DESC
             LIMIT %s OFFSET %s;
@@ -99,6 +106,7 @@ def get_tickets(status=None, priority=None, page=1, limit=20, member_id=None, da
                 resolved_at,
                 closed_at,
                 reopen_count,
+                category,
                 resolution_text
             ) = row
 
@@ -116,6 +124,7 @@ def get_tickets(status=None, priority=None, page=1, limit=20, member_id=None, da
                 "resolved_at":  resolved_at,
                 "closed_at":    closed_at,
                 "reopen_count": reopen_count,
+                "category":     category,
                 "resolution_text": resolution_text,
                 **sla_status
             })
