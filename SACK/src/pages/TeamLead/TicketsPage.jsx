@@ -4,10 +4,12 @@ import {
   Settings, LayoutDashboard, Ticket, BarChart3,
   LogOut, Users, X, CheckCircle, Clock,
   Eye, ChevronLeft, ChevronRight as ChevronRightIcon,
-  ArrowUpDown,
+  ArrowUpDown, BookOpen,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { fetchTickets, fetchMembers, assignTicket } from "./api";
+import { fetchTickets, fetchMembers, assignTicket, approveResolution, rejectResolution } from "../api";
+import { ThumbsUp, ThumbsDown } from "lucide-react";
+import supabase from "../supabaseClient";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -41,22 +43,55 @@ export default function TicketsPage() {
   const [currentPage,    setCurrentPage]    = useState(1);
   const [activeNav,      setActiveNav]      = useState("tickets");
 
+  // Current logged-in user
+  const [currentUser, setCurrentUser] = useState(null);
+
   // Assign
-  const [assignModal,    setAssignModal]    = useState(null);
-  const [selectedAgent,  setSelectedAgent]  = useState("");
-  const [membersList,    setMembersList]    = useState([]);
-  const [assignLoading,  setAssignLoading]  = useState(false);
-  const [assignError,    setAssignError]    = useState("");
+  const [assignModal,   setAssignModal]   = useState(null);
+  const [selectedAgent, setSelectedAgent] = useState("");
+  const [membersList,   setMembersList]   = useState([]);
+  const [assignLoading, setAssignLoading] = useState(false);
+  const [assignError,   setAssignError]   = useState("");
+
+  // Approval
+  const [approvalLoading, setApprovalLoading] = useState(null);
+  const [approvalError,   setApprovalError]   = useState("");
 
   // Detail modal
-  const [detailTicket,   setDetailTicket]   = useState(null);
+  const [detailTicket, setDetailTicket] = useState(null);
 
   const navItems = [
-    { id: "overview", label: "Dashboard",       icon: LayoutDashboard, path: "/teamlead"         },
-    { id: "tickets",  label: "Tickets",          icon: Ticket,          path: "/tickets"          },
-    { id: "team",     label: "Team Performance", icon: Users,           path: "/team-performance" },
-    { id: "analytics",label: "Analytics",        icon: BarChart3,       path: "/analytics"        },
+    { id: "overview",  label: "Dashboard",       icon: LayoutDashboard, path: "/teamlead"         },
+    { id: "tickets",   label: "Tickets",          icon: Ticket,          path: "/tickets"          },
+    { id: "team",      label: "Team Performance", icon: Users,           path: "/team-performance" },
+    { id: "analytics", label: "Analytics",        icon: BarChart3,       path: "/analytics"        },
   ];
+
+  // ── Load current user ────────────────────────────────────────────────────
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+        const { data: leadRow } = await supabase
+          .from("team_leads")
+          .select("lead_id, name")
+          .eq("supabase_user_id", user.id)
+          .single();
+        setCurrentUser({
+          id:       user.id,
+          email:    user.email,
+          name:     leadRow?.name || user.email,
+          lead_id:  leadRow?.lead_id || null,
+          initials: leadRow?.name
+            ? leadRow.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)
+            : user.email.slice(0, 2).toUpperCase(),
+        });
+      } catch (e) {
+        console.error("Failed to load user:", e);
+      }
+    })();
+  }, []);
 
   useEffect(() => { loadTickets(); }, [filterStatus, filterPriority, currentPage]);
 
@@ -85,6 +120,7 @@ export default function TicketsPage() {
     }
   }
 
+  // ── Assign ───────────────────────────────────────────────────────────────
   const handleAssign = async (ticketId) => {
     if (!selectedAgent) return;
     const member = membersList.find(m => m.member_id === parseInt(selectedAgent));
@@ -93,14 +129,9 @@ export default function TicketsPage() {
     setAssignError("");
     try {
       await assignTicket({ ticket_id: ticketId, member_id: member.member_id, lead_id: member.lead_id });
-      setTickets(prev => prev.map(t =>
-        t.ticket_id === ticketId
-          ? { ...t, _assignedName: member.name, assigned_at: new Date().toISOString(), status: "Assigned" }
-          : t
-      ));
-      if (detailTicket?.ticket_id === ticketId) {
-        setDetailTicket(prev => ({ ...prev, _assignedName: member.name, assigned_at: new Date().toISOString(), status: "Assigned" }));
-      }
+      const patch = { _assignedName: member.name, assigned_at: new Date().toISOString(), status: "Assigned" };
+      setTickets(prev => prev.map(t => t.ticket_id === ticketId ? { ...t, ...patch } : t));
+      if (detailTicket?.ticket_id === ticketId) setDetailTicket(prev => ({ ...prev, ...patch }));
       setAssignModal(null);
       setSelectedAgent("");
     } catch (e) {
@@ -110,6 +141,30 @@ export default function TicketsPage() {
     }
   };
 
+  // ── Approval ─────────────────────────────────────────────────────────────
+  const handleApproval = async (ticketId, action, addToKb = false) => {
+    setApprovalLoading(ticketId);
+    setApprovalError("");
+    try {
+      if (action === "approve") {
+        await approveResolution({ ticket_id: ticketId, add_to_kb: addToKb });
+        const patch = { status: "Closed" };
+        setTickets(prev => prev.map(t => t.ticket_id === ticketId ? { ...t, ...patch } : t));
+        if (detailTicket?.ticket_id === ticketId) setDetailTicket(prev => ({ ...prev, ...patch }));
+      } else {
+        await rejectResolution({ ticket_id: ticketId });
+        const patch = { status: "Assigned" };
+        setTickets(prev => prev.map(t => t.ticket_id === ticketId ? { ...t, ...patch } : t));
+        if (detailTicket?.ticket_id === ticketId) setDetailTicket(prev => ({ ...prev, ...patch }));
+      }
+    } catch (e) {
+      setApprovalError(e.message);
+    } finally {
+      setApprovalLoading(null);
+    }
+  };
+
+  // ── Style helpers ─────────────────────────────────────────────────────────
   const getPriorityStyle = (p) => ({
     high:   { background: "rgba(248,113,113,0.12)", color: "#f87171",  border: "1px solid rgba(248,113,113,0.25)" },
     medium: { background: "rgba(148,163,184,0.12)", color: "#94a3b8",  border: "1px solid rgba(148,163,184,0.25)" },
@@ -124,13 +179,14 @@ export default function TicketsPage() {
     Closed:        { background: "rgba(74,222,128,0.1)",  color: "#4ade80" },
   }[s] || { background: "rgba(148,163,184,0.1)", color: "#94a3b8" });
 
-  const getSlaStyle  = (s) => ({ healthy: { color: "#4ade80" }, at_risk: { color: "#fbbf24" }, breached: { color: "#f87171" } }[s] || { color: "rgba(255,255,255,0.2)" });
-  const getSlaLabel  = (s) => s === "breached" ? "⚠ Breached" : s === "at_risk" ? "⚡ At Risk" : s === "healthy" ? "✓ Healthy" : "—";
+  const getSlaStyle = (s) => ({ healthy: { color: "#4ade80" }, at_risk: { color: "#fbbf24" }, breached: { color: "#f87171" } }[s] || { color: "rgba(255,255,255,0.2)" });
+  const getSlaLabel = (s) => s === "breached" ? "⚠ Breached" : s === "at_risk" ? "⚡ At Risk" : s === "healthy" ? "✓ Healthy" : "—";
 
+  // ── Filtering + sorting ───────────────────────────────────────────────────
   const filtered = tickets
     .filter(t => {
       const q = searchQuery.toLowerCase();
-      return !q || t.subject?.toLowerCase().includes(q) || `tck-${t.ticket_id}`.includes(q.replace("tck-",""));
+      return !q || t.subject?.toLowerCase().includes(q) || `tck-${t.ticket_id}`.includes(q.replace("tck-", ""));
     })
     .sort((a, b) => {
       let va = a[sortField], vb = b[sortField];
@@ -151,13 +207,14 @@ export default function TicketsPage() {
   );
 
   const stats = [
-    { label: "Total",       val: total,                                                                              color: "#fff",    icon: Ticket,      bg: "rgba(255,255,255,0.08)"  },
-    { label: "Pending",     val: tickets.filter(t => t.status === "Pending").length,                                color: "#94a3b8", icon: AlertCircle, bg: "rgba(148,163,184,0.1)"   },
-    { label: "In Progress", val: tickets.filter(t => t.status === "In Progress").length,                            color: "#60a5fa", icon: Clock,       bg: "rgba(96,165,250,0.1)"    },
-    { label: "Resolved",    val: tickets.filter(t => t.status === "Resolved" || t.status === "Closed").length,     color: "#4ade80", icon: CheckCircle, bg: "rgba(74,222,128,0.1)"    },
-    { label: "Unassigned",  val: tickets.filter(t => !t.assigned_at).length,                                        color: "#f87171", icon: UserPlus,    bg: "rgba(248,113,113,0.1)"   },
+    { label: "Total",       val: total,                                                                          color: "#fff",    icon: Ticket,       bg: "rgba(255,255,255,0.08)"  },
+    { label: "Pending",     val: tickets.filter(t => t.status === "Pending").length,                            color: "#94a3b8", icon: AlertCircle,  bg: "rgba(148,163,184,0.1)"   },
+    { label: "In Progress", val: tickets.filter(t => t.status === "In Progress").length,                        color: "#60a5fa", icon: Clock,        bg: "rgba(96,165,250,0.1)"    },
+    { label: "Resolved",    val: tickets.filter(t => t.status === "Resolved" || t.status === "Closed").length, color: "#4ade80", icon: CheckCircle,  bg: "rgba(74,222,128,0.1)"    },
+    { label: "Unassigned",  val: tickets.filter(t => !t.assigned_at).length,                                    color: "#f87171", icon: UserPlus,     bg: "rgba(248,113,113,0.1)"   },
   ];
 
+  // Reusable assign select inside modals
   const AssignSelect = ({ ticketId }) => (
     <>
       <select className="modal-select" style={{ margin: "0 0 12px" }} value={selectedAgent}
@@ -178,6 +235,9 @@ export default function TicketsPage() {
     </>
   );
 
+  // ─────────────────────────────────────────────────────────────────────────
+  // RENDER
+  // ─────────────────────────────────────────────────────────────────────────
   return (
     <div style={{ minHeight: "100vh", display: "flex", background: "#080808", fontFamily: "'Nunito Sans', sans-serif" }}>
       <style>{`
@@ -210,8 +270,20 @@ export default function TicketsPage() {
         .assign-btn { display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.6);font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Nunito Sans',sans-serif; }
         .assign-btn:hover { background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.25); }
 
+        .approve-btn { display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1px solid rgba(74,222,128,0.3);background:rgba(74,222,128,0.08);color:#4ade80;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Nunito Sans',sans-serif; }
+        .approve-btn:hover    { background:rgba(74,222,128,0.18); }
+        .approve-btn:disabled { opacity:.4;cursor:default; }
+
+        .kb-btn { display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1px solid rgba(96,165,250,0.3);background:rgba(96,165,250,0.08);color:#60a5fa;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Nunito Sans',sans-serif; }
+        .kb-btn:hover    { background:rgba(96,165,250,0.18); }
+        .kb-btn:disabled { opacity:.4;cursor:default; }
+
+        .reject-btn { display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1px solid rgba(248,113,113,0.3);background:rgba(248,113,113,0.08);color:#f87171;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Nunito Sans',sans-serif; }
+        .reject-btn:hover    { background:rgba(248,113,113,0.18); }
+        .reject-btn:disabled { opacity:.4;cursor:default; }
+
         .modal-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.72);display:flex;align-items:center;justify-content:center;z-index:200;backdrop-filter:blur(6px);padding:24px; }
-        .modal-box { background:#111;border:1px solid rgba(255,255,255,0.1);border-radius:22px;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;animation:modalIn .25s ease both;box-shadow:0 40px 100px rgba(0,0,0,0.8); }
+        .modal-box { background:#111;border:1px solid rgba(255,255,255,0.1);border-radius:22px;width:100%;max-width:580px;max-height:88vh;overflow-y:auto;animation:modalIn .25s ease both;box-shadow:0 40px 100px rgba(0,0,0,0.8); }
         .assign-modal-box { background:#111;border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:28px;width:360px;animation:modalIn .25s ease both; }
 
         .modal-select { width:100%;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#fff;font-family:'Nunito Sans',sans-serif;font-size:14px;outline:none;margin:14px 0;cursor:pointer; }
@@ -238,7 +310,7 @@ export default function TicketsPage() {
         th:hover { color:rgba(255,255,255,0.6); }
       `}</style>
 
-      {/* ASSIGN MODAL */}
+      {/* ── ASSIGN MODAL ─────────────────────────────────────────────────── */}
       {assignModal && (
         <div className="modal-overlay" onClick={() => { setAssignModal(null); setAssignError(""); }}>
           <div className="assign-modal-box" onClick={e => e.stopPropagation()}>
@@ -250,7 +322,7 @@ export default function TicketsPage() {
         </div>
       )}
 
-      {/* TICKET DETAIL MODAL */}
+      {/* ── TICKET DETAIL MODAL ──────────────────────────────────────────── */}
       {detailTicket && (
         <div className="modal-overlay" onClick={() => setDetailTicket(null)}>
           <div className="modal-box" onClick={e => e.stopPropagation()}>
@@ -290,6 +362,34 @@ export default function TicketsPage() {
           </p>
         </div>
 
+              {/* ── APPROVAL PANEL (only for Resolved tickets) ─────────── */}
+              {detailTicket.status === "Resolved" && (
+                <div style={{ background: "rgba(167,139,250,0.06)", border: "1px solid rgba(167,139,250,0.2)", borderRadius: 14, padding: 18, marginBottom: 22 }}>
+                  <p style={{ color: "#a78bfa", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", margin: "0 0 6px" }}>Awaiting Your Approval</p>
+                  <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: "0 0 14px" }}>Review and approve or reject this resolution. You can also add it to the Knowledge Base.</p>
+                  {approvalError && (
+                    <div style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", borderRadius: 10, padding: "10px 14px", marginBottom: 12, color: "#f87171", fontSize: 13 }}>
+                      ⚠ {approvalError}
+                      <button onClick={() => setApprovalError("")} style={{ float: "right", background: "none", border: "none", color: "#f87171", cursor: "pointer" }}>✕</button>
+                    </div>
+                  )}
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                    <button className="approve-btn" disabled={approvalLoading === detailTicket.ticket_id}
+                      onClick={() => handleApproval(detailTicket.ticket_id, "approve", false)}>
+                      <ThumbsUp size={12} /> {approvalLoading === detailTicket.ticket_id ? "Processing…" : "Approve"}
+                    </button>
+                    <button className="kb-btn" disabled={approvalLoading === detailTicket.ticket_id}
+                      onClick={() => handleApproval(detailTicket.ticket_id, "approve", true)}>
+                      <BookOpen size={12} /> {approvalLoading === detailTicket.ticket_id ? "Processing…" : "Approve + Add to KB"}
+                    </button>
+                    <button className="reject-btn" disabled={approvalLoading === detailTicket.ticket_id}
+                      onClick={() => handleApproval(detailTicket.ticket_id, "reject")}>
+                      <ThumbsDown size={12} /> {approvalLoading === detailTicket.ticket_id ? "Processing…" : "Reject & Reassign"}
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {/* SLA */}
               <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 14, padding: 18, marginBottom: 20 }}>
                 <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 14px" }}>SLA Status</p>
@@ -328,7 +428,7 @@ export default function TicketsPage() {
                 </div>
               </div>
 
-              {/* Assign from detail */}
+              {/* Assign / Reassign */}
               <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 14, padding: 18 }}>
                 <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 14px" }}>
                   {detailTicket._assignedName || detailTicket.assigned_at ? "Reassign Ticket" : "Assign Ticket"}
@@ -343,17 +443,19 @@ export default function TicketsPage() {
                 )}
                 <AssignSelect ticketId={detailTicket.ticket_id} />
               </div>
+
             </div>
           </div>
         </div>
       )}
 
-      {/* SIDEBAR */}
+      {/* ── SIDEBAR ──────────────────────────────────────────────────────── */}
       <aside style={{ width: 240, background: "#0d0d0d", borderRight: "1px solid rgba(255,255,255,0.06)", display: "flex", flexDirection: "column", padding: "24px 16px", height: "100vh", position: "sticky", top: 0, flexShrink: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 36, padding: "0 6px" }}>
           <div style={{ width: 8, height: 8, background: "#fff", borderRadius: "50%", boxShadow: "0 0 10px 3px rgba(255,255,255,0.3)", animation: "pulse-d 2.5s ease infinite" }} />
           <span style={{ fontFamily: "'Nunito',sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", letterSpacing: "0.05em" }}>AI Ticket</span>
         </div>
+
         <nav style={{ flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
           {navItems.map(({ id, label, icon: Icon, path }) => (
             <button key={id} className={`nav-btn ${activeNav === id ? "active" : ""}`}
@@ -366,26 +468,47 @@ export default function TicketsPage() {
   <Settings size={16} /> Settings
 </button>
         </nav>
+
+        {/* ── USER PROFILE CARD ─────────────────────────────────────────── */}
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 16, marginTop: 16 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12, padding: "0 6px" }}>
-            <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", color: "#080808", fontWeight: 700, fontSize: 13, flexShrink: 0 }}>TL</div>
-            <div>
-              <p style={{ color: "#fff", fontSize: 13, fontWeight: 600, margin: 0 }}>Team Lead</p>
-              <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, margin: 0 }}>admin@company.com</p>
+          <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, padding: "14px 12px", marginBottom: 10 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+              {/* Avatar */}
+              <div style={{ width: 40, height: 40, borderRadius: "50%", background: "linear-gradient(135deg,#6366f1,#8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 14, flexShrink: 0, boxShadow: "0 0 0 2px rgba(99,102,241,0.3)" }}>
+                {currentUser?.initials || "TL"}
+              </div>
+              <div style={{ minWidth: 0 }}>
+                <p style={{ color: "#fff", fontSize: 13, fontWeight: 700, margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {currentUser?.name || "Team Lead"}
+                </p>
+                <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, margin: "2px 0 0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {currentUser?.email || "—"}
+                </p>
+              </div>
+            </div>
+            {/* Role + online status */}
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <span style={{ background: "rgba(99,102,241,0.15)", color: "#818cf8", border: "1px solid rgba(99,102,241,0.25)", borderRadius: 999, fontSize: 10, fontWeight: 700, padding: "2px 10px", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                Team Lead
+              </span>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ade80", boxShadow: "0 0 6px #4ade80", display: "inline-block" }} />
+              <span style={{ color: "#4ade80", fontSize: 10, fontWeight: 600 }}>Online</span>
             </div>
           </div>
-          <button className="nav-btn" onClick={() => navigate("/")}><LogOut size={16} /> Logout</button>
+          <button className="nav-btn" onClick={() => supabase.auth.signOut().then(() => navigate("/"))}>
+            <LogOut size={16} /> Logout
+          </button>
         </div>
       </aside>
 
-      {/* MAIN */}
+      {/* ── MAIN ─────────────────────────────────────────────────────────── */}
       <main style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
 
         <header style={{ background: "rgba(8,8,8,0.9)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "16px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 50 }}>
           <div>
             <h1 style={{ fontFamily: "'Nunito',sans-serif", fontWeight: 700, fontSize: 20, color: "#fff", margin: 0 }}>Ticket Management</h1>
             <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: "2px 0 0" }}>
-              {total} total · {tickets.filter(t => !t.assigned_at).length} unassigned
+              {total} total · {tickets.filter(t => !t.assigned_at).length} unassigned · {tickets.filter(t => t.status === "Resolved").length} awaiting approval
             </p>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -412,6 +535,14 @@ export default function TicketsPage() {
               </div>
             ))}
           </div>
+
+          {/* APPROVAL ERROR BANNER */}
+          {approvalError && (
+            <div style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", borderRadius: 12, padding: "12px 16px", marginBottom: 16, color: "#f87171", fontSize: 13, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span>⚠ {approvalError}</span>
+              <button onClick={() => setApprovalError("")} style={{ background: "none", border: "none", color: "#f87171", cursor: "pointer" }}>✕</button>
+            </div>
+          )}
 
           {/* FILTERS */}
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20, flexWrap: "wrap", padding: "14px 18px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 14 }}>
@@ -451,9 +582,7 @@ export default function TicketsPage() {
                 <AlertCircle size={36} style={{ margin: "0 auto 12px", display: "block" }} />
                 <p style={{ fontSize: 15, margin: 0 }}>Failed to load tickets</p>
                 <p style={{ fontSize: 13, marginTop: 6, color: "rgba(255,255,255,0.3)" }}>{error}</p>
-                <button onClick={loadTickets} style={{ marginTop: 16, padding: "8px 20px", borderRadius: 10, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", color: "#fff", cursor: "pointer", fontSize: 13 }}>
-                  Try Again
-                </button>
+                <button onClick={loadTickets} style={{ marginTop: 16, padding: "8px 20px", borderRadius: 10, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", color: "#fff", cursor: "pointer", fontSize: 13 }}>Try Again</button>
               </div>
             )}
             {!loading && !error && (
@@ -475,9 +604,9 @@ export default function TicketsPage() {
                     {filtered.map(ticket => (
                       <tr key={ticket.ticket_id} className="ticket-row"
                         style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}
-                        onClick={() => { setDetailTicket(ticket); setSelectedAgent(""); setAssignError(""); }}>
+                        onClick={() => { setDetailTicket(ticket); setSelectedAgent(""); setAssignError(""); setApprovalError(""); }}>
                         <td style={{ padding: "14px 16px", color: "#94a3b8", fontFamily: "monospace", fontSize: 12, fontWeight: 700 }}>TCK-{ticket.ticket_id}</td>
-                        <td style={{ padding: "14px 16px", color: "#fff", fontWeight: 500, maxWidth: 240 }}>
+                        <td style={{ padding: "14px 16px", color: "#fff", fontWeight: 500, maxWidth: 220 }}>
                           <span style={{ display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{ticket.subject}</span>
                         </td>
                         <td style={{ padding: "14px 16px", textAlign: "center" }}>
@@ -493,15 +622,39 @@ export default function TicketsPage() {
                           <span style={getSlaStyle(ticket.resolution_sla_status)}>{getSlaLabel(ticket.resolution_sla_status)}</span>
                         </td>
                         <td style={{ padding: "14px 16px", color: "rgba(255,255,255,0.3)", fontSize: 12, whiteSpace: "nowrap" }}>{formatCreated(ticket.created_at)}</td>
+
+                        {/* ── ACTIONS CELL ──────────────────────────────── */}
                         <td style={{ padding: "14px 16px", textAlign: "center" }} onClick={e => e.stopPropagation()}>
-                          <div style={{ display: "flex", alignItems: "center", gap: 6, justifyContent: "center" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 5, justifyContent: "center", flexWrap: "wrap" }}>
+
+                            {/* Assign / Reassign */}
                             <button className="assign-btn"
-                              onClick={e => { e.stopPropagation(); setAssignModal(ticket.ticket_id); setSelectedAgent(""); setAssignError(""); }}>
+                              onClick={() => { setAssignModal(ticket.ticket_id); setSelectedAgent(""); setAssignError(""); }}>
                               <UserPlus size={11} />
                               {ticket.assigned_at ? "Reassign" : "Assign"}
                             </button>
+
+                            {/* Approve / KB / Reject — only for Resolved tickets */}
+                            {ticket.status === "Resolved" && (
+                              <>
+                                <button className="approve-btn" disabled={approvalLoading === ticket.ticket_id}
+                                  onClick={() => handleApproval(ticket.ticket_id, "approve", false)}>
+                                  <ThumbsUp size={10} /> {approvalLoading === ticket.ticket_id ? "…" : "OK"}
+                                </button>
+                                <button className="kb-btn" disabled={approvalLoading === ticket.ticket_id}
+                                  onClick={() => handleApproval(ticket.ticket_id, "approve", true)}>
+                                  <BookOpen size={10} /> KB
+                                </button>
+                                <button className="reject-btn" disabled={approvalLoading === ticket.ticket_id}
+                                  onClick={() => handleApproval(ticket.ticket_id, "reject")}>
+                                  <ThumbsDown size={10} /> {approvalLoading === ticket.ticket_id ? "…" : "Reject"}
+                                </button>
+                              </>
+                            )}
+
+                            {/* Detail eye */}
                             <button style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.25)", display: "flex", padding: 4 }}
-                              onClick={e => { e.stopPropagation(); setDetailTicket(ticket); setSelectedAgent(""); setAssignError(""); }}>
+                              onClick={() => { setDetailTicket(ticket); setSelectedAgent(""); setAssignError(""); setApprovalError(""); }}>
                               <Eye size={14} />
                             </button>
                           </div>
@@ -510,6 +663,7 @@ export default function TicketsPage() {
                     ))}
                   </tbody>
                 </table>
+
                 {filtered.length === 0 && (
                   <div style={{ textAlign: "center", padding: "60px 0", color: "rgba(255,255,255,0.2)" }}>
                     <AlertCircle size={36} style={{ margin: "0 auto 12px", display: "block", opacity: 0.4 }} />

@@ -9,7 +9,8 @@ import {
   RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer,
   BarChart, Bar, XAxis, YAxis, Tooltip, Cell,
 } from "recharts";
-import { fetchMemberAnalytics } from "./api";
+import { fetchMemberAnalytics } from "../api";
+import supabase from "../supabaseClient";
 
 // Grade color mapping
 const GRADE_COLORS = { A: "#4ade80", B: "#ffffff", C: "#fbbf24", D: "#f87171" };
@@ -63,6 +64,33 @@ export default function TeamPerformancePage() {
   const [range,             setRange]             = useState("7days");
   const [showNotifications, setShowNotifications] = useState(false);
   const [activeNav,         setActiveNav]         = useState("team");
+  const [currentUser,       setCurrentUser]       = useState(null);
+
+  // ── Load logged-in user ──────────────────────────────────────────────────
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+        const { data: leadRow } = await supabase
+          .from("team_leads")
+          .select("lead_id, name")
+          .eq("supabase_user_id", user.id)
+          .single();
+        const name = leadRow?.name || user.email;
+        setCurrentUser({
+          id:       user.id,
+          email:    user.email,
+          name,
+          initials: name
+            ? name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)
+            : user.email.slice(0, 2).toUpperCase(),
+        });
+      } catch (e) {
+        console.error("Failed to load user:", e);
+      }
+    })();
+  }, []);
 
   // ── Fetch real member analytics ──────────────────
   useEffect(() => {
@@ -127,8 +155,12 @@ export default function TeamPerformancePage() {
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #111; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeUp   { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes spin     { to { transform: rotate(360deg); } }
+        @keyframes pulse-dot{ 0%,100%{opacity:1} 50%{opacity:.4} }
+        .nav-btn { width:100%;display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;border:none;background:transparent;cursor:pointer;font-family:'Nunito Sans',sans-serif;font-size:14px;color:rgba(255,255,255,0.4);transition:all .2s;text-align:left; }
+        .nav-btn:hover  { background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.8); }
+        .nav-btn.active { background:rgba(255,255,255,0.08);color:#fff;font-weight:600; }
         .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 18px; }
         .member-card { padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); cursor: pointer; transition: all 0.2s; }
         .member-card:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.12); }
@@ -147,13 +179,13 @@ export default function TeamPerformancePage() {
             <span style={{ fontWeight: 800, fontSize: 15, letterSpacing: "0.25em", color: "rgba(255,255,255,0.25)", textTransform: "uppercase" }}>SACK.AI</span>
           </div>
         </div>
-        <nav style={{ flex: 1, padding: "20px 12px" }}>
+
+        {/* Nav */}
+        <nav style={{ flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
           {navItems.map(item => {
             const Icon = item.icon;
-            const isActive = activeNav === item.id;
             return (
-              <button key={item.id} onClick={() => handleNavClick(item)}
-                style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, border: "none", cursor: "pointer", marginBottom: 4, fontFamily: "'Nunito Sans', sans-serif", fontSize: 13, fontWeight: 600, transition: "all 0.2s", background: isActive ? "rgba(255,255,255,0.08)" : "transparent", color: isActive ? "#fff" : "rgba(255,255,255,0.35)" }}>
+              <button key={item.id} className={`nav-btn ${activeNav === item.id ? "active" : ""}`} onClick={() => handleNavClick(item)}>
                 <Icon size={16} /> {item.label}
               </button>
             );

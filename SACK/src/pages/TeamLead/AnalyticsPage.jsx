@@ -7,7 +7,8 @@ import {
 import {
   fetchAnalytics, fetchPriorityBreakdown, fetchCategoryBreakdown,
   fetchSlaTrend, fetchSlaComparison,
-} from "./api";
+} from "../api";
+import supabase from "../supabaseClient";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function fmtMins(m) {
@@ -182,6 +183,33 @@ export default function AnalyticsPage() {
   const [comparison,   setComparison]   = useState(null);
   const [loading,      setLoading]      = useState(true);
   const [error,        setError]        = useState("");
+  const [currentUser,  setCurrentUser]  = useState(null);
+
+  // ── Load logged-in user ──────────────────────────────────────────────────
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+        const { data: leadRow } = await supabase
+          .from("team_leads")
+          .select("lead_id, name")
+          .eq("supabase_user_id", user.id)
+          .single();
+        const name = leadRow?.name || user.email;
+        setCurrentUser({
+          id:       user.id,
+          email:    user.email,
+          name,
+          initials: name
+            ? name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)
+            : user.email.slice(0, 2).toUpperCase(),
+        });
+      } catch (e) {
+        console.error("Failed to load user:", e);
+      }
+    })();
+  }, []);
 
   const days = range === "7days" ? 7 : 30;
 
@@ -293,15 +321,30 @@ export default function AnalyticsPage() {
   <Settings size={16} /> Settings
 </button>
         </nav>
-        <div style={{ borderTop:"1px solid rgba(255,255,255,0.07)",paddingTop:16 }}>
-          <div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:12,padding:"0 6px" }}>
-            <div style={{ width:36,height:36,borderRadius:"50%",background:"#fff",display:"flex",alignItems:"center",justifyContent:"center",color:"#080808",fontWeight:700,fontSize:13,flexShrink:0 }}>TL</div>
-            <div>
-              <p style={{ color:"#fff",fontSize:13,fontWeight:600,margin:0 }}>Team Lead</p>
-              <p style={{ color:"rgba(255,255,255,0.3)",fontSize:11,margin:0 }}>admin@company.com</p>
+        <div style={{ borderTop:"1px solid rgba(255,255,255,0.07)",paddingTop:16,marginTop:16 }}>
+          <div style={{ background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,padding:"14px 12px",marginBottom:10 }}>
+            <div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:10 }}>
+              <div style={{ width:40,height:40,borderRadius:"50%",background:"linear-gradient(135deg,#6366f1,#8b5cf6)",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:800,fontSize:14,flexShrink:0,boxShadow:"0 0 0 2px rgba(99,102,241,0.3)" }}>
+                {currentUser?.initials || "TL"}
+              </div>
+              <div style={{ minWidth:0 }}>
+                <p style={{ color:"#fff",fontSize:13,fontWeight:700,margin:0,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis" }}>
+                  {currentUser?.name || "Team Lead"}
+                </p>
+                <p style={{ color:"rgba(255,255,255,0.35)",fontSize:11,margin:"2px 0 0",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis" }}>
+                  {currentUser?.email || "—"}
+                </p>
+              </div>
+            </div>
+            <div style={{ display:"flex",alignItems:"center",gap:6 }}>
+              <span style={{ background:"rgba(99,102,241,0.15)",color:"#818cf8",border:"1px solid rgba(99,102,241,0.25)",borderRadius:999,fontSize:10,fontWeight:700,padding:"2px 10px",letterSpacing:"0.05em",textTransform:"uppercase" }}>
+                Team Lead
+              </span>
+              <span style={{ width:6,height:6,borderRadius:"50%",background:"#4ade80",boxShadow:"0 0 6px #4ade80",display:"inline-block" }} />
+              <span style={{ color:"#4ade80",fontSize:10,fontWeight:600 }}>Online</span>
             </div>
           </div>
-          <button className="nav-btn" onClick={() => navigate("/")}><LogOut size={16} /> Logout</button>
+          <button className="nav-btn" onClick={() => supabase.auth.signOut().then(() => navigate("/"))}><LogOut size={16} /> Logout</button>
         </div>
       </aside>
 

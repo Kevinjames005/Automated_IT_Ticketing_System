@@ -54,14 +54,18 @@ def assign_ticket_endpoint():
 
     data = request.get_json()
 
-    if not data or "ticket_id" not in data or "member_id" not in data or "lead_id" not in data:
+    if not data or "ticket_id" not in data or "member_id" not in data:
         return {"error": "Invalid input"}, 400
 
     try:
+        supabase_uuid = request.user.get("id")
+        if not supabase_uuid:
+            return {"error": "Unauthorized"}, 403
+
         assign_ticket(
             ticket_id=data["ticket_id"],
             member_id=data["member_id"],
-            lead_id=data["lead_id"]
+            supabase_uuid=supabase_uuid
         )
 
         return {"message": "Ticket assigned successfully"}, 200
@@ -167,9 +171,13 @@ def approve_resolution_endpoint():
 
         lead_id = row[0]
 
+        # lead_id comes from the verified Supabase user attached by @require_auth
+        supabase_uuid = request.user.get("id")
+        if not supabase_uuid:
+            return {"error": "Unauthorized"}, 403
         approve_resolution(
             ticket_id=data["ticket_id"],
-            lead_id=lead_id,
+            supabase_uuid=supabase_uuid,
             add_to_kb=data.get("add_to_kb", False)
         )
         return {"message": "Ticket approved successfully"}, 200
@@ -185,10 +193,12 @@ def reject_resolution_endpoint():
     if not data or "ticket_id" not in data:
         return {"error": "Invalid input"}, 400
     try:
-        lead_id = request.user.get("id") or data.get("lead_id")
+        supabase_uuid = request.user.get("id")
+        if not supabase_uuid:
+            return {"error": "Unauthorized"}, 403
         reject_resolution(
             ticket_id=data["ticket_id"],
-            lead_id=lead_id
+            supabase_uuid=supabase_uuid
         )
         return {"message": "Resolution rejected. Ticket reassigned."}, 200
     except Exception as e:
