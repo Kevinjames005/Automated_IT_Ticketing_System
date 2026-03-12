@@ -46,7 +46,6 @@ export default function TeamLeadDashboard() {
   const [categoryData,      setCategoryData]      = useState([]);
   const [loading,           setLoading]           = useState(true);
 
-
   // Action Center
   const [pendingTickets,  setPendingTickets]  = useState([]);
   const [resolvedTickets, setResolvedTickets] = useState([]);
@@ -66,9 +65,9 @@ export default function TeamLeadDashboard() {
   const [approvalError,   setApprovalError]   = useState("");
 
   // Approval floating window
-  const [approvalModal,   setApprovalModal]   = useState(null); // holds the ticket object
-  const [addToKb,         setAddToKb]         = useState(false);
-
+  const [approvalModal,    setApprovalModal]    = useState(null);
+  const [addToKb,          setAddToKb]          = useState(false);
+  const [rejectionReason,  setRejectionReason]  = useState("");
 
   // ── Fetch members ────────────────────────────────────────────────────────
   useEffect(() => {
@@ -95,8 +94,9 @@ export default function TeamLeadDashboard() {
       setResolvedTickets(resolved);
       setSlaAtRisk(all.filter(t =>
         t.status !== "Closed" &&
-        (t.response_sla_status === "at_risk"   || t.response_sla_status === "breached" ||
-         t.resolution_sla_status === "at_risk" || t.resolution_sla_status === "breached")
+        (t.lead_sla_status === "at_risk"               || t.lead_sla_status === "breached" ||
+         t.member_response_sla_status === "at_risk"    || t.member_response_sla_status === "breached" ||
+         t.member_resolution_sla_status === "at_risk"  || t.member_resolution_sla_status === "breached")
       ));
     } catch (e) {
       console.error("Triage load error:", e.message);
@@ -142,8 +142,10 @@ export default function TeamLeadDashboard() {
 
   // ── Helpers ──────────────────────────────────────────────────────────────
   const slaBadge = (t) =>
-    [t.response_sla_status, t.resolution_sla_status].includes("breached") ? "breached"
-    : [t.response_sla_status, t.resolution_sla_status].includes("at_risk") ? "at_risk"
+    [t.lead_sla_status, t.member_response_sla_status, t.member_resolution_sla_status,
+     t.response_sla_status, t.resolution_sla_status].includes("breached") ? "breached"
+    : [t.lead_sla_status, t.member_response_sla_status, t.member_resolution_sla_status,
+       t.response_sla_status, t.resolution_sla_status].includes("at_risk") ? "at_risk"
     : "healthy";
 
   const handleAssign = async (ticketId) => {
@@ -169,14 +171,14 @@ export default function TeamLeadDashboard() {
     }
   };
 
-  const handleApproval = async (ticketId, action, addToKb = false) => {
+  const handleApproval = async (ticketId, action, addToKb = false, reason = "") => {
     setApprovalLoading(ticketId);
     setApprovalError("");
     try {
       if (action === "approve") {
         await approveResolution({ ticket_id: ticketId, add_to_kb: addToKb });
       } else {
-        await rejectResolution({ ticket_id: ticketId });
+        await rejectResolution({ ticket_id: ticketId, rejection_reason: reason });
       }
       setResolvedTickets(prev => prev.filter(t => t.ticket_id !== ticketId));
       if (detailTicket?.ticket_id === ticketId) setDetailTicket(null);
@@ -232,6 +234,13 @@ export default function TeamLeadDashboard() {
     if (item.path) navigate(item.path);
     else setActiveTab(item.id);
   };
+
+  // Time range pill options
+  const timeRangeOptions = [
+    { value: "today",  label: "Today"    },
+    { value: "7days",  label: "7 Days"   },
+    { value: "30days", label: "30 Days"  },
+  ];
 
   // ─────────────────────────────────────────────────────────────────────────
   // RENDER
@@ -289,6 +298,16 @@ export default function TeamLeadDashboard() {
         .reject-btn:hover { background:rgba(248,113,113,0.18); }
         .reject-btn:disabled { opacity:.4;cursor:default; }
 
+        /* ── Rejection reason textarea ── */
+        .rejection-textarea { width:100%;padding:12px 14px;border-radius:12px;background:rgba(248,113,113,0.05);border:1px solid rgba(248,113,113,0.2);color:#fff;font-family:'Nunito Sans',sans-serif;font-size:13px;line-height:1.6;outline:none;resize:vertical;min-height:88px;transition:border-color .2s; }
+        .rejection-textarea:focus { border-color:rgba(248,113,113,0.45); }
+        .rejection-textarea::placeholder { color:rgba(255,255,255,0.2); }
+
+        /* ── Time range pill tabs ── */
+        .time-pill { padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.35);font-family:'Nunito Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .18s;white-space:nowrap; }
+        .time-pill:hover { color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.2); }
+        .time-pill.active { background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.3); }
+
         th { font-family:'Nunito Sans',sans-serif;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.3);font-weight:600; }
         .mobile-overlay { display:none; }
         @media(max-width:768px) { .sidebar{position:fixed!important;z-index:100;} .mobile-overlay{display:block;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99;} }
@@ -321,13 +340,13 @@ export default function TeamLeadDashboard() {
       {approvalModal && (
         <div
           style={{ position: "fixed", inset: 0, zIndex: 300, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.75)", backdropFilter: "blur(8px)", padding: 24 }}
-          onClick={() => { setApprovalModal(null); setAddToKb(false); setApprovalError(""); }}
+          onClick={() => { setApprovalModal(null); setAddToKb(false); setApprovalError(""); setRejectionReason(""); }}
         >
           <div
             onClick={e => e.stopPropagation()}
             style={{ width: "100%", maxWidth: 620, maxHeight: "90vh", background: "#111", border: "1px solid rgba(167,139,250,0.3)", borderRadius: 24, overflowY: "auto", animation: "modalIn .28s cubic-bezier(.22,1,.36,1) both", boxShadow: "0 0 0 1px rgba(167,139,250,0.08), 0 48px 120px rgba(0,0,0,0.9)" }}
           >
-            {/* ── Header ── */}
+            {/* Header */}
             <div style={{ padding: "24px 28px 20px", borderBottom: "1px solid rgba(255,255,255,0.07)", display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16 }}>
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
@@ -341,7 +360,7 @@ export default function TeamLeadDashboard() {
                 </h2>
               </div>
               <button
-                onClick={() => { setApprovalModal(null); setAddToKb(false); setApprovalError(""); }}
+                onClick={() => { setApprovalModal(null); setAddToKb(false); setApprovalError(""); setRejectionReason(""); }}
                 style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: 8, cursor: "pointer", color: "rgba(255,255,255,0.5)", display: "flex", flexShrink: 0, transition: "background .2s" }}
                 onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.1)"}
                 onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.06)"}
@@ -352,7 +371,7 @@ export default function TeamLeadDashboard() {
 
             <div style={{ padding: "22px 28px" }}>
 
-              {/* ── Meta badges ── */}
+              {/* Meta badges */}
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 22 }}>
                 <span style={{ ...getPriorityStyle(approvalModal.priority), padding: "4px 12px", borderRadius: 8, fontSize: 12, fontWeight: 700, textTransform: "capitalize" }}>
                   {approvalModal.priority}
@@ -362,29 +381,77 @@ export default function TeamLeadDashboard() {
                 </span>
                 {(() => {
                   const s = slaBadge(approvalModal);
-                  const styles = { breached: { bg: "rgba(248,113,113,0.08)", color: "#f87171", border: "rgba(248,113,113,0.2)" }, at_risk: { bg: "rgba(251,191,36,0.08)", color: "#fbbf24", border: "rgba(251,191,36,0.2)" }, healthy: { bg: "rgba(74,222,128,0.08)", color: "#4ade80", border: "rgba(74,222,128,0.2)" } }[s] || {};
-                  return <span style={{ background: styles.bg, color: styles.color, border: `1px solid ${styles.border}`, padding: "4px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600 }}>{s === "breached" ? "⚠ SLA Breached" : s === "at_risk" ? "⚡ SLA At Risk" : "✓ SLA Healthy"}</span>;
+                  const styles = {
+                    breached: { bg: "rgba(248,113,113,0.08)", color: "#f87171", border: "rgba(248,113,113,0.2)" },
+                    at_risk:  { bg: "rgba(251,191,36,0.08)",  color: "#fbbf24", border: "rgba(251,191,36,0.2)"  },
+                    healthy:  { bg: "rgba(74,222,128,0.08)",  color: "#4ade80", border: "rgba(74,222,128,0.2)"  },
+                  }[s] || {};
+                  return (
+                    <span style={{ background: styles.bg, color: styles.color, border: `1px solid ${styles.border}`, padding: "4px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600 }}>
+                      {s === "breached" ? "⚠ SLA Breached" : s === "at_risk" ? "⚡ SLA At Risk" : "✓ SLA Healthy"}
+                    </span>
+                  );
                 })()}
               </div>
 
               {/* ── Resolution Document ── */}
-              <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: "20px 22px", marginBottom: 18 }}>
-                <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700, margin: "0 0 14px", display: "flex", alignItems: "center", gap: 6 }}>
-                  <BookOpen size={12} /> Resolution Document
-                </p>
-                {approvalModal.resolution_notes || approvalModal.resolution || approvalModal.description ? (
-                  <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 14, lineHeight: 1.75, margin: 0, whiteSpace: "pre-wrap" }}>
-                    {approvalModal.resolution_notes || approvalModal.resolution || approvalModal.description}
-                  </p>
-                ) : (
-                  <div style={{ textAlign: "center", padding: "24px 0" }}>
-                    <BookOpen size={28} style={{ color: "rgba(255,255,255,0.1)", display: "block", margin: "0 auto 10px" }} />
-                    <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 13, margin: 0 }}>No resolution document attached to this ticket</p>
+              <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, overflow: "hidden", marginBottom: 18 }}>
+                {/* Section header */}
+                <div style={{ background: "rgba(255,255,255,0.03)", borderBottom: "1px solid rgba(255,255,255,0.07)", padding: "11px 18px", display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={{ width: 26, height: 26, borderRadius: 8, background: "rgba(167,139,250,0.12)", border: "1px solid rgba(167,139,250,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <BookOpen size={12} style={{ color: "#a78bfa" }} />
                   </div>
-                )}
+                  <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em" }}>Resolution Document</span>
+                </div>
+
+                {/* Body — checks every possible field name the backend might use */}
+                <div style={{ padding: "16px 18px" }}>
+                  {(() => {
+                    const text =
+                      approvalModal.resolution_notes  ||
+                      approvalModal.resolution        ||
+                      approvalModal.resolution_text   ||
+                      approvalModal.resolved_notes    ||
+                      approvalModal.agent_notes       ||
+                      approvalModal.notes             ||
+                      approvalModal.body              ||
+                      approvalModal.email_body        ||
+                      approvalModal.description       ||
+                      approvalModal.message           ||
+                      approvalModal.content           ||
+                      null;
+
+                    if (!text) {
+                      return (
+                        <div style={{ textAlign: "center", padding: "24px 0" }}>
+                          <BookOpen size={28} style={{ color: "rgba(255,255,255,0.1)", display: "block", margin: "0 auto 10px" }} />
+                          <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 13, margin: 0 }}>No resolution document attached to this ticket</p>
+                          <p style={{ color: "rgba(255,255,255,0.12)", fontSize: 12, margin: "6px 0 0" }}>
+                            The agent may not have added resolution notes yet.
+                          </p>
+                        </div>
+                      );
+                    }
+
+                    const isHtml = /<[a-z][\s\S]*>/i.test(text);
+                    if (isHtml) {
+                      return (
+                        <div
+                          style={{ color: "rgba(255,255,255,0.8)", fontSize: 14, lineHeight: 1.75, fontFamily: "'Nunito Sans',sans-serif" }}
+                          dangerouslySetInnerHTML={{ __html: text }}
+                        />
+                      );
+                    }
+                    return (
+                      <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 14, lineHeight: 1.75, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                        {text}
+                      </p>
+                    );
+                  })()}
+                </div>
               </div>
 
-              {/* ── Timeline snapshot ── */}
+              {/* Timeline snapshot */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 18 }}>
                 {[
                   { label: "Created",  val: approvalModal.created_at },
@@ -399,7 +466,7 @@ export default function TeamLeadDashboard() {
                 ))}
               </div>
 
-              {/* ── Error ── */}
+              {/* Error */}
               {approvalError && (
                 <div style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", borderRadius: 10, padding: "10px 14px", marginBottom: 16, color: "#f87171", fontSize: 13, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   ⚠ {approvalError}
@@ -407,10 +474,8 @@ export default function TeamLeadDashboard() {
                 </div>
               )}
 
-              {/* ── Add to Knowledge Base checkbox ── */}
-              <label
-                style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "16px 18px", background: addToKb ? "rgba(96,165,250,0.06)" : "rgba(255,255,255,0.02)", border: `1px solid ${addToKb ? "rgba(96,165,250,0.3)" : "rgba(255,255,255,0.08)"}`, borderRadius: 14, cursor: "pointer", transition: "all .2s", marginBottom: 20, userSelect: "none" }}
-              >
+              {/* Add to KB checkbox */}
+              <label style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "16px 18px", background: addToKb ? "rgba(96,165,250,0.06)" : "rgba(255,255,255,0.02)", border: `1px solid ${addToKb ? "rgba(96,165,250,0.3)" : "rgba(255,255,255,0.08)"}`, borderRadius: 14, cursor: "pointer", transition: "all .2s", marginBottom: 20, userSelect: "none" }}>
                 <div style={{ position: "relative", flexShrink: 0, marginTop: 2 }}>
                   <input type="checkbox" checked={addToKb} onChange={e => setAddToKb(e.target.checked)} style={{ position: "absolute", opacity: 0, width: 0, height: 0 }} />
                   <div style={{ width: 20, height: 20, borderRadius: 6, border: `2px solid ${addToKb ? "#60a5fa" : "rgba(255,255,255,0.2)"}`, background: addToKb ? "rgba(96,165,250,0.15)" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", transition: "all .2s" }}>
@@ -426,14 +491,40 @@ export default function TeamLeadDashboard() {
                     <BookOpen size={13} /> Add resolution to Knowledge Base
                   </p>
                   <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: 0 }}>
-                    {addToKb
-                      ? "This resolution will be saved to the KB when approved."
-                      : "Check to save this resolution to the Knowledge Base on approval."}
+                    {addToKb ? "This resolution will be saved to the KB when approved." : "Check to save this resolution to the Knowledge Base on approval."}
                   </p>
                 </div>
               </label>
 
-              {/* ── Action buttons ── */}
+              {/* ── Rejection Reason ─────────────────────────────────────────
+                  Only shown / required when the lead wants to reject.
+                  The comment is saved to ticket_comments on the backend.
+              ──────────────────────────────────────────────────────────── */}
+              <div style={{ background: "rgba(248,113,113,0.04)", border: "1px solid rgba(248,113,113,0.15)", borderRadius: 14, padding: "16px 18px", marginBottom: 18 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                  <div style={{ width: 22, height: 22, borderRadius: 6, background: "rgba(248,113,113,0.12)", border: "1px solid rgba(248,113,113,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <ThumbsDown size={11} style={{ color: "#f87171" }} />
+                  </div>
+                  <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                    Rejection Reason
+                    <span style={{ color: "rgba(248,113,113,0.6)", marginLeft: 4 }}>— visible to the agent</span>
+                  </span>
+                </div>
+                <textarea
+                  className="rejection-textarea"
+                  placeholder="Explain why this resolution was rejected so the agent knows what to fix…"
+                  value={rejectionReason}
+                  onChange={e => setRejectionReason(e.target.value)}
+                  maxLength={1000}
+                />
+                <div style={{ textAlign: "right", marginTop: 4 }}>
+                  <span style={{ color: rejectionReason.length > 900 ? "#f87171" : "rgba(255,255,255,0.15)", fontSize: 11 }}>
+                    {rejectionReason.length}/1000
+                  </span>
+                </div>
+              </div>
+
+              {/* Action buttons */}
               <div style={{ display: "flex", gap: 10 }}>
                 <button
                   disabled={approvalLoading === approvalModal.ticket_id}
@@ -441,6 +532,7 @@ export default function TeamLeadDashboard() {
                     await handleApproval(approvalModal.ticket_id, "approve", addToKb);
                     setApprovalModal(null);
                     setAddToKb(false);
+                    setRejectionReason("");
                   }}
                   style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "13px 20px", borderRadius: 12, border: "1px solid rgba(74,222,128,0.35)", background: "rgba(74,222,128,0.1)", color: "#4ade80", fontSize: 14, fontWeight: 700, cursor: approvalLoading === approvalModal.ticket_id ? "default" : "pointer", transition: "all .2s", fontFamily: "'Nunito Sans',sans-serif", opacity: approvalLoading === approvalModal.ticket_id ? 0.5 : 1 }}
                   onMouseEnter={e => { if (approvalLoading !== approvalModal.ticket_id) e.currentTarget.style.background = "rgba(74,222,128,0.18)"; }}
@@ -450,17 +542,20 @@ export default function TeamLeadDashboard() {
                   {approvalLoading === approvalModal.ticket_id ? "Processing…" : addToKb ? "Approve + Save to KB" : "Approve"}
                 </button>
                 <button
-                  disabled={approvalLoading === approvalModal.ticket_id}
+                  disabled={approvalLoading === approvalModal.ticket_id || !rejectionReason.trim()}
                   onClick={async () => {
-                    await handleApproval(approvalModal.ticket_id, "reject");
+                    await handleApproval(approvalModal.ticket_id, "reject", false, rejectionReason);
                     setApprovalModal(null);
                     setAddToKb(false);
+                    setRejectionReason("");
                   }}
-                  style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "13px 22px", borderRadius: 12, border: "1px solid rgba(248,113,113,0.3)", background: "rgba(248,113,113,0.08)", color: "#f87171", fontSize: 14, fontWeight: 700, cursor: approvalLoading === approvalModal.ticket_id ? "default" : "pointer", transition: "all .2s", fontFamily: "'Nunito Sans',sans-serif", opacity: approvalLoading === approvalModal.ticket_id ? 0.5 : 1 }}
-                  onMouseEnter={e => { if (approvalLoading !== approvalModal.ticket_id) e.currentTarget.style.background = "rgba(248,113,113,0.16)"; }}
+                  title={!rejectionReason.trim() ? "Please add a rejection reason before rejecting" : ""}
+                  style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "13px 22px", borderRadius: 12, border: "1px solid rgba(248,113,113,0.3)", background: "rgba(248,113,113,0.08)", color: "#f87171", fontSize: 14, fontWeight: 700, cursor: (approvalLoading === approvalModal.ticket_id || !rejectionReason.trim()) ? "not-allowed" : "pointer", transition: "all .2s", fontFamily: "'Nunito Sans',sans-serif", opacity: (approvalLoading === approvalModal.ticket_id || !rejectionReason.trim()) ? 0.4 : 1 }}
+                  onMouseEnter={e => { if (approvalLoading !== approvalModal.ticket_id && rejectionReason.trim()) e.currentTarget.style.background = "rgba(248,113,113,0.16)"; }}
                   onMouseLeave={e => { e.currentTarget.style.background = "rgba(248,113,113,0.08)"; }}
                 >
-                  <ThumbsDown size={15} /> Reject
+                  <ThumbsDown size={15} />
+                  {approvalLoading === approvalModal.ticket_id ? "Processing…" : "Reject & Send Reason"}
                 </button>
               </div>
 
@@ -494,13 +589,9 @@ export default function TeamLeadDashboard() {
             {/* Approval actions (only when status = Resolved) */}
             {detailTicket.status === "Resolved" && (
               <div style={{ background: "rgba(167,139,250,0.06)", border: "1px solid rgba(167,139,250,0.2)", borderRadius: 14, padding: 18, marginBottom: 20 }}>
-                <p style={{ color: "#a78bfa", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", margin: "0 0 14px" }}>
-                  Awaiting Your Approval
-                </p>
+                <p style={{ color: "#a78bfa", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", margin: "0 0 14px" }}>Awaiting Your Approval</p>
                 {approvalError && (
-                  <div style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", borderRadius: 10, padding: "10px 14px", marginBottom: 12, color: "#f87171", fontSize: 13 }}>
-                    ⚠ {approvalError}
-                  </div>
+                  <div style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", borderRadius: 10, padding: "10px 14px", marginBottom: 12, color: "#f87171", fontSize: 13 }}>⚠ {approvalError}</div>
                 )}
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                   <button className="approve-btn" disabled={approvalLoading === detailTicket.ticket_id}
@@ -522,17 +613,48 @@ export default function TeamLeadDashboard() {
             {/* SLA */}
             <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 14, padding: 18, marginBottom: 20 }}>
               <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 14px" }}>SLA Status</p>
+
+              {/* Lead SLA */}
+              <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.06em", margin: "0 0 8px" }}>Team Lead</p>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 10, marginBottom: 16 }}>
+                {(() => {
+                  const status  = detailTicket.lead_sla_status || detailTicket.response_sla_status;
+                  const elapsed = detailTicket.lead_response_elapsed_minutes ?? detailTicket.response_elapsed_minutes;
+                  return (
+                    <div style={{ background: "rgba(255,255,255,0.03)", borderRadius: 10, padding: "12px 14px" }}>
+                      <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, margin: "0 0 6px", textTransform: "uppercase" }}>Assign Response</p>
+                      <p style={{ ...getSlaStyle(status), fontWeight: 700, fontSize: 14, margin: "0 0 4px" }}>
+                        {status === "breached" ? "⚠ Breached" : status === "at_risk" ? "⚡ At Risk" : "✓ Healthy"}
+                      </p>
+                      <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 11, margin: 0 }}>{fmtMinutes(elapsed)} elapsed</p>
+                    </div>
+                  );
+                })()}
+              </div>
+
+              {/* Member SLA */}
+              <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.06em", margin: "0 0 8px" }}>Team Member</p>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 {[
-                  { label: "Response",   status: detailTicket.response_sla_status,   elapsed: detailTicket.response_elapsed_minutes },
-                  { label: "Resolution", status: detailTicket.resolution_sla_status, elapsed: detailTicket.resolution_elapsed_minutes },
+                  {
+                    label:   "Response",
+                    status:  detailTicket.member_response_sla_status,
+                    elapsed: detailTicket.member_elapsed_minutes,
+                  },
+                  {
+                    label:   "Resolution",
+                    status:  detailTicket.member_resolution_sla_status || detailTicket.resolution_sla_status,
+                    elapsed: detailTicket.member_elapsed_minutes ?? detailTicket.resolution_elapsed_minutes,
+                  },
                 ].map(({ label, status, elapsed }) => (
                   <div key={label} style={{ background: "rgba(255,255,255,0.03)", borderRadius: 10, padding: "12px 14px" }}>
                     <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, margin: "0 0 6px", textTransform: "uppercase" }}>{label}</p>
                     <p style={{ ...getSlaStyle(status), fontWeight: 700, fontSize: 14, margin: "0 0 4px" }}>
-                      {status === "breached" ? "⚠ Breached" : status === "at_risk" ? "⚡ At Risk" : "✓ Healthy"}
+                      {status === "breached" ? "⚠ Breached" : status === "at_risk" ? "⚡ At Risk" : status === "pending" ? "— Pending" : "✓ Healthy"}
                     </p>
-                    <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 11, margin: 0 }}>{fmtMinutes(elapsed)} elapsed</p>
+                    <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 11, margin: 0 }}>
+                      {elapsed != null ? `${fmtMinutes(elapsed)} elapsed` : "Awaiting assignment"}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -599,7 +721,6 @@ export default function TeamLeadDashboard() {
 
       {/* ── SIDEBAR ──────────────────────────────────────────────────────── */}
       <aside className="sidebar" style={{ width: 240, background: "#0d0d0d", borderRight: "1px solid rgba(255,255,255,0.06)", display: "flex", flexDirection: "column", padding: "24px 16px", height: "100vh", position: "sticky", top: 0, flexShrink: 0, transition: "transform .3s" }}>
-        {/* Logo */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 36, padding: "0 6px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <div style={{ width: 8, height: 8, background: "#fff", borderRadius: "50%", boxShadow: "0 0 10px 3px rgba(255,255,255,0.3)", animation: "pulse-dot 2.5s ease infinite" }} />
@@ -608,7 +729,6 @@ export default function TeamLeadDashboard() {
           <button onClick={() => setSidebarOpen(false)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", cursor: "pointer" }}><X size={16} /></button>
         </div>
 
-        {/* Nav */}
         <nav style={{ flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
           {navItems.map(item => {
             const Icon = item.icon;
@@ -621,11 +741,10 @@ export default function TeamLeadDashboard() {
           <button className="nav-btn" style={{ marginTop: 8 }} onClick={() => navigate("/settings")}><Settings size={16} /> Settings</button>
         </nav>
 
-        {/* ── USER PROFILE CARD ─────────────────────────────────────────── */}
+        {/* User profile card */}
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 16, marginTop: 16 }}>
           <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, padding: "14px 12px", marginBottom: 10 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-              {/* Avatar */}
               <div style={{ width: 40, height: 40, borderRadius: "50%", background: "linear-gradient(135deg,#6366f1,#8b5cf6)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 14, flexShrink: 0, boxShadow: "0 0 0 2px rgba(99,102,241,0.3)" }}>
                 {currentUser?.initials || "TL"}
               </div>
@@ -638,7 +757,6 @@ export default function TeamLeadDashboard() {
                 </p>
               </div>
             </div>
-            {/* Role badge */}
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <span style={{ background: "rgba(99,102,241,0.15)", color: "#818cf8", border: "1px solid rgba(99,102,241,0.25)", borderRadius: 999, fontSize: 10, fontWeight: 700, padding: "2px 10px", letterSpacing: "0.05em", textTransform: "uppercase" }}>
                 Team Lead
@@ -667,17 +785,24 @@ export default function TeamLeadDashboard() {
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: "7px 12px" }}>
-              <Calendar size={14} style={{ color: "rgba(255,255,255,0.4)" }} />
-              <select value={timeRange} onChange={e => setTimeRange(e.target.value)} style={{ background: "transparent", border: "none", color: "rgba(255,255,255,0.7)", fontSize: 13, outline: "none", cursor: "pointer", fontFamily: "'Nunito Sans',sans-serif" }}>
-                <option value="today">Today</option>
-                <option value="7days">Last 7 Days</option>
-                <option value="30days">Last 30 Days</option>
-              </select>
+
+            {/* ── Time range pill selector (replaces the native <select>) ── */}
+            <div style={{ display: "flex", alignItems: "center", gap: 4, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 10, padding: "4px 5px" }}>
+              {timeRangeOptions.map(opt => (
+                <button
+                  key={opt.value}
+                  className={`time-pill${timeRange === opt.value ? " active" : ""}`}
+                  onClick={() => setTimeRange(opt.value)}
+                >
+                  {opt.label}
+                </button>
+              ))}
             </div>
+
             <button onClick={loadTriage} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: 8, cursor: "pointer", display: "flex", color: "rgba(255,255,255,0.5)" }}>
               <RefreshCw size={16} style={{ animation: triageLoading ? "spin 1s linear infinite" : "none" }} />
             </button>
+
             <div style={{ position: "relative" }}>
               <button onClick={() => setShowNotifications(!showNotifications)} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, padding: 8, cursor: "pointer", display: "flex", color: "rgba(255,255,255,0.5)", position: "relative" }}>
                 <Bell size={16} />
@@ -706,6 +831,7 @@ export default function TeamLeadDashboard() {
                 </div>
               )}
             </div>
+
             <button className="export-btn"><Download size={14} /> Export</button>
           </div>
         </header>
@@ -713,13 +839,13 @@ export default function TeamLeadDashboard() {
         {/* CONTENT */}
         <div style={{ padding: "28px", flex: 1 }}>
 
-          {/* ── ACTION CENTER COUNTER CARDS ─────────────────────────────── */}
+          {/* ACTION CENTER COUNTER CARDS */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14, marginBottom: 24 }}>
             {[
               { key: "unassigned", label: "Unassigned High Priority", count: highUnassigned.length,  icon: Flame,       color: "#f87171", bg: "rgba(248,113,113,0.08)", border: "rgba(248,113,113,0.2)"  },
-              { key: "pending",    label: "Pending Tickets",          count: pendingTickets.length,  icon: Clock,        color: "#fbbf24", bg: "rgba(251,191,36,0.08)",  border: "rgba(251,191,36,0.2)"   },
-              { key: "sla",        label: "SLA At Risk / Breached",   count: slaAtRisk.length,       icon: ShieldAlert,  color: "#60a5fa", bg: "rgba(96,165,250,0.08)",  border: "rgba(96,165,250,0.2)"   },
-              { key: "approval",   label: "Awaiting Approval",        count: resolvedTickets.length, icon: CheckCircle,  color: "#a78bfa", bg: "rgba(167,139,250,0.08)", border: "rgba(167,139,250,0.2)"  },
+              { key: "pending",    label: "Pending Tickets",          count: pendingTickets.length,  icon: Clock,       color: "#fbbf24", bg: "rgba(251,191,36,0.08)",  border: "rgba(251,191,36,0.2)"   },
+              { key: "sla",        label: "SLA At Risk / Breached",   count: slaAtRisk.length,       icon: ShieldAlert, color: "#60a5fa", bg: "rgba(96,165,250,0.08)",  border: "rgba(96,165,250,0.2)"   },
+              { key: "approval",   label: "Awaiting Approval",        count: resolvedTickets.length, icon: CheckCircle, color: "#a78bfa", bg: "rgba(167,139,250,0.08)", border: "rgba(167,139,250,0.2)"  },
             ].map(({ key, label, count, icon: Icon, color, bg, border }) => (
               <button key={key} onClick={() => setActiveSection(key)} style={{ background: activeSection === key ? bg : "rgba(255,255,255,0.02)", border: `1px solid ${activeSection === key ? border : "rgba(255,255,255,0.07)"}`, borderRadius: 16, padding: "18px 20px", cursor: "pointer", textAlign: "left", transition: "all .2s", animation: "fadeSlideIn .4s ease both" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
@@ -736,7 +862,7 @@ export default function TeamLeadDashboard() {
             ))}
           </div>
 
-          {/* ── TRIAGE TABLE ─────────────────────────────────────────────── */}
+          {/* TRIAGE TABLE */}
           <div className="chart-card" style={{ marginBottom: 24, animation: "fadeSlideIn .4s ease both" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -750,7 +876,6 @@ export default function TeamLeadDashboard() {
               </button>
             </div>
 
-            {/* Approval error banner */}
             {approvalError && (
               <div style={{ background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.2)", borderRadius: 10, padding: "10px 16px", marginBottom: 16, color: "#f87171", fontSize: 13, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span>⚠ {approvalError}</span>
@@ -827,25 +952,32 @@ export default function TeamLeadDashboard() {
                   <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
                     <thead>
                       <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                        {["Ticket ID","Subject","Priority","Status","Response SLA","Resolution SLA","Created"].map(h => (
+                        {["Ticket ID","Subject","Priority","Status","Lead SLA","Member Response","Member Resolution","Created"].map(h => (
                           <th key={h} style={{ padding: "10px 14px", textAlign: ["Ticket ID","Subject","Created"].includes(h) ? "left" : "center" }}>{h}</th>
                         ))}
                       </tr>
                     </thead>
                     <tbody>
                       {slaAtRisk.length === 0
-                        ? <tr><td colSpan={7} style={{ padding: "48px 0", textAlign: "center", color: "rgba(255,255,255,0.2)", fontSize: 14 }}>✅ All tickets within SLA</td></tr>
-                        : slaAtRisk.map(t => (
+                        ? <tr><td colSpan={8} style={{ padding: "48px 0", textAlign: "center", color: "rgba(255,255,255,0.2)", fontSize: 14 }}>✅ All tickets within SLA</td></tr>
+                        : slaAtRisk.map(t => {
+                          const slaCell = (status) => (
+                            <span style={{ ...getSlaStyle(status), fontSize: 12, fontWeight: 600 }}>
+                              {status === "breached" ? "⚠ Breached" : status === "at_risk" ? "⚡ At Risk" : status === "pending" ? "— Pending" : "✓ OK"}
+                            </span>
+                          );
+                          return (
                           <tr key={t.ticket_id} className="ticket-row" style={{ borderBottom: "1px solid rgba(255,255,255,0.04)", cursor: "pointer" }} onClick={() => { setDetailTicket(t); setSelectedAgent(""); }}>
                             <td style={{ padding: "14px", color: "#94a3b8", fontFamily: "monospace", fontSize: 12, fontWeight: 700 }}>TCK-{t.ticket_id}</td>
                             <td style={{ padding: "14px", color: "#fff", fontWeight: 500, maxWidth: 200 }}><span style={{ display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{t.subject}</span></td>
                             <td style={{ padding: "14px", textAlign: "center" }}><span style={{ ...getPriorityStyle(t.priority), padding: "3px 10px", borderRadius: 6, fontSize: 11, fontWeight: 700, textTransform: "capitalize" }}>{t.priority}</span></td>
                             <td style={{ padding: "14px", textAlign: "center" }}><span style={{ ...getStatusStyle(t.status), padding: "3px 10px", borderRadius: 6, fontSize: 11, fontWeight: 600 }}>{t.status}</span></td>
-                            <td style={{ padding: "14px", textAlign: "center" }}><span style={{ ...getSlaStyle(t.response_sla_status), fontSize: 12, fontWeight: 600 }}>{t.response_sla_status === "breached" ? "⚠ Breached" : t.response_sla_status === "at_risk" ? "⚡ At Risk" : "✓ OK"}</span></td>
-                            <td style={{ padding: "14px", textAlign: "center" }}><span style={{ ...getSlaStyle(t.resolution_sla_status), fontSize: 12, fontWeight: 600 }}>{t.resolution_sla_status === "breached" ? "⚠ Breached" : t.resolution_sla_status === "at_risk" ? "⚡ At Risk" : "✓ OK"}</span></td>
+                            <td style={{ padding: "14px", textAlign: "center" }}>{slaCell(t.lead_sla_status || t.response_sla_status)}</td>
+                            <td style={{ padding: "14px", textAlign: "center" }}>{slaCell(t.member_response_sla_status)}</td>
+                            <td style={{ padding: "14px", textAlign: "center" }}>{slaCell(t.member_resolution_sla_status || t.resolution_sla_status)}</td>
                             <td style={{ padding: "14px", color: "rgba(255,255,255,0.3)", fontSize: 12, whiteSpace: "nowrap" }}>{formatCreated(t.created_at)}</td>
                           </tr>
-                        ))
+                        )})
                       }
                     </tbody>
                   </table>
@@ -892,17 +1024,17 @@ export default function TeamLeadDashboard() {
             )}
           </div>
 
-          {/* ── KPI CARDS ────────────────────────────────────────────────── */}
+          {/* KPI CARDS */}
           {analytics && (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))", gap: 16, marginBottom: 24 }}>
               {[
-                { label: "Total Tickets",      val: analytics.total_tickets,                                          icon: Ticket,       color: "#fff",    suffix: "" },
-                { label: "Open Tickets",        val: analytics.open_tickets,                                           icon: AlertCircle,  color: "#fbbf24", suffix: "" },
-                { label: "Closed Tickets",      val: analytics.closed_tickets,                                         icon: CheckCircle,  color: "#4ade80", suffix: "" },
-                { label: "Avg Response",        val: (analytics.average_response_time_minutes / 60).toFixed(1),        icon: Clock,        color: "#60a5fa", suffix: "h" },
-                { label: "Avg Resolution",      val: (analytics.average_resolution_time_minutes / 60).toFixed(1),      icon: TrendingUp,   color: "#a78bfa", suffix: "h" },
-                { label: "Response Breach",     val: analytics.response_breach_rate_percent,                           icon: ShieldAlert,  color: "#f87171", suffix: "%" },
-                { label: "Resolution Breach",   val: analytics.resolution_breach_rate_percent,                         icon: AlertTriangle,color: "#f87171", suffix: "%" },
+                { label: "Total Tickets",    val: analytics.total_tickets,                                         icon: Ticket,        color: "#fff",    suffix: "" },
+                { label: "Open Tickets",      val: analytics.open_tickets,                                          icon: AlertCircle,   color: "#fbbf24", suffix: "" },
+                { label: "Closed Tickets",    val: analytics.closed_tickets,                                        icon: CheckCircle,   color: "#4ade80", suffix: "" },
+                { label: "Avg Response",      val: (analytics.average_response_time_minutes / 60).toFixed(1),       icon: Clock,         color: "#60a5fa", suffix: "h" },
+                { label: "Avg Resolution",    val: (analytics.average_resolution_time_minutes / 60).toFixed(1),     icon: TrendingUp,    color: "#a78bfa", suffix: "h" },
+                { label: "Response Breach",   val: analytics.response_breach_rate_percent,                          icon: ShieldAlert,   color: "#f87171", suffix: "%" },
+                { label: "Resolution Breach", val: analytics.resolution_breach_rate_percent,                        icon: AlertTriangle, color: "#f87171", suffix: "%" },
               ].map(({ label, val, icon: Icon, color, suffix }, i) => (
                 <div key={label} className="kpi-card" style={{ animationDelay: `${i * 0.07}s` }}>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
@@ -915,9 +1047,8 @@ export default function TeamLeadDashboard() {
             </div>
           )}
 
-          {/* ── CHARTS ───────────────────────────────────────────────────── */}
+          {/* CHARTS */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 24 }}>
-            {/* Priority Pie */}
             <div className="chart-card">
               <h3 style={{ fontFamily: "'Nunito',sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", margin: "0 0 20px" }}>Tickets by Priority</h3>
               {priorityData.length > 0 ? (
@@ -935,7 +1066,6 @@ export default function TeamLeadDashboard() {
               )}
             </div>
 
-            {/* Category Bar */}
             <div className="chart-card">
               <h3 style={{ fontFamily: "'Nunito',sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", margin: "0 0 20px" }}>Tickets by Category</h3>
               {categoryData.length > 0 ? (

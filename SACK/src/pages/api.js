@@ -90,10 +90,22 @@ export function approveResolution({ ticket_id, add_to_kb = false }) {
   });
 }
 
-export function rejectResolution({ ticket_id }) {
+export function rejectResolution({ ticket_id, rejection_reason = "" }) {
   return apiFetch("/reject-resolution", {
     method: "POST",
-    body: JSON.stringify({ ticket_id }),
+    body: JSON.stringify({ ticket_id, rejection_reason }),
+  });
+}
+
+// ── Comments ──────────────────────────────────────────
+export function fetchComments(ticket_id) {
+  return apiFetch(`/tickets/${ticket_id}/comments`);
+}
+
+export function addComment({ ticket_id, body }) {
+  return apiFetch(`/tickets/${ticket_id}/comments`, {
+    method: "POST",
+    body: JSON.stringify({ body }),
   });
 }
 

@@ -193,14 +193,162 @@ def reject_resolution_endpoint():
     if not data or "ticket_id" not in data:
         return {"error": "Invalid input"}, 400
     try:
+        from db import get_conn, release_conn
+
         supabase_uuid = request.user.get("id")
         if not supabase_uuid:
             return {"error": "Unauthorized"}, 403
+
         reject_resolution(
             ticket_id=data["ticket_id"],
             supabase_uuid=supabase_uuid
         )
+
+        # ── Persist rejection reason as a comment ───────────────────────────
+        rejection_reason = (data.get("rejection_reason") or "").strip()
+        if rejection_reason:
+            conn = get_conn()
+            cur  = conn.cursor()
+
+            # Resolve lead_id from supabase_uuid
+            cur.execute(
+                "SELECT lead_id FROM team_leads WHERE supabase_user_id::text = %s",
+                (supabase_uuid,)
+            )
+            row = cur.fetchone()
+            if row:
+                lead_id = row[0]
+                cur.execute(
+                    """
+                    INSERT INTO ticket_comments
+                        (ticket_id, author_id, author_role, comment_type, body)
+                    VALUES (%s, %s, 'lead', 'rejection_reason', %s)
+                    """,
+                    (data["ticket_id"], lead_id, rejection_reason)
+                )
+                conn.commit()
+
+            cur.close()
+            release_conn(conn)
+        # ────────────────────────────────────────────────────────────────────
+
         return {"message": "Resolution rejected. Ticket reassigned."}, 200
+    except Exception as e:
+        return {"error": str(e)}, 400
+
+
+@app.route("/tickets/<int:ticket_id>/comments", methods=["GET"])
+@require_auth
+def get_ticket_comments(ticket_id):
+    """Return all comments for a ticket, newest first."""
+    try:
+        from db import get_conn, release_conn
+        conn = get_conn()
+        cur  = conn.cursor()
+
+        cur.execute(
+            """
+            SELECT
+                tc.comment_id,
+                tc.ticket_id,
+                tc.author_id,
+                tc.author_role,
+                tc.comment_type,
+                tc.body,
+                tc.created_at,
+                CASE
+                    WHEN tc.author_role = 'lead'
+                         THEN tl.name
+                    ELSE tm.name
+                END AS author_name
+            FROM ticket_comments tc
+            LEFT JOIN team_leads   tl ON tc.author_role = 'lead'   AND tl.lead_id   = tc.author_id
+            LEFT JOIN team_members tm ON tc.author_role = 'member' AND tm.member_id  = tc.author_id
+            WHERE tc.ticket_id = %s
+            ORDER BY tc.created_at DESC
+            """,
+            (ticket_id,)
+        )
+
+        rows = cur.fetchall()
+        cur.close()
+        release_conn(conn)
+
+        comments = [
+            {
+                "comment_id":   r[0],
+                "ticket_id":    r[1],
+                "author_id":    r[2],
+                "author_role":  r[3],
+                "comment_type": r[4],
+                "body":         r[5],
+                "created_at":   r[6].isoformat() if r[6] else None,
+                "author_name":  r[7] or "Unknown",
+            }
+            for r in rows
+        ]
+
+        return jsonify({"comments": comments}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
+@app.route("/tickets/<int:ticket_id>/comments", methods=["POST"])
+@require_auth
+def add_ticket_comment(ticket_id):
+    """Add a general comment to a ticket (lead or member)."""
+    data = request.get_json()
+    if not data or not (data.get("body") or "").strip():
+        return {"error": "Comment body is required"}, 400
+    try:
+        from db import get_conn, release_conn
+
+        supabase_uuid = request.user.get("id")
+        conn = get_conn()
+        cur  = conn.cursor()
+
+        # Determine author role and id
+        cur.execute(
+            "SELECT lead_id FROM team_leads WHERE supabase_user_id::text = %s",
+            (supabase_uuid,)
+        )
+        row = cur.fetchone()
+        if row:
+            author_id   = row[0]
+            author_role = "lead"
+        else:
+            cur.execute(
+                "SELECT member_id FROM team_members WHERE supabase_user_id::text = %s",
+                (supabase_uuid,)
+            )
+            row = cur.fetchone()
+            if not row:
+                cur.close()
+                release_conn(conn)
+                return {"error": "User not found"}, 403
+            author_id   = row[0]
+            author_role = "member"
+
+        cur.execute(
+            """
+            INSERT INTO ticket_comments
+                (ticket_id, author_id, author_role, comment_type, body)
+            VALUES (%s, %s, %s, 'general', %s)
+            RETURNING comment_id, created_at
+            """,
+            (ticket_id, author_id, author_role, data["body"].strip())
+        )
+        result = cur.fetchone()
+        conn.commit()
+        cur.close()
+        release_conn(conn)
+
+        return jsonify({
+            "comment_id": result[0],
+            "created_at": result[1].isoformat(),
+        }), 201
+
     except Exception as e:
         return {"error": str(e)}, 400
 

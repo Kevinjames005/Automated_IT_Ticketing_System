@@ -260,7 +260,7 @@ export default function TeamPerformancePage() {
                         {[
                           { label: "Response",   val: fmtMinutes(member.average_response_time_minutes) },
                           { label: "Resolution", val: fmtMinutes(member.average_resolution_time_minutes) },
-                          { label: "Breach",     val: `${member.sla_breach_rate_percent}%`, color: member.sla_breach_rate_percent > 30 ? "#f87171" : member.sla_breach_rate_percent > 10 ? "#fbbf24" : "#4ade80" },
+                          { label: "Breach",     val: `${member.sla_breach_rate_percent}%`, color: member.sla_breach_rate_percent > 30 ? "#f87171" : member.sla_breach_rate_percent > 10 ? "#fbbf24" : "#4ade80", title: "Member SLA breach rate" },
                         ].map(({ label, val, color }) => (
                           <div key={label} style={{ background: "rgba(255,255,255,0.04)", borderRadius: 8, padding: "7px 10px" }}>
                             <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 10, margin: 0, textTransform: "uppercase" }}>{label}</p>
@@ -334,10 +334,10 @@ export default function TeamPerformancePage() {
                       <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: "0 0 20px" }}>Breach and reopen stats</p>
                       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                         {[
-                          { label: "SLA Breaches",    val: selectedMember.sla_breaches,            color: selectedMember.sla_breaches > 5 ? "#f87171" : "#fff" },
-                          { label: "Breach Rate",     val: `${selectedMember.sla_breach_rate_percent}%`, color: selectedMember.sla_breach_rate_percent > 30 ? "#f87171" : selectedMember.sla_breach_rate_percent > 10 ? "#fbbf24" : "#4ade80" },
-                          { label: "Ticket Reopens",  val: selectedMember.reopens,                  color: selectedMember.reopens > 2 ? "#fbbf24" : "#4ade80" },
-                          { label: "Total Handled",   val: selectedMember.tickets_handled,           color: "#fff" },
+                          { label: "Member SLA Breaches", val: selectedMember.sla_breaches,            color: selectedMember.sla_breaches > 5 ? "#f87171" : "#fff" },
+                          { label: "Member Breach Rate",  val: `${selectedMember.sla_breach_rate_percent}%`, color: selectedMember.sla_breach_rate_percent > 30 ? "#f87171" : selectedMember.sla_breach_rate_percent > 10 ? "#fbbf24" : "#4ade80" },
+                          { label: "Ticket Reopens",      val: selectedMember.reopens,                  color: selectedMember.reopens > 2 ? "#fbbf24" : "#4ade80" },
+                          { label: "Total Handled",       val: selectedMember.tickets_handled,           color: "#fff" },
                         ].map(({ label, val, color }) => (
                           <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 10 }}>
                             <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 13 }}>{label}</span>

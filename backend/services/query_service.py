@@ -102,7 +102,7 @@ def get_tickets(status=None, priority=None, page=1, limit=20, member_id=None, da
                 resolution_text
             ) = row
 
-            sla_status = calculate_sla_status(priority, created_at, assigned_at, closed_at)
+            sla_status = calculate_sla_status(priority, created_at, assigned_at, resolved_at, closed_at)
 
             tickets.append({
                 "ticket_id":    ticket_id,

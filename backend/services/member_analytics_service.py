@@ -29,6 +29,7 @@ def get_member_performance(start_date=None, end_date=None):
                 t.priority,
                 t.created_at,
                 t.assigned_at,
+                t.resolved_at,
                 t.closed_at,
                 t.reopen_count
             FROM ticket_assignments ta
@@ -47,6 +48,7 @@ def get_member_performance(start_date=None, end_date=None):
             priority,
             created_at,
             assigned_at,
+            resolved_at,
             closed_at,
             reopen_count
         ) in rows:
@@ -75,20 +77,21 @@ def get_member_performance(start_date=None, end_date=None):
                 priority,
                 created_at,
                 assigned_at,
+                resolved_at,
                 closed_at
             )
 
-            # Response Time
-            if sla.get("response_elapsed_minutes") is not None:
-                member_data["total_response_time"] += sla["response_elapsed_minutes"]
+            # Response Time (member clock — elapsed since assigned_at)
+            if sla.get("member_elapsed_minutes") is not None:
+                member_data["total_response_time"] += sla["member_elapsed_minutes"]
                 member_data["response_count"] += 1
 
-                if sla["response_sla_status"] == "breached":
+                if sla["member_resolution_sla_status"] == "breached":
                     member_data["sla_breaches"] += 1
 
-            # Resolution Time
-            if sla.get("resolution_elapsed_minutes") is not None:
-                member_data["total_resolution_time"] += sla["resolution_elapsed_minutes"]
+            # Resolution Time (member clock)
+            if sla.get("member_elapsed_minutes") is not None:
+                member_data["total_resolution_time"] += sla["member_elapsed_minutes"]
                 member_data["resolution_count"] += 1
 
         # Final Calculations

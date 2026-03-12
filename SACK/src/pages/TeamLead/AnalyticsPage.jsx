@@ -388,10 +388,10 @@ export default function AnalyticsPage() {
               {/* ── KPI CARDS ROW 2 ── */}
               <div style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:14,marginBottom:28 }}>
                 {[
-                  { label:"Avg Response Time",      val: fmtMins(kpi?.average_response_time_minutes),   color:"#60a5fa", delay:"0.18s" },
-                  { label:"Avg Resolution Time",    val: fmtMins(kpi?.average_resolution_time_minutes), color:"#a78bfa", delay:"0.24s" },
-                  { label:"Response Breach Rate",   val: kpi ? `${kpi.response_breach_rate_percent ?? 0}%`   : "—", color: slaBreachColor(kpi?.response_breach_rate_percent),   delay:"0.30s" },
-                  { label:"Resolution Breach Rate", val: kpi ? `${kpi.resolution_breach_rate_percent ?? 0}%` : "—", color: slaBreachColor(kpi?.resolution_breach_rate_percent), delay:"0.36s" },
+                  { label:"Avg Lead Assign Time",       val: fmtMins(kpi?.average_response_time_minutes),   color:"#60a5fa", delay:"0.18s" },
+                  { label:"Avg Member Resolution Time", val: fmtMins(kpi?.average_resolution_time_minutes), color:"#a78bfa", delay:"0.24s" },
+                  { label:"Lead SLA Breach Rate",       val: kpi ? `${kpi.response_breach_rate_percent ?? 0}%`   : "—", color: slaBreachColor(kpi?.response_breach_rate_percent),   delay:"0.30s" },
+                  { label:"Member SLA Breach Rate",     val: kpi ? `${kpi.resolution_breach_rate_percent ?? 0}%` : "—", color: slaBreachColor(kpi?.resolution_breach_rate_percent), delay:"0.36s" },
                 ].map(({ label, val, color, delay }) => (
                   <div key={label} className="kpi" style={{ animationDelay:delay }}>
                     <p className="ct">{label}</p>
@@ -411,7 +411,7 @@ export default function AnalyticsPage() {
                     { key:"Res Breach",  color:"#fbbf24", fill:true },
                   ]} />
                   <div style={{ display:"flex",gap:18,marginTop:12 }}>
-                    {[{ c:"#f87171",l:"Response Breach %" },{ c:"#fbbf24",l:"Resolution Breach %" }].map(({c,l}) => (
+                    {[{ c:"#f87171",l:"Lead SLA Breach %" },{ c:"#fbbf24",l:"Member SLA Breach %" }].map(({c,l}) => (
                       <div key={l} style={{ display:"flex",alignItems:"center",gap:6 }}><div className="legend-dot" style={{ background:c }} /><span style={{ color:"rgba(255,255,255,0.4)",fontSize:12 }}>{l}</span></div>
                     ))}
                   </div>
@@ -425,7 +425,7 @@ export default function AnalyticsPage() {
                     { key:"Avg Res",  color:"#a78bfa", fill:false },
                   ]} />
                   <div style={{ display:"flex",gap:18,marginTop:12 }}>
-                    {[{ c:"#60a5fa",l:"Avg Response" },{ c:"#a78bfa",l:"Avg Resolution" }].map(({c,l}) => (
+                    {[{ c:"#60a5fa",l:"Avg Lead Assign Time" },{ c:"#a78bfa",l:"Avg Member Resolution" }].map(({c,l}) => (
                       <div key={l} style={{ display:"flex",alignItems:"center",gap:6 }}><div className="legend-dot" style={{ background:c }} /><span style={{ color:"rgba(255,255,255,0.4)",fontSize:12 }}>{l}</span></div>
                     ))}
                   </div>

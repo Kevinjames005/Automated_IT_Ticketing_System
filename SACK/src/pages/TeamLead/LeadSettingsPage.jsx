@@ -37,9 +37,9 @@ export default function LeadSettingsPage() {
 
   // SLA thresholds (display only — edit sla_service.py to persist)
   const slaThresholds = [
-    { priority: "High",   response: "15 min",  resolution: "2 hrs",  color: "#f87171", bg: "rgba(248,113,113,0.08)",  border: "rgba(248,113,113,0.2)"  },
-    { priority: "Medium", response: "1 hr",    resolution: "8 hrs",  color: "#fbbf24", bg: "rgba(251,191,36,0.08)",   border: "rgba(251,191,36,0.2)"   },
-    { priority: "Low",    response: "4 hrs",   resolution: "24 hrs", color: "#94a3b8", bg: "rgba(148,163,184,0.08)",  border: "rgba(148,163,184,0.2)"  },
+    { priority: "High",   lead_response: "15 min", member_response: "15 min", resolution: "2 hrs",  color: "#f87171", bg: "rgba(248,113,113,0.08)",  border: "rgba(248,113,113,0.2)"  },
+    { priority: "Medium", lead_response: "1 hr",   member_response: "1 hr",   resolution: "8 hrs",  color: "#fbbf24", bg: "rgba(251,191,36,0.08)",   border: "rgba(251,191,36,0.2)"   },
+    { priority: "Low",    lead_response: "4 hrs",  member_response: "4 hrs",  resolution: "24 hrs", color: "#94a3b8", bg: "rgba(148,163,184,0.08)",  border: "rgba(148,163,184,0.2)"  },
   ];
 
   // Notification prefs
@@ -431,18 +431,22 @@ export default function LeadSettingsPage() {
                 <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 13, margin: "0 0 24px" }}>Current response and resolution time limits by priority.</p>
 
                 <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                  {slaThresholds.map(({ priority, response, resolution, color, bg, border }, i) => (
-                    <div key={priority} style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14, animation: `fadeUp .35s ease ${i * 0.08}s both` }}>
+                  {slaThresholds.map(({ priority, lead_response, member_response, resolution, color, bg, border }, i) => (
+                    <div key={priority} style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 14, animation: `fadeUp .35s ease ${i * 0.08}s both` }}>
                       <div style={{ background: bg, border: `1px solid ${border}`, borderRadius: 13, padding: "16px 18px", display: "flex", alignItems: "center", gap: 10 }}>
                         <div style={{ width: 10, height: 10, borderRadius: "50%", background: color, flexShrink: 0 }} />
                         <span style={{ color, fontWeight: 700, fontSize: 14 }}>{priority}</span>
                       </div>
                       <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 13, padding: "16px 18px" }}>
-                        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, margin: "0 0 4px", textTransform: "uppercase", letterSpacing: ".06em" }}>Response</p>
-                        <p style={{ color: "#fff", fontWeight: 700, fontSize: 16, margin: 0, fontFamily: "'Nunito', sans-serif" }}>{response}</p>
+                        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, margin: "0 0 4px", textTransform: "uppercase", letterSpacing: ".06em" }}>Lead Assign</p>
+                        <p style={{ color: "#fff", fontWeight: 700, fontSize: 16, margin: 0, fontFamily: "'Nunito', sans-serif" }}>{lead_response}</p>
                       </div>
                       <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 13, padding: "16px 18px" }}>
-                        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, margin: "0 0 4px", textTransform: "uppercase", letterSpacing: ".06em" }}>Resolution</p>
+                        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, margin: "0 0 4px", textTransform: "uppercase", letterSpacing: ".06em" }}>Member Response</p>
+                        <p style={{ color: "#fff", fontWeight: 700, fontSize: 16, margin: 0, fontFamily: "'Nunito', sans-serif" }}>{member_response}</p>
+                      </div>
+                      <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 13, padding: "16px 18px" }}>
+                        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, margin: "0 0 4px", textTransform: "uppercase", letterSpacing: ".06em" }}>Member Resolution</p>
                         <p style={{ color: "#fff", fontWeight: 700, fontSize: 16, margin: 0, fontFamily: "'Nunito', sans-serif" }}>{resolution}</p>
                       </div>
                     </div>
