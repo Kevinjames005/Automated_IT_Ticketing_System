@@ -1,5 +1,4 @@
 from db import get_conn, release_conn
-from db import get_conn, release_conn
 from ml.embeddings import get_embedding
 
 def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
@@ -8,7 +7,6 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
     cur = conn.cursor()
 
     try:
-        # Lock ticket row
         cur.execute(
             """
             SELECT status
@@ -28,7 +26,6 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
         if current_status != "Resolved":
             raise Exception("Only resolved tickets can be approved")
 
-        # Lock resolution row
         cur.execute(
             """
             SELECT resolution_id, content
@@ -45,7 +42,6 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
 
         resolution_id, content = resolution
 
-        # Update resolution approved_by
         cur.execute(
             """
             UPDATE resolution_documents
@@ -55,22 +51,25 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
             (lead_id, resolution_id)
         )
 
-        # Optional KB insert (async embedding)
         if add_to_kb:
             cur.execute(
-                """
-                INSERT INTO knowledge_base_articles
-                (title, content, source_resolution_id, embedding, embedding_status)
-                VALUES (%s, %s, %s, NULL, 'pending');
-                """,
-                (
-                    f"Resolution for Ticket {ticket_id}",
-                    content,
-                    resolution_id,
-                )
+                "SELECT 1 FROM knowledge_base_articles WHERE source_resolution_id = %s;",
+                (resolution_id,)
             )
+            if not cur.fetchone():
+                cur.execute(
+                    """
+                    INSERT INTO knowledge_base_articles
+                    (title, content, source_resolution_id, embedding, embedding_status)
+                    VALUES (%s, %s, %s, NULL, 'pending');
+                    """,
+                    (
+                        f"Resolution for Ticket {ticket_id}",
+                        content,
+                        resolution_id,
+                    )
+                )
 
-        # Update ticket → Closed
         cur.execute(
             """
             UPDATE tickets
@@ -81,7 +80,6 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
             (ticket_id,)
         )
 
-        # Log history
         cur.execute(
             """
             INSERT INTO ticket_status_history
@@ -101,13 +99,13 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool):
         cur.close()
         release_conn(conn)
 
+
 def reject_resolution(ticket_id: int, lead_id: int):
 
     conn = get_conn()
     cur = conn.cursor()
 
     try:
-        # Lock ticket row
         cur.execute(
             """
             SELECT status
@@ -119,7 +117,6 @@ def reject_resolution(ticket_id: int, lead_id: int):
         )
 
         ticket = cur.fetchone()
-
         if not ticket:
             raise Exception("Ticket not found")
 
@@ -128,7 +125,6 @@ def reject_resolution(ticket_id: int, lead_id: int):
         if current_status != "Resolved":
             raise Exception("Only resolved tickets can be rejected")
 
-        # Update ticket back to Assigned
         cur.execute(
             """
             UPDATE tickets
@@ -140,7 +136,6 @@ def reject_resolution(ticket_id: int, lead_id: int):
             (ticket_id,)
         )
 
-        # Log history
         cur.execute(
             """
             INSERT INTO ticket_status_history

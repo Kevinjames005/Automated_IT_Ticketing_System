@@ -144,7 +144,7 @@ export default function TeamPerformancePage() {
         <div style={{ padding: "0 20px 28px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#fff" }} />
-            <span style={{ fontWeight: 800, fontSize: 15, letterSpacing: "0.25em", color: "rgba(255,255,255,0.25)", textTransform: "uppercase" }}>SACK</span>
+            <span style={{ fontWeight: 800, fontSize: 15, letterSpacing: "0.25em", color: "rgba(255,255,255,0.25)", textTransform: "uppercase" }}>SACK.AI</span>
           </div>
         </div>
         <nav style={{ flex: 1, padding: "20px 12px" }}>
@@ -158,12 +158,24 @@ export default function TeamPerformancePage() {
               </button>
             );
           })}
+          <button onClick={() => navigate("/settings")}
+  style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, border: "none", cursor: "pointer", marginBottom: 4, fontFamily: "'Nunito Sans', sans-serif", fontSize: 13, fontWeight: 600, background: "transparent", color: "rgba(255,255,255,0.35)", marginTop: 8 }}>
+  <Settings size={16} /> Settings
+</button>
         </nav>
-        <div style={{ padding: "0 12px" }}>
-          <button onClick={() => navigate("/")} style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, border: "none", cursor: "pointer", background: "transparent", color: "rgba(255,255,255,0.25)", fontFamily: "'Nunito Sans', sans-serif", fontSize: 13, fontWeight: 600 }}>
-            <LogOut size={16} /> Sign Out
-          </button>
-        </div>
+        <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 16, marginTop: 16 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12, padding: "0 6px" }}>
+                    <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", color: "#080808", fontWeight: 700, fontSize: 13, flexShrink: 0 }}>TL</div>
+                    <div>
+                      <p style={{ color: "#fff", fontSize: 13, fontWeight: 600, margin: 0 }}>Team Lead</p>
+                      <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, margin: 0 }}>admin@company.com</p>
+                    </div>
+                  </div>
+                  <button onClick={() => navigate("/")}
+  style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, border: "none", cursor: "pointer", fontFamily: "'Nunito Sans', sans-serif", fontSize: 13, fontWeight: 600, background: "transparent", color: "rgba(255,255,255,0.35)" }}>
+  <LogOut size={16} /> Logout
+</button>
+                </div>
       </aside>
 
       {/* MAIN */}

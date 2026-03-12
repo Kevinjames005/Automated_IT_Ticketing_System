@@ -14,12 +14,18 @@ from services.member_analytics_service import get_member_performance
 from services.breakdown_analytics_service import get_priority_breakdown, get_category_breakdown, get_sla_trend,get_sla_comparison
 from security.supabase_auth import require_auth
 from flask_cors import CORS
+from services.assignment_service import assign_ticket, reassign_ticket
 
 load_dotenv()
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {
+    "origins": ["http://localhost:5173"],
+    "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    "allow_headers": ["Content-Type", "Authorization"],
+    "supports_credentials": True
+}})
 
 
 
@@ -43,7 +49,7 @@ def classify():
 
 
 @app.route("/assign-ticket", methods=["POST"])
-@require_auth  # 👈 called from frontend with Supabase token
+@require_auth
 def assign_ticket_endpoint():
 
     data = request.get_json()
@@ -65,19 +71,15 @@ def assign_ticket_endpoint():
 
 
 @app.route("/members", methods=["GET"])
-@require_auth  # 👈 returns all team members with their IDs
+@require_auth
 def get_members_endpoint():
-    """
-    Returns all team members so the frontend can
-    show names in the dropdown and send member_id on assign.
-    """
     try:
         from db import get_conn, release_conn
         conn = get_conn()
-        cur = conn.cursor()
+        cur  = conn.cursor()
 
         cur.execute("""
-            SELECT member_id, name, lead_id
+            SELECT member_id, name, lead_id, email
             FROM team_members
             ORDER BY name ASC;
         """)
@@ -87,7 +89,7 @@ def get_members_endpoint():
         release_conn(conn)
 
         members = [
-            {"member_id": row[0], "name": row[1], "lead_id": row[2]}
+            {"member_id": row[0], "name": row[1], "lead_id": row[2], "email": row[3]}
             for row in rows
         ]
 
@@ -97,7 +99,7 @@ def get_members_endpoint():
         return jsonify({"error": str(e)}), 400
     
 @app.route("/start-ticket", methods=["POST"])
-@require_api_key
+@require_auth
 def start_ticket_endpoint():
 
     data = request.get_json()
@@ -117,7 +119,7 @@ def start_ticket_endpoint():
         return {"error": str(e)}, 400
     
 @app.route("/resolve-ticket", methods=["POST"])
-@require_api_key
+@require_auth
 def resolve_ticket_endpoint():
 
     data = request.get_json()
@@ -147,16 +149,34 @@ def approve_resolution_endpoint():
     if not data or "ticket_id" not in data:
         return {"error": "Invalid input"}, 400
     try:
-        # lead_id comes from the verified Supabase user attached by @require_auth
-        lead_id = request.user.get("id") or data.get("lead_id")
+        from db import get_conn, release_conn
+
+        supabase_user_id = request.user.get("id")
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT lead_id FROM team_leads WHERE supabase_user_id::text = %s",
+            (supabase_user_id,)
+        )
+        row = cur.fetchone()
+        cur.close()
+        release_conn(conn)
+
+        if not row:
+            return {"error": "Lead not found"}, 403
+
+        lead_id = row[0]
+
         approve_resolution(
             ticket_id=data["ticket_id"],
             lead_id=lead_id,
             add_to_kb=data.get("add_to_kb", False)
         )
         return {"message": "Ticket approved successfully"}, 200
+
     except Exception as e:
         return {"error": str(e)}, 400
+
 
 @app.route("/reject-resolution", methods=["POST"])
 @require_auth
@@ -173,30 +193,41 @@ def reject_resolution_endpoint():
         return {"message": "Resolution rejected. Ticket reassigned."}, 200
     except Exception as e:
         return {"error": str(e)}, 400
-    
+
+
 @app.route("/tickets", methods=["GET"])
 @require_auth
 def get_tickets_endpoint():
     try:
-        status = request.args.get("status")
+        status   = request.args.get("status")
         priority = request.args.get("priority")
-        page = int(request.args.get("page", 1))
-        limit = int(request.args.get("limit", 20))
+        page     = int(request.args.get("page",  1))
+        limit    = int(request.args.get("limit", 20))
 
-        data = get_tickets(
+        range_param = request.args.get("range")
+        member_id = request.args.get("member_id")
+        if member_id:
+            member_id = int(member_id)
+
+        result = get_tickets(
             status=status,
             priority=priority,
             page=page,
-            limit=limit
+            limit=limit,
+            date_range=range_param,
+            member_id=member_id,
         )
 
-        return jsonify(data), 200
+        for t in result.get("tickets", []):
+            for field in ("created_at", "assigned_at", "started_at",
+                          "resolved_at", "closed_at"):
+                if t.get(field) and hasattr(t[field], "isoformat"):
+                    t[field] = t[field].isoformat()
+
+        return jsonify(result), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
-    
-from services.analytics_service import get_analytics
-from datetime import datetime, timedelta
 
 @app.route("/analytics", methods=["GET"])
 @require_auth
@@ -252,7 +283,7 @@ def analytics_priority():
 @require_auth
 def analytics_categories():
     result = get_category_breakdown()
-    return {"category_breakdown": result}, 200
+    return {"category_breakdown": result},200
 
 @app.route("/analytics/sla-trend", methods=["GET"])
 @require_auth
@@ -260,6 +291,24 @@ def analytics_sla_trend():
     days = int(request.args.get("days", 7))
     result = get_sla_trend(days)
     return {"sla_trend": result}, 200
+
+
+@app.route("/reassign-ticket", methods=["POST"])
+@require_auth
+def reassign_ticket_endpoint():
+    data = request.get_json()
+    if not data or "ticket_id" not in data or "new_member_id" not in data or "lead_id" not in data:
+        return {"error": "Invalid input"}, 400
+    try:
+        reassign_ticket(
+            ticket_id=data["ticket_id"],
+            new_member_id=data["new_member_id"],
+            lead_id=data["lead_id"]
+        )
+        return {"message": "Ticket reassigned successfully"}, 200
+    except Exception as e:
+        return {"error": str(e)}, 400
+
 
 @app.route("/analytics/sla-comparison", methods=["GET"])
 @require_auth
@@ -278,8 +327,7 @@ def get_me():
 
         user_id = request.user.get("id")
 
-        # 🔥 IMPORTANT — use supabase_user_id
-        cur.execute("SELECT lead_id FROM team_leads WHERE supabase_user_id = %s", (user_id,))
+        cur.execute("SELECT lead_id FROM team_leads WHERE supabase_user_id::text = %s", (user_id,))
         if cur.fetchone():
             cur.close()
             release_conn(conn)
@@ -301,4 +349,4 @@ def get_me():
     
     
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",port=8000)
+    app.run(host="0.0.0.0", port=8000, debug=True)

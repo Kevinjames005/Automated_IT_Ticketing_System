@@ -6,8 +6,19 @@ import supabase from "./supabaseClient";
 const BASE_URL = "http://localhost:8000"; // 👈 change this to your backend URL in production
 
 async function getToken() {
+  // First try existing session
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) throw new Error("Not authenticated");
+
+  // If token is expired or expiring within 60 seconds, refresh it
+  const expiresAt = session.expires_at; // Unix timestamp in seconds
+  const now = Math.floor(Date.now() / 1000);
+  if (expiresAt && expiresAt - now < 60) {
+    const { data: refreshed, error } = await supabase.auth.refreshSession();
+    if (error || !refreshed.session) throw new Error("Session expired. Please log in again.");
+    return refreshed.session.access_token;
+  }
+
   return session.access_token;
 }
 
@@ -54,6 +65,23 @@ export function assignTicket({ ticket_id, member_id, lead_id }) {
   });
 }
 
+// ── Start Ticket (member: Assigned → In Progress) ─────
+export function startTicket({ ticket_id, member_id }) {
+  return apiFetch("/start-ticket", {
+    method: "POST",
+    body: JSON.stringify({ ticket_id, member_id }),
+  });
+}
+
+// ── Resolve Ticket (member: In Progress → Resolved) ───
+// This triggers the team lead approval queue automatically.
+export function resolveTicket({ ticket_id, member_id, resolution_text }) {
+  return apiFetch("/resolve-ticket", {
+    method: "POST",
+    body: JSON.stringify({ ticket_id, member_id, resolution_text }),
+  });
+}
+
 // ── Approvals ─────────────────────────────────────────
 export function approveResolution({ ticket_id, add_to_kb = false }) {
   return apiFetch("/approve-resolution", {
@@ -68,6 +96,8 @@ export function rejectResolution({ ticket_id }) {
     body: JSON.stringify({ ticket_id }),
   });
 }
+
+// ── Analytics ─────────────────────────────────────────
 export function fetchAnalytics(range = "7days") {
   return apiFetch(`/analytics?range=${range}`);
 }
@@ -93,3 +123,12 @@ export function fetchSlaComparison(days = 7) {
 }
 
 export { apiFetch };
+
+// Add this function to your existing api.js, alongside the other exports:
+
+export function reassignTicket({ ticket_id, new_member_id, lead_id }) {
+  return apiFetch("/reassign-ticket", {
+    method: "POST",
+    body: JSON.stringify({ ticket_id, new_member_id, lead_id }),
+  });
+}

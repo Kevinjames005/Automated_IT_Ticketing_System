@@ -280,7 +280,7 @@ export default function AnalyticsPage() {
       <aside style={{ width:240,background:"#0d0d0d",borderRight:"1px solid rgba(255,255,255,0.06)",display:"flex",flexDirection:"column",padding:"24px 16px",height:"100vh",position:"sticky",top:0,flexShrink:0 }}>
         <div style={{ display:"flex",alignItems:"center",gap:8,marginBottom:36,padding:"0 6px" }}>
           <div style={{ width:8,height:8,background:"#fff",borderRadius:"50%",boxShadow:"0 0 10px 3px rgba(255,255,255,0.3)",animation:"pulse-d 2.5s ease infinite" }} />
-          <span style={{ fontFamily:"'Nunito',sans-serif",fontWeight:700,fontSize:15,color:"#fff",letterSpacing:"0.05em" }}>AI Ticket</span>
+          <span style={{ fontWeight: 800, fontSize: 15, letterSpacing: "0.25em", color: "rgba(255,255,255,0.25)", textTransform: "uppercase" }}>SACK.AI</span>
         </div>
         <nav style={{ flex:1,display:"flex",flexDirection:"column",gap:4 }}>
           {NAV.map(({ id, label, icon: Icon, path }) => (
@@ -288,7 +288,10 @@ export default function AnalyticsPage() {
               <Icon size={16} /> {label}
             </button>
           ))}
-          <button className="nav-btn" style={{ marginTop:8 }}><Settings size={16} /> Settings</button>
+           <button onClick={() => navigate("/settings")}
+  style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, border: "none", cursor: "pointer", marginBottom: 4, fontFamily: "'Nunito Sans', sans-serif", fontSize: 13, fontWeight: 600, background: "transparent", color: "rgba(255,255,255,0.35)", marginTop: 8 }}>
+  <Settings size={16} /> Settings
+</button>
         </nav>
         <div style={{ borderTop:"1px solid rgba(255,255,255,0.07)",paddingTop:16 }}>
           <div style={{ display:"flex",alignItems:"center",gap:10,marginBottom:12,padding:"0 6px" }}>

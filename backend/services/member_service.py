@@ -6,7 +6,6 @@ def start_ticket(ticket_id: int, member_id: int):
     cur = conn.cursor()
 
     try:
-        # Verify ticket is assigned to this member
         cur.execute(
             """
             SELECT t.status
@@ -26,11 +25,9 @@ def start_ticket(ticket_id: int, member_id: int):
 
         current_status = result[0]
 
-        # Only Assigned tickets can be started
         if current_status != "Assigned":
             raise Exception("Only assigned tickets can be started")
 
-        # Update ticket status → In Progress
         cur.execute(
             """
             UPDATE tickets
@@ -41,7 +38,6 @@ def start_ticket(ticket_id: int, member_id: int):
             (ticket_id,)
         )
 
-        # Log status history
         cur.execute(
             """
             INSERT INTO ticket_status_history
@@ -61,6 +57,7 @@ def start_ticket(ticket_id: int, member_id: int):
         cur.close()
         release_conn(conn)
 
+
 def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
 
     conn = get_conn()
@@ -70,7 +67,7 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
         # Lock the ticket row
         cur.execute(
             """
-            SELECT status
+            SELECT status, priority
             FROM tickets
             WHERE ticket_id = %s
             FOR UPDATE;
@@ -83,9 +80,9 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
         if not ticket:
             raise Exception("Ticket not found")
 
-        current_status = ticket[0]
+        current_status, priority = ticket
 
-        # Validate assignment (no lock needed here)
+        # Validate assignment
         cur.execute(
             """
             SELECT 1
@@ -99,11 +96,10 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
         if not cur.fetchone():
             raise Exception("Ticket is not assigned to this member")
 
-        # Validate state AFTER locking
         if current_status != "In Progress":
             raise Exception("Only In Progress tickets can be resolved")
 
-        # Insert resolution
+        # 1️⃣ Insert resolution document
         cur.execute(
             """
             INSERT INTO resolution_documents (ticket_id, content)
@@ -115,7 +111,21 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
 
         resolution_id = cur.fetchone()[0]
 
-        # Update ticket state
+        # 2️⃣ Insert directly into knowledge_base_articles
+        cur.execute(
+            """
+            INSERT INTO knowledge_base_articles
+            (title, content, source_resolution_id, embedding, embedding_status)
+            VALUES (%s, %s, %s, NULL, 'pending');
+            """,
+            (
+                f"Resolution for Ticket #{ticket_id} [{priority}]",
+                resolution_text,
+                resolution_id,
+            )
+        )
+
+        # 3️⃣ Update ticket status → Resolved
         cur.execute(
             """
             UPDATE tickets
@@ -126,7 +136,7 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
             (ticket_id,)
         )
 
-        # Insert history
+        # 4️⃣ Log status history
         cur.execute(
             """
             INSERT INTO ticket_status_history

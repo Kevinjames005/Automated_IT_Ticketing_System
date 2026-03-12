@@ -278,6 +278,17 @@ export default function TicketsPage() {
                   </span>
                 )}
               </div>
+              
+
+      {/* Subject & Body */}
+        <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 14, padding: 18, marginBottom: 20 }}>
+          <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 6px" }}>Subject</p>
+          <p style={{ color: "#fff", fontSize: 14, fontWeight: 600, margin: "0 0 18px" }}>{detailTicket.subject}</p>
+          <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 6px" }}>Description</p>
+          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, lineHeight: 1.7, margin: 0, whiteSpace: "pre-wrap" }}>
+          {detailTicket.body || detailTicket.description || detailTicket.message || "No description provided."}
+          </p>
+        </div>
 
               {/* SLA */}
               <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 14, padding: 18, marginBottom: 20 }}>
@@ -350,7 +361,10 @@ export default function TicketsPage() {
               <Icon size={16} /> {label}
             </button>
           ))}
-          <button className="nav-btn" style={{ marginTop: 8 }}><Settings size={16} /> Settings</button>
+           <button onClick={() => navigate("/settings")}
+  style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, border: "none", cursor: "pointer", marginBottom: 4, fontFamily: "'Nunito Sans', sans-serif", fontSize: 13, fontWeight: 600, background: "transparent", color: "rgba(255,255,255,0.35)", marginTop: 8 }}>
+  <Settings size={16} /> Settings
+</button>
         </nav>
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 16, marginTop: 16 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12, padding: "0 6px" }}>

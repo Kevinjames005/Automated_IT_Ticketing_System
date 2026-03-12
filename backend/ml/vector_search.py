@@ -36,7 +36,7 @@ def semantic_search(text: str, threshold: float = 0.80):
     if result:
         article_id, title, content, similarity = result
 
-        if similarity >= threshold:
+        if similarity is not None and similarity >= threshold:
             return {
                 "resolved": True,
                 "article_id": article_id,
