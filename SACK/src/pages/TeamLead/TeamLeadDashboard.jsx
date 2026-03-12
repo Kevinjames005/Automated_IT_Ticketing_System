@@ -16,6 +16,7 @@ import {
 } from "../api";
 import { AlertTriangle, Flame, ShieldAlert, ThumbsUp, ThumbsDown } from "lucide-react";
 import supabase from "../supabaseClient";
+import { useUser } from "../../UserContext";
 
 function formatCreated(dateStr) {
   if (!dateStr) return "—";
@@ -34,6 +35,7 @@ function fmtMinutes(mins) {
 
 export default function TeamLeadDashboard() {
   const navigate = useNavigate();
+  const { currentUser } = useUser();
 
   const [timeRange,         setTimeRange]         = useState("7days");
   const [showNotifications, setShowNotifications] = useState(false);
@@ -44,8 +46,6 @@ export default function TeamLeadDashboard() {
   const [categoryData,      setCategoryData]      = useState([]);
   const [loading,           setLoading]           = useState(true);
 
-  // Current logged-in user
-  const [currentUser, setCurrentUser] = useState(null);
 
   // Action Center
   const [pendingTickets,  setPendingTickets]  = useState([]);
@@ -69,31 +69,6 @@ export default function TeamLeadDashboard() {
   const [approvalModal,   setApprovalModal]   = useState(null); // holds the ticket object
   const [addToKb,         setAddToKb]         = useState(false);
 
-  // ── Load logged-in user ──────────────────────────────────────────────────
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
-        const { data: leadRow } = await supabase
-          .from("team_leads")
-          .select("lead_id, name")
-          .eq("supabase_user_id", user.id)
-          .single();
-        setCurrentUser({
-          id:      user.id,
-          email:   user.email,
-          name:    leadRow?.name  || user.email,
-          lead_id: leadRow?.lead_id || null,
-          initials: leadRow?.name
-            ? leadRow.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)
-            : user.email.slice(0, 2).toUpperCase(),
-        });
-      } catch (e) {
-        console.error("Failed to load user:", e);
-      }
-    })();
-  }, []);
 
   // ── Fetch members ────────────────────────────────────────────────────────
   useEffect(() => {

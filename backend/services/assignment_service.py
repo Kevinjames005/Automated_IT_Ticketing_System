@@ -6,8 +6,6 @@ def assign_ticket(ticket_id: int, member_id: int, supabase_uuid: str):
     cur = conn.cursor()
 
     try:
-<<<<<<< HEAD
-=======
         # Resolve supabase_uuid → lead_id
         cur.execute(
             """
@@ -25,10 +23,7 @@ def assign_ticket(ticket_id: int, member_id: int, supabase_uuid: str):
 
         lead_id = lead_row[0]
 
-        # 🔒 2. Lock ticket
-    
-        
->>>>>>> feature/dashboard-api
+        # Lock ticket
         cur.execute(
             "SELECT status FROM tickets WHERE ticket_id = %s FOR UPDATE;",
             (ticket_id,)

@@ -6,13 +6,8 @@ def approve_resolution(ticket_id: int, supabase_uuid: str, add_to_kb: bool):
     conn = get_conn()
     cur = conn.cursor()
 
-    
-
     try:
-<<<<<<< HEAD
-=======
-
-            # Resolve supabase_uuid → lead_id
+        # Resolve supabase_uuid → lead_id
         cur.execute(
             """
             SELECT lead_id
@@ -29,7 +24,7 @@ def approve_resolution(ticket_id: int, supabase_uuid: str, add_to_kb: bool):
 
         lead_id = lead_row[0]
 
-        # 🔐 STEP 2 — Ownership Check
+        # Ownership Check
         cur.execute(
             """
             SELECT 1
@@ -45,8 +40,8 @@ def approve_resolution(ticket_id: int, supabase_uuid: str, add_to_kb: bool):
 
         if not ownership:
             raise Exception("Unauthorized: cannot modify this ticket")
+
         # Lock ticket row
->>>>>>> feature/dashboard-api
         cur.execute(
             """
             SELECT status
@@ -139,23 +134,14 @@ def approve_resolution(ticket_id: int, supabase_uuid: str, add_to_kb: bool):
         cur.close()
         release_conn(conn)
 
-<<<<<<< HEAD
 
-def reject_resolution(ticket_id: int, lead_id: int):
-=======
 def reject_resolution(ticket_id: int, supabase_uuid: str):
->>>>>>> feature/dashboard-api
 
     conn = get_conn()
     cur = conn.cursor()
 
-    
-
     try:
-<<<<<<< HEAD
-=======
-
-            # Resolve supabase_uuid → lead_id
+        # Resolve supabase_uuid → lead_id
         cur.execute(
             """
             SELECT lead_id
@@ -172,8 +158,7 @@ def reject_resolution(ticket_id: int, supabase_uuid: str):
 
         lead_id = lead_row[0]
 
-
-        # 🔐 STEP 2 — Ownership Check
+        # Ownership Check
         cur.execute(
             """
             SELECT 1
@@ -189,9 +174,8 @@ def reject_resolution(ticket_id: int, supabase_uuid: str):
 
         if not ownership:
             raise Exception("Unauthorized: cannot modify this ticket")
-        
-            # Lock ticket row
->>>>>>> feature/dashboard-api
+
+        # Lock ticket row
         cur.execute(
             """
             SELECT status

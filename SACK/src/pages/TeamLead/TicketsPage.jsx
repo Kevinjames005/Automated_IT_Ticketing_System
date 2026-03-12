@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchTickets, fetchMembers, assignTicket, approveResolution, rejectResolution } from "../api";
 import { ThumbsUp, ThumbsDown } from "lucide-react";
 import supabase from "../supabaseClient";
+import { useUser } from "../../UserContext";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -30,6 +31,7 @@ function fmtMinutes(mins) {
 
 export default function TicketsPage() {
   const navigate = useNavigate();
+  const { currentUser } = useUser();
 
   const [tickets,        setTickets]        = useState([]);
   const [total,          setTotal]          = useState(0);
@@ -43,8 +45,6 @@ export default function TicketsPage() {
   const [currentPage,    setCurrentPage]    = useState(1);
   const [activeNav,      setActiveNav]      = useState("tickets");
 
-  // Current logged-in user
-  const [currentUser, setCurrentUser] = useState(null);
 
   // Assign
   const [assignModal,   setAssignModal]   = useState(null);
@@ -67,31 +67,6 @@ export default function TicketsPage() {
     { id: "analytics", label: "Analytics",        icon: BarChart3,       path: "/analytics"        },
   ];
 
-  // ── Load current user ────────────────────────────────────────────────────
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
-        const { data: leadRow } = await supabase
-          .from("team_leads")
-          .select("lead_id, name")
-          .eq("supabase_user_id", user.id)
-          .single();
-        setCurrentUser({
-          id:       user.id,
-          email:    user.email,
-          name:     leadRow?.name || user.email,
-          lead_id:  leadRow?.lead_id || null,
-          initials: leadRow?.name
-            ? leadRow.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)
-            : user.email.slice(0, 2).toUpperCase(),
-        });
-      } catch (e) {
-        console.error("Failed to load user:", e);
-      }
-    })();
-  }, []);
 
   useEffect(() => { loadTickets(); }, [filterStatus, filterPriority, currentPage]);
 

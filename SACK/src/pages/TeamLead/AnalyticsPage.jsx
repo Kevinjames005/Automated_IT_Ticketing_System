@@ -9,6 +9,7 @@ import {
   fetchSlaTrend, fetchSlaComparison,
 } from "../api";
 import supabase from "../supabaseClient";
+import { useUser } from "../../UserContext";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function fmtMins(m) {
@@ -175,6 +176,7 @@ const PRIO_COLORS = { high: "#f87171", medium: "#fbbf24", low: "#4ade80" };
 // ── Main ──────────────────────────────────────────────────────────────────────
 export default function AnalyticsPage() {
   const navigate = useNavigate();
+  const { currentUser } = useUser();
   const [range,        setRange]        = useState("7days");
   const [kpi,          setKpi]          = useState(null);
   const [priority,     setPriority]     = useState([]);
@@ -183,33 +185,7 @@ export default function AnalyticsPage() {
   const [comparison,   setComparison]   = useState(null);
   const [loading,      setLoading]      = useState(true);
   const [error,        setError]        = useState("");
-  const [currentUser,  setCurrentUser]  = useState(null);
 
-  // ── Load logged-in user ──────────────────────────────────────────────────
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
-        const { data: leadRow } = await supabase
-          .from("team_leads")
-          .select("lead_id, name")
-          .eq("supabase_user_id", user.id)
-          .single();
-        const name = leadRow?.name || user.email;
-        setCurrentUser({
-          id:       user.id,
-          email:    user.email,
-          name,
-          initials: name
-            ? name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)
-            : user.email.slice(0, 2).toUpperCase(),
-        });
-      } catch (e) {
-        console.error("Failed to load user:", e);
-      }
-    })();
-  }, []);
 
   const days = range === "7days" ? 7 : 30;
 
