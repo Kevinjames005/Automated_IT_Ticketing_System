@@ -90,6 +90,12 @@ function normaliseTicket(t) {
 // ─────────────────────────────────────────────────────────────────────────────
 // COMPONENT
 // ─────────────────────────────────────────────────────────────────────────────
+function toUTC(dateStr) {
+  if (!dateStr) return null;
+  if (dateStr.endsWith('Z') || /[+-]\d{2}:\d{2}$/.test(dateStr)) return new Date(dateStr);
+  return new Date(dateStr + 'Z');
+}
+
 export default function TeamMemberDashboard() {
   const navigate = useNavigate();
 
@@ -295,7 +301,7 @@ export default function TeamMemberDashboard() {
   // ── Formatters ────────────────────────────────────────────────────────────
   const formatDate = (d) => {
     if (!d) return "—";
-    const date = new Date(d);
+    const date = toUTC(d);
     const diff = Math.floor((new Date() - date) / 3600000);
     if (diff < 1)  return "Just now";
     if (diff < 24) return `${diff}h ago`;
@@ -1205,7 +1211,7 @@ export default function TeamMemberDashboard() {
                       <div style={{ display:"flex", alignItems:"center", gap:10, flex:1 }}>
                         <span style={{ color: time ? color : "rgba(255,255,255,0.2)", fontSize:12, fontWeight:600, minWidth:70 }}>{label}</span>
                         <span style={{ color: time ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.15)", fontSize:12 }}>
-                          {time ? new Date(time).toLocaleString(undefined, { dateStyle:"medium", timeStyle:"short" }) : "Not yet"}
+                          {time ? toUTC(time)?.toLocaleString(undefined, { dateStyle:"medium", timeStyle:"short" }) : "Not yet"}
                         </span>
                       </div>
                     </div>

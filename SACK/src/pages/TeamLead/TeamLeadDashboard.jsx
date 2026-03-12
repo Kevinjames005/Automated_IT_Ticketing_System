@@ -18,13 +18,22 @@ import { AlertTriangle, Flame, ShieldAlert, ThumbsUp, ThumbsDown } from "lucide-
 import supabase from "../supabaseClient";
 import { useUser } from "../../UserContext";
 
+// Ensures backend UTC timestamps (which arrive without timezone suffix) are
+// correctly parsed as UTC — not as local time.
+function toUTC(dateStr) {
+  if (!dateStr) return null;
+  // If already has timezone info (Z or +xx:xx), use as-is
+  if (dateStr.endsWith('Z') || /[+-]\d{2}:\d{2}$/.test(dateStr)) return new Date(dateStr);
+  return new Date(dateStr + 'Z');
+}
+
 function formatCreated(dateStr) {
   if (!dateStr) return "—";
-  const diff = Math.floor((new Date() - new Date(dateStr)) / 3600000);
+  const diff = Math.floor((new Date() - toUTC(dateStr)) / 3600000);
   if (diff < 1) return "Just now";
   if (diff < 24) return `${diff}h ago`;
   const days = Math.floor(diff / 24);
-  return days < 7 ? `${days}d ago` : new Date(dateStr).toLocaleDateString();
+  return days < 7 ? `${days}d ago` : toUTC(dateStr).toLocaleDateString();
 }
 
 function fmtMinutes(mins) {
@@ -281,9 +290,9 @@ export default function TeamLeadDashboard() {
       t.lead_sla_status || t.response_sla_status || "",
       t.member_response_sla_status || "",
       t.member_resolution_sla_status || t.resolution_sla_status || "",
-      t.assigned_at ? new Date(t.assigned_at).toLocaleString() : "Unassigned",
-      t.created_at  ? new Date(t.created_at).toLocaleString()  : "",
-      t.resolved_at ? new Date(t.resolved_at).toLocaleString() : "",
+      t.assigned_at ? toUTC(t.assigned_at)?.toLocaleString() : "Unassigned",
+      t.created_at  ? toUTC(t.created_at)?.toLocaleString()  : "",
+      t.resolved_at ? toUTC(t.resolved_at)?.toLocaleString() : "",
     ].map(escape).join(","));
 
     const csv = [headers.join(","), ...rows].join("\n");
@@ -514,7 +523,7 @@ export default function TeamLeadDashboard() {
                   <div key={label} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 10, padding: "12px 14px" }}>
                     <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em", margin: "0 0 4px" }}>{label}</p>
                     <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 13, fontWeight: 500, margin: 0 }}>
-                      {val ? new Date(val).toLocaleString() : "—"}
+                      {val ? toUTC(val)?.toLocaleString() : "—"}
                     </p>
                   </div>
                 ))}
@@ -728,7 +737,7 @@ export default function TeamLeadDashboard() {
                   <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <span style={{ color: "rgba(255,255,255,0.35)", fontSize: 13 }}>{label}</span>
                     <span style={{ color: val ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.2)", fontSize: 13, fontWeight: val ? 500 : 400 }}>
-                      {val ? new Date(val).toLocaleString() : "—"}
+                      {val ? toUTC(val)?.toLocaleString() : "—"}
                     </span>
                   </div>
                 ))}

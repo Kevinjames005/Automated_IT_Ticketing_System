@@ -5,6 +5,7 @@ from services.ticket_service import create_ticket, get_category_id
 from ml.inference import predict
 from ml.vector_search import semantic_search
 from ml.rule_engine import rule_based_override
+from db import get_conn, release_conn
 
 
 def process_email(subject: str, body: str, sender_email: str, sender_name: str = None):
@@ -15,10 +16,34 @@ def process_email(subject: str, body: str, sender_email: str, sender_name: str =
     # 1️⃣ Get or create user
     user_id = get_or_create_user(sender_email, sender_name)
 
-    # 2️⃣ Insert email
+    # 2⃣ Duplicate check — if this exact email was already processed, return early
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT er.email_id, t.ticket_id
+        FROM email_requests er
+        JOIN tickets t ON t.email_id = er.email_id
+        WHERE er.user_id = %s
+          AND er.subject  = %s
+          AND er.body     = %s
+        LIMIT 1;
+    """, (user_id, subject, body))
+    existing = cur.fetchone()
+    cur.close()
+    release_conn(conn)
+
+    if existing:
+        return {
+            "duplicate":  True,
+            "email_id":   existing[0],
+            "ticket_id":  existing[1],
+            "message":    "This email has already been processed."
+        }
+
+    # 3️⃣ Insert email
     email_id = create_email_request(user_id, subject, body)
 
-    # 3️⃣ Rule-based override
+    # 4️⃣ Rule-based override
     override = rule_based_override(subject, body)
 
     if override:
@@ -44,7 +69,7 @@ def process_email(subject: str, body: str, sender_email: str, sender_name: str =
             "source": "rule"
         }
 
-    # 4️⃣ Semantic search (auto-resolve)
+    # 5️⃣ Semantic search (auto-resolve)
     vector_result = semantic_search(subject + " " + body)
 
     if vector_result.get("resolved"):
@@ -62,7 +87,7 @@ def process_email(subject: str, body: str, sender_email: str, sender_name: str =
             "similarity": vector_result["similarity"]
         }
 
-    # 5️⃣ ML classification
+    # 6️⃣ ML classification
     result = predict(subject, body)
 
     category_name = result["category"]["value"]
