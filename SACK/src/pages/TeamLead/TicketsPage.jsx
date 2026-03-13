@@ -126,7 +126,6 @@ export default function TicketsPage() {
         inProgress: all.filter(t => t.status === "In Progress").length,
         resolved:   all.filter(t => t.status === "Resolved").length,
         closed:     all.filter(t => t.status === "Closed").length,
-        unassigned: all.filter(t => !t.assigned_at).length,
       });
     } catch (e) {
       console.error("Failed to load counts", e);
@@ -224,7 +223,6 @@ export default function TicketsPage() {
     { label: "In Progress", val: statusCounts.inProgress  ?? 0,    color: "#60a5fa", icon: Clock,       bg: "rgba(96,165,250,0.1)"    },
     { label: "Resolved",    val: statusCounts.resolved    ?? 0,    color: "#a78bfa", icon: CheckCircle, bg: "rgba(167,139,250,0.1)"   },
     { label: "Closed",      val: statusCounts.closed      ?? 0,    color: "#4ade80", icon: CheckCircle, bg: "rgba(74,222,128,0.1)"    },
-    { label: "Unassigned",  val: statusCounts.unassigned  ?? 0,    color: "#f87171", icon: UserPlus,    bg: "rgba(248,113,113,0.1)"   },
   ];
 
   // Reusable assign select inside modals
@@ -668,7 +666,7 @@ export default function TicketsPage() {
           <div>
             <h1 style={{ fontFamily: "'Nunito',sans-serif", fontWeight: 700, fontSize: 20, color: "#fff", margin: 0 }}>Ticket Management</h1>
             <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, margin: "2px 0 0" }}>
-              {statusCounts.total ?? total} total · {statusCounts.unassigned ?? 0} unassigned · {statusCounts.resolved ?? 0} awaiting approval
+              {statusCounts.total ?? total} total · {statusCounts.resolved ?? 0} awaiting approval
             </p>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -682,7 +680,7 @@ export default function TicketsPage() {
         <div style={{ padding: 28, flex: 1 }}>
 
           {/* STAT CARDS */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(6,1fr)", gap: 14, marginBottom: 24 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 14, marginBottom: 24 }}>
             {stats.map(({ label, val, color, icon: Icon, bg }, i) => (
               <div key={label} className="stat-card" style={{ animationDelay: `${i * 0.07}s`, gap: 14 }}>
                 <div style={{ width: 40, height: 40, borderRadius: 12, background: bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>

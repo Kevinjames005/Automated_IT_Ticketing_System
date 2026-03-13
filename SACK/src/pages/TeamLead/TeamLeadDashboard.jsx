@@ -649,6 +649,43 @@ export default function TeamLeadDashboard() {
               <span style={{ ...getStatusStyle(detailTicket.status), padding: "4px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600 }}>{detailTicket.status}</span>
             </div>
 
+            {/* Email Body */}
+            {(() => {
+              const body =
+                detailTicket.body        ||
+                detailTicket.email_body  ||
+                detailTicket.description ||
+                detailTicket.message     ||
+                detailTicket.content     ||
+                null;
+              if (!body) return null;
+              const isHtml = /<[a-z][\s\S]*>/i.test(body);
+              return (
+                <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, overflow: "hidden", marginBottom: 20 }}>
+                  <div style={{ background: "rgba(255,255,255,0.03)", borderBottom: "1px solid rgba(255,255,255,0.07)", padding: "10px 16px", display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ width: 24, height: 24, borderRadius: 7, background: "rgba(96,165,250,0.12)", border: "1px solid rgba(96,165,250,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1h10M1 1l5 4.5L11 1M1 1v8h10V1" stroke="#60a5fa" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                    <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em" }}>Email Body</span>
+                  </div>
+                  <div style={{ padding: "14px 16px", maxHeight: 220, overflowY: "auto" }}>
+                    {isHtml ? (
+                      <div
+                        style={{ color: "rgba(255,255,255,0.75)", fontSize: 13, lineHeight: 1.7, fontFamily: "'Nunito Sans',sans-serif" }}
+                        dangerouslySetInnerHTML={{ __html: body }}
+                      />
+                    ) : (
+                      <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 13, lineHeight: 1.7, margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                        {body}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              );
+            })()}
+
             {/* Approval actions (only when status = Resolved) */}
             {detailTicket.status === "Resolved" && (
               <div style={{ background: "rgba(167,139,250,0.06)", border: "1px solid rgba(167,139,250,0.2)", borderRadius: 14, padding: 18, marginBottom: 20 }}>
@@ -1088,63 +1125,10 @@ export default function TeamLeadDashboard() {
           </div>
 
           {/* KPI CARDS */}
-          {analytics && (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))", gap: 16, marginBottom: 24 }}>
-              {[
-                { label: "Total Tickets",    val: analytics.total_tickets,                                         icon: Ticket,        color: "#fff",    suffix: "" },
-                { label: "Open Tickets",      val: analytics.open_tickets,                                          icon: AlertCircle,   color: "#fbbf24", suffix: "" },
-                { label: "Closed Tickets",    val: analytics.closed_tickets,                                        icon: CheckCircle,   color: "#4ade80", suffix: "" },
-                { label: "Avg Response",      val: (analytics.average_response_time_minutes / 60).toFixed(1),       icon: Clock,         color: "#60a5fa", suffix: "h" },
-                { label: "Avg Resolution",    val: (analytics.average_resolution_time_minutes / 60).toFixed(1),     icon: TrendingUp,    color: "#a78bfa", suffix: "h" },
-                { label: "Response Breach",   val: analytics.response_breach_rate_percent,                          icon: ShieldAlert,   color: "#f87171", suffix: "%" },
-                { label: "Resolution Breach", val: analytics.resolution_breach_rate_percent,                        icon: AlertTriangle, color: "#f87171", suffix: "%" },
-              ].map(({ label, val, icon: Icon, color, suffix }, i) => (
-                <div key={label} className="kpi-card" style={{ animationDelay: `${i * 0.07}s` }}>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-                    <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 12, margin: 0, textTransform: "uppercase", letterSpacing: "0.06em" }}>{label}</p>
-                    <Icon size={16} style={{ color }} />
-                  </div>
-                  <p style={{ color: "#fff", fontWeight: 800, fontSize: 28, margin: 0, fontFamily: "'Nunito',sans-serif" }}>{val}{suffix}</p>
-                </div>
-              ))}
-            </div>
-          )}
+          
 
           {/* CHARTS */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 24 }}>
-            <div className="chart-card">
-              <h3 style={{ fontFamily: "'Nunito',sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", margin: "0 0 20px" }}>Tickets by Priority</h3>
-              {priorityData.length > 0 ? (
-                <ResponsiveContainer width="100%" height={220}>
-                  <PieChart>
-                    <Pie data={priorityData} cx="50%" cy="50%" innerRadius={60} outerRadius={90} paddingAngle={3} dataKey="value">
-                      {priorityData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
-                    </Pie>
-                    <Tooltip content={<CustomTooltip />} />
-                    <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 12, color: "rgba(255,255,255,0.5)" }} />
-                  </PieChart>
-                </ResponsiveContainer>
-              ) : (
-                <div style={{ textAlign: "center", padding: "60px 0", color: "rgba(255,255,255,0.2)", fontSize: 13 }}>No data</div>
-              )}
-            </div>
-
-            <div className="chart-card">
-              <h3 style={{ fontFamily: "'Nunito',sans-serif", fontWeight: 700, fontSize: 15, color: "#fff", margin: "0 0 20px" }}>Tickets by Category</h3>
-              {categoryData.length > 0 ? (
-                <ResponsiveContainer width="100%" height={220}>
-                  <BarChart data={categoryData.slice(0, 6)} layout="vertical" margin={{ left: 20 }}>
-                    <XAxis type="number" tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 11 }} axisLine={false} tickLine={false} />
-                    <YAxis type="category" dataKey="name" tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 11 }} axisLine={false} tickLine={false} width={80} />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Bar dataKey="tickets" fill="rgba(255,255,255,0.15)" radius={[0, 4, 4, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              ) : (
-                <div style={{ textAlign: "center", padding: "60px 0", color: "rgba(255,255,255,0.2)", fontSize: 13 }}>No data</div>
-              )}
-            </div>
-          </div>
+          
 
         </div>
       </main>

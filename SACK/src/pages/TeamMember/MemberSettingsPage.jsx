@@ -231,33 +231,7 @@ export default function MemberSettingsPage() {
         </div>
 
         {/* Performance Card */}
-        <div style={{ background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:16, padding:18, marginBottom:24 }}>
-          <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
-            <div style={{ width:40, height:40, borderRadius:12, background:"rgba(255,255,255,0.08)", display:"flex", alignItems:"center", justifyContent:"center" }}>
-              <Award size={18} style={{ color:"rgba(255,255,255,0.7)" }} />
-            </div>
-            <div>
-              <p style={{ color:"rgba(255,255,255,0.35)", fontSize:11, margin:0, letterSpacing:"0.06em", textTransform:"uppercase" }}>Performance</p>
-              <div style={{ display:"flex", alignItems:"center", gap:5, marginTop:2 }}>
-                <Star size={14} style={{ color:"#fbbf24", fill:"#fbbf24" }} />
-                <span style={{ color: myPerf ? gradeColor(myPerf.performance_grade) : "#fff", fontWeight:700, fontSize:20, fontFamily:"'Nunito',sans-serif" }}>
-                  {myPerf ? myPerf.performance_grade : "—"}
-                </span>
-              </div>
-            </div>
-          </div>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8 }}>
-            {[
-              { label:"Resolved", val: resolvedCount },
-              { label:"Active",   val: activeCount   },
-            ].map(({ label, val }) => (
-              <div key={label} style={{ background:"rgba(255,255,255,0.06)", borderRadius:10, padding:"10px 8px", textAlign:"center" }}>
-                <p style={{ color:"#fff", fontWeight:700, fontSize:22, margin:0, fontFamily:"'Nunito',sans-serif" }}>{val}</p>
-                <p style={{ color:"rgba(255,255,255,0.3)", fontSize:11, margin:0 }}>{label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        
 
         {/* Nav */}
         <nav style={{ flex:1, display:"flex", flexDirection:"column", gap:4 }}>
