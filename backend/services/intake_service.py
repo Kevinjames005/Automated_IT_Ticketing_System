@@ -2,6 +2,7 @@ from services.user_service import get_or_create_user
 from services.email_service import create_email_request
 from services.ai_service import store_ai_analysis
 from services.ticket_service import create_ticket, get_category_id
+from services.notification_service import notify_ticket_created, notify_auto_resolved
 from ml.inference import predict
 from ml.vector_search import semantic_search
 from ml.rule_engine import rule_based_override
@@ -16,7 +17,7 @@ def process_email(subject: str, body: str, sender_email: str, sender_name: str =
     # 1️⃣ Get or create user
     user_id = get_or_create_user(sender_email, sender_name)
 
-    # 2⃣ Duplicate check — if this exact email was already processed, return early
+    # 2️⃣ Duplicate check — if this exact email was already processed, return early
     conn = get_conn()
     cur = conn.cursor()
     cur.execute("""
@@ -63,6 +64,16 @@ def process_email(subject: str, body: str, sender_email: str, sender_name: str =
 
         ticket_id = create_ticket(email_id, category_id, priority_value)
 
+        # 📧 Notify reporter: ticket created
+        notify_ticket_created(
+            to_email=sender_email,
+            reporter_name=sender_name,
+            ticket_id=ticket_id,
+            subject=subject,
+            category=category_name,
+            priority=priority_value,
+        )
+
         return {
             "ticket_created": True,
             "ticket_id": ticket_id,
@@ -79,6 +90,14 @@ def process_email(subject: str, body: str, sender_email: str, sender_name: str =
             predicted_category=None,
             predicted_priority=None,
             confidence_score=vector_result["similarity"]
+        )
+
+        # 📧 Notify reporter: auto-resolved (no ticket created)
+        notify_auto_resolved(
+            to_email=sender_email,
+            reporter_name=sender_name,
+            original_subject=subject,
+            resolution_text=vector_result["content"],
         )
 
         return {
@@ -107,6 +126,16 @@ def process_email(subject: str, body: str, sender_email: str, sender_name: str =
     )
 
     ticket_id = create_ticket(email_id, category_id, priority_value)
+
+    # 📧 Notify reporter: ticket created
+    notify_ticket_created(
+        to_email=sender_email,
+        reporter_name=sender_name,
+        ticket_id=ticket_id,
+        subject=subject,
+        category=category_name,
+        priority=priority_value,
+    )
 
     return {
         "ticket_created": True,

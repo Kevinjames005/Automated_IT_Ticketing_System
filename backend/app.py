@@ -1,8 +1,8 @@
 import os
-from flask import Flask,request,jsonify
+from flask import Flask, request, jsonify
 from dotenv import load_dotenv
-from services.assignment_service import assign_ticket
-from services.member_service import start_ticket , resolve_ticket
+from services.assignment_service import assign_ticket, reassign_ticket
+from services.member_service import start_ticket, resolve_ticket
 from services.approval_service import approve_resolution, reject_resolution
 from services.intake_service import process_email
 from security.auth import require_api_key
@@ -11,13 +11,14 @@ from services.ticket_detail_service import get_ticket_detail
 from services.analytics_service import get_analytics
 from datetime import datetime, timedelta
 from services.member_analytics_service import get_member_performance
-from services.breakdown_analytics_service import get_priority_breakdown, get_category_breakdown, get_sla_trend,get_sla_comparison
+from services.breakdown_analytics_service import (
+    get_priority_breakdown, get_category_breakdown,
+    get_sla_trend, get_sla_comparison
+)
 from security.supabase_auth import require_auth
 from flask_cors import CORS
-from services.assignment_service import assign_ticket, reassign_ticket
 
 load_dotenv()
-
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {
@@ -28,11 +29,9 @@ CORS(app, resources={r"/*": {
 }})
 
 
-
 @app.route("/classify", methods=["POST"])
 @require_api_key
 def classify():
-
     data = request.get_json()
 
     if not data or "subject" not in data or "body" not in data or "sender_email" not in data:
@@ -51,7 +50,6 @@ def classify():
 @app.route("/assign-ticket", methods=["POST"])
 @require_auth
 def assign_ticket_endpoint():
-
     data = request.get_json()
 
     if not data or "ticket_id" not in data or "member_id" not in data:
@@ -101,11 +99,11 @@ def get_members_endpoint():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
-    
+
+
 @app.route("/start-ticket", methods=["POST"])
 @require_auth
 def start_ticket_endpoint():
-
     data = request.get_json()
 
     if not data or "ticket_id" not in data or "member_id" not in data:
@@ -121,11 +119,11 @@ def start_ticket_endpoint():
 
     except Exception as e:
         return {"error": str(e)}, 400
-    
+
+
 @app.route("/resolve-ticket", methods=["POST"])
 @require_auth
 def resolve_ticket_endpoint():
-
     data = request.get_json()
 
     if not data or "ticket_id" not in data or "member_id" not in data or "resolution_text" not in data:
@@ -145,7 +143,8 @@ def resolve_ticket_endpoint():
 
     except Exception as e:
         return {"error": str(e)}, 400
-    
+
+
 @app.route("/approve-resolution", methods=["POST"])
 @require_auth
 def approve_resolution_endpoint():
@@ -169,12 +168,10 @@ def approve_resolution_endpoint():
         if not row:
             return {"error": "Lead not found"}, 403
 
-        lead_id = row[0]
-
-        # lead_id comes from the verified Supabase user attached by @require_auth
         supabase_uuid = request.user.get("id")
         if not supabase_uuid:
             return {"error": "Unauthorized"}, 403
+
         approve_resolution(
             ticket_id=data["ticket_id"],
             supabase_uuid=supabase_uuid,
@@ -199,18 +196,20 @@ def reject_resolution_endpoint():
         if not supabase_uuid:
             return {"error": "Unauthorized"}, 403
 
+        rejection_reason = (data.get("rejection_reason") or "").strip() or None
+
+        # reject_resolution now handles both: status change + member email
         reject_resolution(
             ticket_id=data["ticket_id"],
-            supabase_uuid=supabase_uuid
+            supabase_uuid=supabase_uuid,
+            rejection_reason=rejection_reason,
         )
 
-        # ── Persist rejection reason as a comment ───────────────────────────
-        rejection_reason = (data.get("rejection_reason") or "").strip()
+        # Persist rejection reason as a comment (unchanged logic)
         if rejection_reason:
             conn = get_conn()
             cur  = conn.cursor()
 
-            # Resolve lead_id from supabase_uuid
             cur.execute(
                 "SELECT lead_id FROM team_leads WHERE supabase_user_id::text = %s",
                 (supabase_uuid,)
@@ -230,9 +229,9 @@ def reject_resolution_endpoint():
 
             cur.close()
             release_conn(conn)
-        # ────────────────────────────────────────────────────────────────────
 
         return {"message": "Resolution rejected. Ticket reassigned."}, 200
+
     except Exception as e:
         return {"error": str(e)}, 400
 
@@ -240,7 +239,6 @@ def reject_resolution_endpoint():
 @app.route("/tickets/<int:ticket_id>/comments", methods=["GET"])
 @require_auth
 def get_ticket_comments(ticket_id):
-    """Return all comments for a ticket, newest first."""
     try:
         from db import get_conn, release_conn
         conn = get_conn()
@@ -297,7 +295,6 @@ def get_ticket_comments(ticket_id):
 @app.route("/tickets/<int:ticket_id>/comments", methods=["POST"])
 @require_auth
 def add_ticket_comment(ticket_id):
-    """Add a general comment to a ticket (lead or member)."""
     data = request.get_json()
     if not data or not (data.get("body") or "").strip():
         return {"error": "Comment body is required"}, 400
@@ -308,7 +305,6 @@ def add_ticket_comment(ticket_id):
         conn = get_conn()
         cur  = conn.cursor()
 
-        # Determine author role and id
         cur.execute(
             "SELECT lead_id FROM team_leads WHERE supabase_user_id::text = %s",
             (supabase_uuid,)
@@ -389,6 +385,7 @@ def get_tickets_endpoint():
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
+
 @app.route("/analytics", methods=["GET"])
 @require_auth
 def analytics_endpoint():
@@ -401,37 +398,32 @@ def analytics_endpoint():
 
     if range_param == "7days":
         start_date = datetime.utcnow() - timedelta(days=7)
-
     elif range_param == "30days":
         start_date = datetime.utcnow() - timedelta(days=30)
-
     elif start and end:
         start_date = datetime.fromisoformat(start)
         end_date = datetime.fromisoformat(end)
 
     result = get_analytics(start_date, end_date)
     return result, 200
-    
-from services.member_analytics_service import get_member_performance
+
 
 @app.route("/analytics/members", methods=["GET"])
 @require_auth
 def analytics_members():
     range_param = request.args.get("range")
 
-    from datetime import datetime, timedelta
-
     start_date = None
     end_date = None
 
     if range_param == "7days":
         start_date = datetime.utcnow() - timedelta(days=7)
-
     elif range_param == "30days":
         start_date = datetime.utcnow() - timedelta(days=30)
 
     result = get_member_performance(start_date, end_date)
     return {"members": result}, 200
+
 
 @app.route("/analytics/priority", methods=["GET"])
 @require_auth
@@ -439,11 +431,13 @@ def analytics_priority():
     result = get_priority_breakdown()
     return {"priority_breakdown": result}, 200
 
+
 @app.route("/analytics/categories", methods=["GET"])
 @require_auth
 def analytics_categories():
     result = get_category_breakdown()
-    return {"category_breakdown": result},200
+    return {"category_breakdown": result}, 200
+
 
 @app.route("/analytics/sla-trend", methods=["GET"])
 @require_auth
@@ -477,6 +471,7 @@ def analytics_sla_comparison():
     result = get_sla_comparison(days)
     return result, 200
 
+
 @app.route("/me", methods=["GET"])
 @require_auth
 def get_me():
@@ -506,7 +501,7 @@ def get_me():
     except Exception as e:
         print("ERROR IN /me:", str(e))
         return {"error": str(e)}, 400
-    
-    
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True)

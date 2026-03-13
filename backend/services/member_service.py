@@ -1,4 +1,6 @@
 from db import get_conn, release_conn
+from services.notification_service import notify_ticket_resolved
+
 
 def start_ticket(ticket_id: int, member_id: int):
 
@@ -111,7 +113,7 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
 
         resolution_id = cur.fetchone()[0]
 
-        # 2️⃣ Insert directly into knowledge_base_articles
+        # 2️⃣ Insert into knowledge_base_articles
         cur.execute(
             """
             INSERT INTO knowledge_base_articles
@@ -147,6 +149,31 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
         )
 
         conn.commit()
+
+        # ── Fetch reporter info and notify ───────────────────────────────────
+        cur.execute(
+            """
+            SELECT u.email, u.name, er.subject
+            FROM tickets t
+            JOIN email_requests er ON er.email_id = t.email_id
+            JOIN users u           ON u.user_id   = er.user_id
+            WHERE t.ticket_id = %s;
+            """,
+            (ticket_id,)
+        )
+        row = cur.fetchone()
+
+        if row:
+            reporter_email, reporter_name, subject = row
+            # 📧 Notify reporter: ticket resolved
+            notify_ticket_resolved(
+                to_email=reporter_email,
+                reporter_name=reporter_name,
+                ticket_id=ticket_id,
+                subject=subject,
+                resolution_text=resolution_text,
+            )
+
         return resolution_id
 
     except Exception as e:

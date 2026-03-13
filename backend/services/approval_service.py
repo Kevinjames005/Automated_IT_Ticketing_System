@@ -1,5 +1,7 @@
 from db import get_conn, release_conn
 from ml.embeddings import get_embedding
+from services.notification_service import notify_ticket_closed, notify_member_resolution_rejected
+
 
 def approve_resolution(ticket_id: int, supabase_uuid: str, add_to_kb: bool):
 
@@ -126,6 +128,29 @@ def approve_resolution(ticket_id: int, supabase_uuid: str, add_to_kb: bool):
 
         conn.commit()
 
+        # ── Fetch reporter info and notify ───────────────────────────────────
+        cur.execute(
+            """
+            SELECT u.email, u.name, er.subject
+            FROM tickets t
+            JOIN email_requests er ON er.email_id = t.email_id
+            JOIN users u           ON u.user_id   = er.user_id
+            WHERE t.ticket_id = %s;
+            """,
+            (ticket_id,)
+        )
+        row = cur.fetchone()
+
+        if row:
+            reporter_email, reporter_name, subject = row
+            # 📧 Notify reporter: ticket officially closed
+            notify_ticket_closed(
+                to_email=reporter_email,
+                reporter_name=reporter_name,
+                ticket_id=ticket_id,
+                subject=subject,
+            )
+
     except Exception as e:
         conn.rollback()
         raise e
@@ -135,7 +160,7 @@ def approve_resolution(ticket_id: int, supabase_uuid: str, add_to_kb: bool):
         release_conn(conn)
 
 
-def reject_resolution(ticket_id: int, supabase_uuid: str):
+def reject_resolution(ticket_id: int, supabase_uuid: str, rejection_reason: str = None):
 
     conn = get_conn()
     cur = conn.cursor()
@@ -216,6 +241,31 @@ def reject_resolution(ticket_id: int, supabase_uuid: str):
         )
 
         conn.commit()
+
+        # ── Fetch member info and notify ─────────────────────────────────────
+        cur.execute(
+            """
+            SELECT tm.email, tm.name, er.subject
+            FROM ticket_assignments ta
+            JOIN team_members tm    ON tm.member_id = ta.member_id
+            JOIN tickets t          ON t.ticket_id  = ta.ticket_id
+            JOIN email_requests er  ON er.email_id  = t.email_id
+            WHERE ta.ticket_id = %s;
+            """,
+            (ticket_id,)
+        )
+        row = cur.fetchone()
+
+        if row:
+            member_email, member_name, subject = row
+            # 📧 Notify member: their resolution was rejected
+            notify_member_resolution_rejected(
+                to_email=member_email,
+                member_name=member_name,
+                ticket_id=ticket_id,
+                subject=subject,
+                rejection_reason=rejection_reason,
+            )
 
     except Exception as e:
         conn.rollback()

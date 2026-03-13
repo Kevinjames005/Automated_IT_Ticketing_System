@@ -1,4 +1,6 @@
 from db import get_conn, release_conn
+from services.notification_service import notify_member_assigned, notify_user_ticket_assigned
+
 
 def assign_ticket(ticket_id: int, member_id: int, supabase_uuid: str):
 
@@ -6,10 +8,10 @@ def assign_ticket(ticket_id: int, member_id: int, supabase_uuid: str):
     cur = conn.cursor()
 
     try:
-        # Resolve supabase_uuid → lead_id
+        # Resolve supabase_uuid → lead_id + lead name
         cur.execute(
             """
-            SELECT lead_id
+            SELECT lead_id, name
             FROM team_leads
             WHERE supabase_user_id = %s;
             """,
@@ -21,7 +23,7 @@ def assign_ticket(ticket_id: int, member_id: int, supabase_uuid: str):
         if not lead_row:
             raise Exception("Unauthorized: not a team lead")
 
-        lead_id = lead_row[0]
+        lead_id, lead_name = lead_row
 
         # Lock ticket
         cur.execute(
@@ -63,6 +65,47 @@ def assign_ticket(ticket_id: int, member_id: int, supabase_uuid: str):
         )
         conn.commit()
 
+        # ── Fetch data needed for notifications ─────────────────────────────
+        cur.execute(
+            """
+            SELECT tm.email, tm.name, er.subject, t.priority, t.category_id,
+                   u.email AS reporter_email, u.name AS reporter_name,
+                   c.name  AS category_name
+            FROM team_members tm
+            JOIN tickets t          ON t.ticket_id = %s
+            JOIN email_requests er  ON er.email_id = t.email_id
+            JOIN users u            ON u.user_id   = er.user_id
+            LEFT JOIN categories c  ON c.category_id = t.category_id
+            WHERE tm.member_id = %s;
+            """,
+            (ticket_id, member_id)
+        )
+        row = cur.fetchone()
+
+        if row:
+            (member_email, member_name, subject, priority,
+             _cat_id, reporter_email, reporter_name, category_name) = row
+
+            # 📧 Notify team member: ticket assigned to them
+            notify_member_assigned(
+                to_email=member_email,
+                member_name=member_name,
+                ticket_id=ticket_id,
+                subject=subject,
+                category=category_name,
+                priority=priority,
+                assigned_by=lead_name,
+            )
+
+            # 📧 Notify reporter: their ticket is now being handled
+            notify_user_ticket_assigned(
+                to_email=reporter_email,
+                reporter_name=reporter_name,
+                ticket_id=ticket_id,
+                subject=subject,
+                priority=priority,
+            )
+
     except Exception as e:
         conn.rollback()
         raise e
@@ -78,6 +121,7 @@ def reassign_ticket(ticket_id: int, new_member_id: int, lead_id: int):
     - Resets ticket status back to 'Assigned'
     - Increments reopen_count so history is visible
     - Logs to ticket_status_history
+    - Notifies the new member by email
     """
     conn = get_conn()
     cur = conn.cursor()
@@ -96,15 +140,23 @@ def reassign_ticket(ticket_id: int, new_member_id: int, lead_id: int):
         if current_status != "Resolved":
             raise Exception("Only resolved tickets can be reassigned")
 
-        # Verify new member belongs to this lead
+        # Verify new member belongs to this lead + get their info
         cur.execute(
-            "SELECT 1 FROM team_members WHERE member_id = %s AND lead_id = %s;",
+            "SELECT name, email FROM team_members WHERE member_id = %s AND lead_id = %s;",
             (new_member_id, lead_id)
         )
-        if not cur.fetchone():
+        member_row = cur.fetchone()
+        if not member_row:
             raise Exception("This member does not belong to this team lead")
 
-        # Update existing assignment record (member_id + assigned_by)
+        new_member_name, new_member_email = member_row
+
+        # Fetch lead name
+        cur.execute("SELECT name FROM team_leads WHERE lead_id = %s;", (lead_id,))
+        lead_row = cur.fetchone()
+        lead_name = lead_row[0] if lead_row else "Team Lead"
+
+        # Update existing assignment record
         cur.execute(
             """
             UPDATE ticket_assignments
@@ -140,6 +192,31 @@ def reassign_ticket(ticket_id: int, new_member_id: int, lead_id: int):
         )
 
         conn.commit()
+
+        # ── Notify new member ────────────────────────────────────────────────
+        cur.execute(
+            """
+            SELECT er.subject, t.priority, c.name AS category
+            FROM tickets t
+            JOIN email_requests er ON er.email_id = t.email_id
+            LEFT JOIN categories c ON c.category_id = t.category_id
+            WHERE t.ticket_id = %s;
+            """,
+            (ticket_id,)
+        )
+        ticket_row = cur.fetchone()
+
+        if ticket_row and new_member_email:
+            subject, priority, category_name = ticket_row
+            notify_member_assigned(
+                to_email=new_member_email,
+                member_name=new_member_name,
+                ticket_id=ticket_id,
+                subject=subject,
+                category=category_name,
+                priority=priority,
+                assigned_by=lead_name,
+            )
 
     except Exception as e:
         conn.rollback()
