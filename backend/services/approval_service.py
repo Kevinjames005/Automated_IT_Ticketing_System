@@ -1,15 +1,19 @@
+import logging
 from db import get_conn, release_conn
 from ml.embeddings import get_embedding
 from services.notification_service import notify_ticket_closed, notify_member_resolution_rejected
 
+logger = logging.getLogger(__name__)
+
 
 def approve_resolution(ticket_id: int, supabase_uuid: str, add_to_kb: bool):
+
+    logger.info("Approving resolution | ticket_id=%s | add_to_kb=%s", ticket_id, add_to_kb)
 
     conn = get_conn()
     cur = conn.cursor()
 
     try:
-        # Resolve supabase_uuid → lead_id
         cur.execute(
             """
             SELECT lead_id
@@ -26,7 +30,6 @@ def approve_resolution(ticket_id: int, supabase_uuid: str, add_to_kb: bool):
 
         lead_id = lead_row[0]
 
-        # Ownership Check
         cur.execute(
             """
             SELECT 1
@@ -38,12 +41,9 @@ def approve_resolution(ticket_id: int, supabase_uuid: str, add_to_kb: bool):
             (ticket_id, lead_id)
         )
 
-        ownership = cur.fetchone()
-
-        if not ownership:
+        if not cur.fetchone():
             raise Exception("Unauthorized: cannot modify this ticket")
 
-        # Lock ticket row
         cur.execute(
             """
             SELECT status
@@ -106,6 +106,7 @@ def approve_resolution(ticket_id: int, supabase_uuid: str, add_to_kb: bool):
                         resolution_id,
                     )
                 )
+                logger.info("Resolution added to knowledge base | ticket_id=%s | resolution_id=%s", ticket_id, resolution_id)
 
         cur.execute(
             """
@@ -127,6 +128,7 @@ def approve_resolution(ticket_id: int, supabase_uuid: str, add_to_kb: bool):
         )
 
         conn.commit()
+        logger.info("Ticket closed | ticket_id=%s | lead_id=%s", ticket_id, lead_id)
 
         # ── Fetch reporter info and notify ───────────────────────────────────
         cur.execute(
@@ -143,17 +145,19 @@ def approve_resolution(ticket_id: int, supabase_uuid: str, add_to_kb: bool):
 
         if row:
             reporter_email, reporter_name, subject = row
-            # 📧 Notify reporter: ticket officially closed
             notify_ticket_closed(
                 to_email=reporter_email,
                 reporter_name=reporter_name,
                 ticket_id=ticket_id,
                 subject=subject,
             )
+        else:
+            logger.warning("Could not fetch reporter info for closed notification | ticket_id=%s", ticket_id)
 
     except Exception as e:
         conn.rollback()
-        raise e
+        logger.error("Failed to approve resolution | ticket_id=%s | error=%s", ticket_id, e)
+        raise
 
     finally:
         cur.close()
@@ -162,11 +166,12 @@ def approve_resolution(ticket_id: int, supabase_uuid: str, add_to_kb: bool):
 
 def reject_resolution(ticket_id: int, supabase_uuid: str, rejection_reason: str = None):
 
+    logger.info("Rejecting resolution | ticket_id=%s", ticket_id)
+
     conn = get_conn()
     cur = conn.cursor()
 
     try:
-        # Resolve supabase_uuid → lead_id
         cur.execute(
             """
             SELECT lead_id
@@ -183,7 +188,6 @@ def reject_resolution(ticket_id: int, supabase_uuid: str, rejection_reason: str 
 
         lead_id = lead_row[0]
 
-        # Ownership Check
         cur.execute(
             """
             SELECT 1
@@ -195,12 +199,9 @@ def reject_resolution(ticket_id: int, supabase_uuid: str, rejection_reason: str 
             (ticket_id, lead_id)
         )
 
-        ownership = cur.fetchone()
-
-        if not ownership:
+        if not cur.fetchone():
             raise Exception("Unauthorized: cannot modify this ticket")
 
-        # Lock ticket row
         cur.execute(
             """
             SELECT status
@@ -241,6 +242,7 @@ def reject_resolution(ticket_id: int, supabase_uuid: str, rejection_reason: str 
         )
 
         conn.commit()
+        logger.info("Resolution rejected | ticket_id=%s | lead_id=%s", ticket_id, lead_id)
 
         # ── Fetch member info and notify ─────────────────────────────────────
         cur.execute(
@@ -258,7 +260,6 @@ def reject_resolution(ticket_id: int, supabase_uuid: str, rejection_reason: str 
 
         if row:
             member_email, member_name, subject = row
-            # 📧 Notify member: their resolution was rejected
             notify_member_resolution_rejected(
                 to_email=member_email,
                 member_name=member_name,
@@ -266,10 +267,13 @@ def reject_resolution(ticket_id: int, supabase_uuid: str, rejection_reason: str 
                 subject=subject,
                 rejection_reason=rejection_reason,
             )
+        else:
+            logger.warning("Could not fetch member info for rejection notification | ticket_id=%s", ticket_id)
 
     except Exception as e:
         conn.rollback()
-        raise e
+        logger.error("Failed to reject resolution | ticket_id=%s | error=%s", ticket_id, e)
+        raise
 
     finally:
         cur.close()

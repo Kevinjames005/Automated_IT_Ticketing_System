@@ -1,8 +1,13 @@
+import logging
 from db import get_conn, release_conn
 from services.notification_service import notify_member_assigned, notify_user_ticket_assigned
 
+logger = logging.getLogger(__name__)
+
 
 def assign_ticket(ticket_id: int, member_id: int, supabase_uuid: str):
+
+    logger.info("Assigning ticket | ticket_id=%s | member_id=%s", ticket_id, member_id)
 
     conn = get_conn()
     cur = conn.cursor()
@@ -65,6 +70,11 @@ def assign_ticket(ticket_id: int, member_id: int, supabase_uuid: str):
         )
         conn.commit()
 
+        logger.info(
+            "Ticket assigned successfully | ticket_id=%s | member_id=%s | lead_id=%s",
+            ticket_id, member_id, lead_id
+        )
+
         # ── Fetch data needed for notifications ─────────────────────────────
         cur.execute(
             """
@@ -86,7 +96,6 @@ def assign_ticket(ticket_id: int, member_id: int, supabase_uuid: str):
             (member_email, member_name, subject, priority,
              _cat_id, reporter_email, reporter_name, category_name) = row
 
-            # 📧 Notify team member: ticket assigned to them
             notify_member_assigned(
                 to_email=member_email,
                 member_name=member_name,
@@ -97,7 +106,6 @@ def assign_ticket(ticket_id: int, member_id: int, supabase_uuid: str):
                 assigned_by=lead_name,
             )
 
-            # 📧 Notify reporter: their ticket is now being handled
             notify_user_ticket_assigned(
                 to_email=reporter_email,
                 reporter_name=reporter_name,
@@ -105,10 +113,16 @@ def assign_ticket(ticket_id: int, member_id: int, supabase_uuid: str):
                 subject=subject,
                 priority=priority,
             )
+        else:
+            logger.warning(
+                "Could not fetch notification data after assignment | ticket_id=%s | member_id=%s",
+                ticket_id, member_id
+            )
 
     except Exception as e:
         conn.rollback()
-        raise e
+        logger.error("Failed to assign ticket | ticket_id=%s | member_id=%s | error=%s", ticket_id, member_id, e)
+        raise
     finally:
         cur.close()
         release_conn(conn)
@@ -117,12 +131,10 @@ def assign_ticket(ticket_id: int, member_id: int, supabase_uuid: str):
 def reassign_ticket(ticket_id: int, new_member_id: int, lead_id: int):
     """
     Reassigns a Resolved ticket to a different (or same) member.
-    - Updates ticket_assignments (member_id, assigned_by)
-    - Resets ticket status back to 'Assigned'
-    - Increments reopen_count so history is visible
-    - Logs to ticket_status_history
-    - Notifies the new member by email
     """
+
+    logger.info("Reassigning ticket | ticket_id=%s | new_member_id=%s | lead_id=%s", ticket_id, new_member_id, lead_id)
+
     conn = get_conn()
     cur = conn.cursor()
 
@@ -140,7 +152,6 @@ def reassign_ticket(ticket_id: int, new_member_id: int, lead_id: int):
         if current_status != "Resolved":
             raise Exception("Only resolved tickets can be reassigned")
 
-        # Verify new member belongs to this lead + get their info
         cur.execute(
             "SELECT name, email FROM team_members WHERE member_id = %s AND lead_id = %s;",
             (new_member_id, lead_id)
@@ -151,12 +162,10 @@ def reassign_ticket(ticket_id: int, new_member_id: int, lead_id: int):
 
         new_member_name, new_member_email = member_row
 
-        # Fetch lead name
         cur.execute("SELECT name FROM team_leads WHERE lead_id = %s;", (lead_id,))
         lead_row = cur.fetchone()
         lead_name = lead_row[0] if lead_row else "Team Lead"
 
-        # Update existing assignment record
         cur.execute(
             """
             UPDATE ticket_assignments
@@ -167,7 +176,6 @@ def reassign_ticket(ticket_id: int, new_member_id: int, lead_id: int):
             (new_member_id, lead_id, ticket_id)
         )
 
-        # Reset ticket status → Assigned, bump reopen_count
         cur.execute(
             """
             UPDATE tickets
@@ -181,7 +189,6 @@ def reassign_ticket(ticket_id: int, new_member_id: int, lead_id: int):
             (ticket_id,)
         )
 
-        # Log history
         cur.execute(
             """
             INSERT INTO ticket_status_history
@@ -192,6 +199,11 @@ def reassign_ticket(ticket_id: int, new_member_id: int, lead_id: int):
         )
 
         conn.commit()
+
+        logger.info(
+            "Ticket reassigned successfully | ticket_id=%s | new_member_id=%s | lead_id=%s",
+            ticket_id, new_member_id, lead_id
+        )
 
         # ── Notify new member ────────────────────────────────────────────────
         cur.execute(
@@ -217,10 +229,16 @@ def reassign_ticket(ticket_id: int, new_member_id: int, lead_id: int):
                 priority=priority,
                 assigned_by=lead_name,
             )
+        else:
+            logger.warning(
+                "Could not fetch notification data after reassignment | ticket_id=%s",
+                ticket_id
+            )
 
     except Exception as e:
         conn.rollback()
-        raise e
+        logger.error("Failed to reassign ticket | ticket_id=%s | new_member_id=%s | error=%s", ticket_id, new_member_id, e)
+        raise
     finally:
         cur.close()
         release_conn(conn)

@@ -1,4 +1,5 @@
 import os
+import logging
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 from services.assignment_service import assign_ticket, reassign_ticket
@@ -20,6 +21,16 @@ from flask_cors import CORS
 
 load_dotenv()
 
+# ── Logging configuration ─────────────────────────────────────────────────────
+# Writes to stdout (Render captures this automatically in the dashboard logs).
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s  %(levelname)-8s  %(name)s  %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+logger = logging.getLogger(__name__)
+# ─────────────────────────────────────────────────────────────────────────────
+
 app = Flask(__name__)
 CORS(app, resources={r"/*": {
     "origins": ["http://localhost:5173"],
@@ -36,6 +47,8 @@ def classify():
 
     if not data or "subject" not in data or "body" not in data or "sender_email" not in data:
         return jsonify({"error": "Invalid input"}), 400
+
+    logger.info("POST /classify | sender=%s", data.get("sender_email"))
 
     result = process_email(
         subject=data["subject"],
@@ -60,6 +73,8 @@ def assign_ticket_endpoint():
         if not supabase_uuid:
             return {"error": "Unauthorized"}, 403
 
+        logger.info("POST /assign-ticket | ticket_id=%s | member_id=%s", data["ticket_id"], data["member_id"])
+
         assign_ticket(
             ticket_id=data["ticket_id"],
             member_id=data["member_id"],
@@ -69,7 +84,8 @@ def assign_ticket_endpoint():
         return {"message": "Ticket assigned successfully"}, 200
 
     except Exception as e:
-        return {"error": str(e)}, 400
+        logger.error("POST /assign-ticket failed | ticket_id=%s | error=%s", data.get("ticket_id"), e)
+        raise e
 
 
 @app.route("/members", methods=["GET"])
@@ -98,7 +114,8 @@ def get_members_endpoint():
         return jsonify({"members": members}), 200
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 400
+        logger.error("GET /members failed | error=%s", e)
+        raise e
 
 
 @app.route("/start-ticket", methods=["POST"])
@@ -110,6 +127,8 @@ def start_ticket_endpoint():
         return {"error": "Invalid input"}, 400
 
     try:
+        logger.info("POST /start-ticket | ticket_id=%s | member_id=%s", data["ticket_id"], data["member_id"])
+
         start_ticket(
             ticket_id=data["ticket_id"],
             member_id=data["member_id"]
@@ -118,7 +137,8 @@ def start_ticket_endpoint():
         return {"message": "Ticket started successfully"}, 200
 
     except Exception as e:
-        return {"error": str(e)}, 400
+        logger.error("POST /start-ticket failed | ticket_id=%s | error=%s", data.get("ticket_id"), e)
+        raise e
 
 
 @app.route("/resolve-ticket", methods=["POST"])
@@ -130,6 +150,8 @@ def resolve_ticket_endpoint():
         return {"error": "Invalid input"}, 400
 
     try:
+        logger.info("POST /resolve-ticket | ticket_id=%s | member_id=%s", data["ticket_id"], data["member_id"])
+
         resolution_id = resolve_ticket(
             ticket_id=data["ticket_id"],
             member_id=data["member_id"],
@@ -142,7 +164,8 @@ def resolve_ticket_endpoint():
         }, 200
 
     except Exception as e:
-        return {"error": str(e)}, 400
+        logger.error("POST /resolve-ticket failed | ticket_id=%s | error=%s", data.get("ticket_id"), e)
+        raise e
 
 
 @app.route("/approve-resolution", methods=["POST"])
@@ -172,6 +195,8 @@ def approve_resolution_endpoint():
         if not supabase_uuid:
             return {"error": "Unauthorized"}, 403
 
+        logger.info("POST /approve-resolution | ticket_id=%s", data["ticket_id"])
+
         approve_resolution(
             ticket_id=data["ticket_id"],
             supabase_uuid=supabase_uuid,
@@ -180,7 +205,8 @@ def approve_resolution_endpoint():
         return {"message": "Ticket approved successfully"}, 200
 
     except Exception as e:
-        return {"error": str(e)}, 400
+        logger.error("POST /approve-resolution failed | ticket_id=%s | error=%s", data.get("ticket_id"), e)
+        raise e
 
 
 @app.route("/reject-resolution", methods=["POST"])
@@ -198,14 +224,14 @@ def reject_resolution_endpoint():
 
         rejection_reason = (data.get("rejection_reason") or "").strip() or None
 
-        # reject_resolution now handles both: status change + member email
+        logger.info("POST /reject-resolution | ticket_id=%s | has_reason=%s", data["ticket_id"], rejection_reason is not None)
+
         reject_resolution(
             ticket_id=data["ticket_id"],
             supabase_uuid=supabase_uuid,
             rejection_reason=rejection_reason,
         )
 
-        # Persist rejection reason as a comment (unchanged logic)
         if rejection_reason:
             conn = get_conn()
             cur  = conn.cursor()
@@ -233,7 +259,8 @@ def reject_resolution_endpoint():
         return {"message": "Resolution rejected. Ticket reassigned."}, 200
 
     except Exception as e:
-        return {"error": str(e)}, 400
+        logger.error("POST /reject-resolution failed | ticket_id=%s | error=%s", data.get("ticket_id"), e)
+        raise e
 
 
 @app.route("/tickets/<int:ticket_id>/comments", methods=["GET"])
@@ -289,7 +316,8 @@ def get_ticket_comments(ticket_id):
         return jsonify({"comments": comments}), 200
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 400
+        logger.error("GET /tickets/%s/comments failed | error=%s", ticket_id, e)
+        raise e
 
 
 @app.route("/tickets/<int:ticket_id>/comments", methods=["POST"])
@@ -346,7 +374,8 @@ def add_ticket_comment(ticket_id):
         }), 201
 
     except Exception as e:
-        return {"error": str(e)}, 400
+        logger.error("POST /tickets/%s/comments failed | error=%s", ticket_id, e)
+        raise e
 
 
 @app.route("/tickets", methods=["GET"])
@@ -383,7 +412,8 @@ def get_tickets_endpoint():
         return jsonify(result), 200
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 400
+        logger.error("GET /tickets failed | error=%s", e)
+        raise e
 
 
 @app.route("/analytics", methods=["GET"])
@@ -454,6 +484,8 @@ def reassign_ticket_endpoint():
     if not data or "ticket_id" not in data or "new_member_id" not in data or "lead_id" not in data:
         return {"error": "Invalid input"}, 400
     try:
+        logger.info("POST /reassign-ticket | ticket_id=%s | new_member_id=%s", data["ticket_id"], data["new_member_id"])
+
         reassign_ticket(
             ticket_id=data["ticket_id"],
             new_member_id=data["new_member_id"],
@@ -461,7 +493,8 @@ def reassign_ticket_endpoint():
         )
         return {"message": "Ticket reassigned successfully"}, 200
     except Exception as e:
-        return {"error": str(e)}, 400
+        logger.error("POST /reassign-ticket failed | ticket_id=%s | error=%s", data.get("ticket_id"), e)
+        raise e
 
 
 @app.route("/analytics/sla-comparison", methods=["GET"])
@@ -499,9 +532,18 @@ def get_me():
         return {"role": "unknown"}, 403
 
     except Exception as e:
-        print("ERROR IN /me:", str(e))
-        return {"error": str(e)}, 400
+        logger.error("GET /me failed | error=%s", e)
+        raise e
+    
+@app.errorhandler(Exception)
+def handle_exception(e):
+    logger.exception("Unhandled exception occurred")  # better logging
+
+    return jsonify({
+        "error": "Internal Server Error"
+    }), 500
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000, debug=True)
+    logger.info("Starting IT Ticketing System backend on port 8000")
+    app.run(host="0.0.0.0", port=8000, debug=os.getenv("FLASK_ENV") == "development")

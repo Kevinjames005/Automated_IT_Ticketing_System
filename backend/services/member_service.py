@@ -1,8 +1,13 @@
+import logging
 from db import get_conn, release_conn
 from services.notification_service import notify_ticket_resolved
 
+logger = logging.getLogger(__name__)
+
 
 def start_ticket(ticket_id: int, member_id: int):
+
+    logger.info("Starting ticket | ticket_id=%s | member_id=%s", ticket_id, member_id)
 
     conn = get_conn()
     cur = conn.cursor()
@@ -50,10 +55,12 @@ def start_ticket(ticket_id: int, member_id: int):
         )
 
         conn.commit()
+        logger.info("Ticket started | ticket_id=%s | member_id=%s", ticket_id, member_id)
 
     except Exception as e:
         conn.rollback()
-        raise e
+        logger.error("Failed to start ticket | ticket_id=%s | member_id=%s | error=%s", ticket_id, member_id, e)
+        raise
 
     finally:
         cur.close()
@@ -61,6 +68,8 @@ def start_ticket(ticket_id: int, member_id: int):
 
 
 def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
+
+    logger.info("Resolving ticket | ticket_id=%s | member_id=%s", ticket_id, member_id)
 
     conn = get_conn()
     cur = conn.cursor()
@@ -149,6 +158,10 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
         )
 
         conn.commit()
+        logger.info(
+            "Ticket resolved | ticket_id=%s | member_id=%s | resolution_id=%s",
+            ticket_id, member_id, resolution_id
+        )
 
         # ── Fetch reporter info and notify ───────────────────────────────────
         cur.execute(
@@ -165,7 +178,6 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
 
         if row:
             reporter_email, reporter_name, subject = row
-            # 📧 Notify reporter: ticket resolved
             notify_ticket_resolved(
                 to_email=reporter_email,
                 reporter_name=reporter_name,
@@ -173,12 +185,15 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
                 subject=subject,
                 resolution_text=resolution_text,
             )
+        else:
+            logger.warning("Could not fetch reporter info for resolved notification | ticket_id=%s", ticket_id)
 
         return resolution_id
 
     except Exception as e:
         conn.rollback()
-        raise e
+        logger.error("Failed to resolve ticket | ticket_id=%s | member_id=%s | error=%s", ticket_id, member_id, e)
+        raise
 
     finally:
         cur.close()

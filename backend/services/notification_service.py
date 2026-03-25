@@ -13,10 +13,13 @@ Environment variables required (.env):
 """
 
 import os
+import logging
 import resend
 from dotenv import load_dotenv
 
 load_dotenv()
+
+logger = logging.getLogger(__name__)
 
 resend.api_key = os.getenv("RESEND_API_KEY")
 
@@ -154,10 +157,10 @@ def _send(to: str, subject: str, html: str) -> bool:
             "subject": subject,
             "html":    html,
         })
+        logger.info("Email sent successfully | to=%s | subject=%s", to, subject)
         return True
     except Exception as exc:
-        # Log but never crash the main request because of email failure
-        print(f"[notification_service] Failed to send email to {to}: {exc}")
+        logger.error("Failed to send email | to=%s | subject=%s | error=%s", to, subject, exc)
         return False
 
 
@@ -173,6 +176,8 @@ def notify_ticket_created(
     category: str,
     priority: str,
 ):
+    logger.info("Sending ticket_created email | ticket_id=%s | to=%s", ticket_id, to_email)
+
     priority_color = PRIORITY_COLOR.get(priority.lower(), "#718096")
 
     rows = (
@@ -227,6 +232,8 @@ def notify_member_assigned(
     priority: str,
     assigned_by: str,
 ):
+    logger.info("Sending member_assigned email | ticket_id=%s | to=%s", ticket_id, to_email)
+
     priority_color = PRIORITY_COLOR.get(priority.lower(), "#718096")
 
     rows = (
@@ -247,7 +254,7 @@ def notify_member_assigned(
       Please review the details below and begin working on it as soon as possible.
     </p>
     {_ticket_info_table(rows)}
-    <p style="color:#E53E3E; font-size:13px; font-weight:600; margin:0 0 4px;">
+    <p style="color:#E53E3E; font-size:13px; font-weight:600; margin:0;">
       ⏱ Please check your SLA deadline and prioritise accordingly.
     </p>
     """
@@ -277,6 +284,8 @@ def notify_user_ticket_assigned(
     subject: str,
     priority: str,
 ):
+    logger.info("Sending user_ticket_assigned email | ticket_id=%s | to=%s", ticket_id, to_email)
+
     priority_color = PRIORITY_COLOR.get(priority.lower(), "#718096")
 
     rows = (
@@ -325,6 +334,8 @@ def notify_ticket_resolved(
     subject: str,
     resolution_text: str,
 ):
+    logger.info("Sending ticket_resolved email | ticket_id=%s | to=%s", ticket_id, to_email)
+
     body = f"""
     <p style="color:#4A5568; font-size:15px; line-height:1.7; margin:0 0 20px;">
       Hi <strong>{reporter_name or 'there'}</strong>,<br/><br/>
@@ -382,6 +393,8 @@ def notify_ticket_closed(
     ticket_id: int,
     subject: str,
 ):
+    logger.info("Sending ticket_closed email | ticket_id=%s | to=%s", ticket_id, to_email)
+
     body = f"""
     <p style="color:#4A5568; font-size:15px; line-height:1.7; margin:0 0 20px;">
       Hi <strong>{reporter_name or 'there'}</strong>,<br/><br/>
@@ -430,6 +443,8 @@ def notify_auto_resolved(
     original_subject: str,
     resolution_text: str,
 ):
+    logger.info("Sending auto_resolved email | to=%s | subject=%s", to_email, original_subject)
+
     body = f"""
     <p style="color:#4A5568; font-size:15px; line-height:1.7; margin:0 0 20px;">
       Hi <strong>{reporter_name or 'there'}</strong>,<br/><br/>
@@ -484,6 +499,8 @@ def notify_member_resolution_rejected(
     subject: str,
     rejection_reason: str = None,
 ):
+    logger.info("Sending resolution_rejected email | ticket_id=%s | to=%s", ticket_id, to_email)
+
     reason_block = ""
     if rejection_reason:
         reason_block = f"""

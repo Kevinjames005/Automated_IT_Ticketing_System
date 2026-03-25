@@ -1,6 +1,16 @@
 import time
+import logging
 from db import get_conn, release_conn
 from ml.embeddings import get_embedding
+
+# ── Logging configuration for standalone worker process ──────────────────────
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s  %(levelname)-8s  %(name)s  %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+logger = logging.getLogger(__name__)
+# ─────────────────────────────────────────────────────────────────────────────
 
 
 def process_pending_embeddings():
@@ -27,6 +37,8 @@ def process_pending_embeddings():
             return False
 
         article_id, content = article
+
+        logger.info("Processing embedding | article_id=%s", article_id)
 
         # Mark as processing
         cur.execute(
@@ -59,24 +71,28 @@ def process_pending_embeddings():
         )
 
         conn.commit()
+        logger.info("Embedding completed | article_id=%s", article_id)
         return True
 
     except Exception as e:
         conn.rollback()
+        logger.error("Embedding failed | article_id=%s | error=%s", locals().get("article_id"), e)
 
-        # mark failed
         if 'article_id' in locals():
-            cur.execute(
-                """
-                UPDATE knowledge_base_articles
-                SET embedding_status = 'failed'
-                WHERE article_id = %s;
-                """,
-                (article_id,)
-            )
-            conn.commit()
+            try:
+                cur.execute(
+                    """
+                    UPDATE knowledge_base_articles
+                    SET embedding_status = 'failed'
+                    WHERE article_id = %s;
+                    """,
+                    (article_id,)
+                )
+                conn.commit()
+            except Exception as mark_err:
+                logger.error("Failed to mark embedding as failed | article_id=%s | error=%s", article_id, mark_err)
 
-        raise e
+        raise
 
     finally:
         cur.close()
@@ -84,7 +100,12 @@ def process_pending_embeddings():
 
 
 if __name__ == "__main__":
+    logger.info("Embedding worker started")
     while True:
-        processed = process_pending_embeddings()
-        if not processed:
-            time.sleep(5)
+        try:
+            processed = process_pending_embeddings()
+            if not processed:
+                time.sleep(5)
+        except Exception as e:
+            logger.error("Embedding worker encountered an error | error=%s | retrying in 10s", e)
+            time.sleep(10)
