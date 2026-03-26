@@ -128,17 +128,34 @@ def assign_ticket(ticket_id: int, member_id: int, supabase_uuid: str):
         release_conn(conn)
 
 
-def reassign_ticket(ticket_id: int, new_member_id: int, lead_id: int):
+def reassign_ticket(ticket_id: int, new_member_id: int, supabase_uuid: str):
     """
     Reassigns a Resolved ticket to a different (or same) member.
     """
 
-    logger.info("Reassigning ticket | ticket_id=%s | new_member_id=%s | lead_id=%s", ticket_id, new_member_id, lead_id)
+    logger.info("Reassigning ticket | ticket_id=%s | new_member_id=%s", ticket_id, new_member_id)
 
     conn = get_conn()
     cur = conn.cursor()
 
     try:
+        # Resolve supabase_uuid → lead_id + lead name
+        cur.execute(
+            """
+            SELECT lead_id, name
+            FROM team_leads
+            WHERE supabase_user_id = %s;
+            """,
+            (supabase_uuid,)
+        )
+
+        lead_row = cur.fetchone()
+
+        if not lead_row:
+            raise Exception("Unauthorized: not a team lead")
+
+        lead_id, lead_name = lead_row
+
         # Lock ticket
         cur.execute(
             "SELECT status FROM tickets WHERE ticket_id = %s FOR UPDATE;",
@@ -161,10 +178,6 @@ def reassign_ticket(ticket_id: int, new_member_id: int, lead_id: int):
             raise Exception("This member does not belong to this team lead")
 
         new_member_name, new_member_email = member_row
-
-        cur.execute("SELECT name FROM team_leads WHERE lead_id = %s;", (lead_id,))
-        lead_row = cur.fetchone()
-        lead_name = lead_row[0] if lead_row else "Team Lead"
 
         cur.execute(
             """

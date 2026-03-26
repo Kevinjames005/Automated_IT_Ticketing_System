@@ -4,20 +4,22 @@ def get_category_id(category_name: str):
     conn = get_conn()
     cur = conn.cursor()
 
-    cur.execute(
-        "SELECT category_id FROM categories WHERE LOWER(name) = LOWER(%s);",
-        (category_name,)
-    )
+    try:
+        cur.execute(
+            "SELECT category_id FROM categories WHERE LOWER(name) = LOWER(%s);",
+            (category_name,)
+        )
 
-    result = cur.fetchone()
+        result = cur.fetchone()
 
-    cur.close()
-    release_conn(conn)
+        if result:
+            return result[0]
+        else:
+            raise Exception(f"Category '{category_name}' not found")
 
-    if result:
-        return result[0]
-    else:
-        raise Exception(f"Category '{category_name}' not found")
+    finally:
+        cur.close()
+        release_conn(conn)
 
 def create_ticket(email_id: int, category_id: int, priority: str):
     """
@@ -53,4 +55,3 @@ def create_ticket(email_id: int, category_id: int, priority: str):
     finally:
         cur.close()
         release_conn(conn)
-

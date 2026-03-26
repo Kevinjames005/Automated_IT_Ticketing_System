@@ -32,8 +32,10 @@ logger = logging.getLogger(__name__)
 # ─────────────────────────────────────────────────────────────────────────────
 
 app = Flask(__name__)
+allowed = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+
 CORS(app, resources={r"/*": {
-    "origins": ["http://localhost:5173"],
+    "origins": [o.strip() for o in allowed],
     "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     "allow_headers": ["Content-Type", "Authorization"],
     "supports_credentials": True
@@ -386,7 +388,7 @@ def get_tickets_endpoint():
         priority = request.args.get("priority")
         search   = request.args.get("search", "").strip() or None
         page     = int(request.args.get("page",  1))
-        limit    = int(request.args.get("limit", 20))
+        limit    = min(int(request.args.get("limit", 20)), 100)
 
         range_param = request.args.get("range")
         member_id = request.args.get("member_id")
@@ -481,15 +483,19 @@ def analytics_sla_trend():
 @require_auth
 def reassign_ticket_endpoint():
     data = request.get_json()
-    if not data or "ticket_id" not in data or "new_member_id" not in data or "lead_id" not in data:
+    if not data or "ticket_id" not in data or "new_member_id" not in data:
         return {"error": "Invalid input"}, 400
     try:
+        supabase_uuid = request.user.get("id")
+        if not supabase_uuid:
+            return {"error": "Unauthorized"}, 403
+        
         logger.info("POST /reassign-ticket | ticket_id=%s | new_member_id=%s", data["ticket_id"], data["new_member_id"])
 
         reassign_ticket(
             ticket_id=data["ticket_id"],
             new_member_id=data["new_member_id"],
-            lead_id=data["lead_id"]
+            supabase_uuid=supabase_uuid
         )
         return {"message": "Ticket reassigned successfully"}, 200
     except Exception as e:
