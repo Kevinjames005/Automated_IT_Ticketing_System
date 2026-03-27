@@ -85,7 +85,7 @@ def _base_template(title: str, headline: str, body_html: str, ticket_id: int = N
           <td style="background:#4F46E5; padding:24px 36px;">
             <h1 style="margin:0; color:#ffffff; font-size:20px; font-weight:700;
                         letter-spacing:-0.3px;">
-              IT Support Ticketing System
+              SACK Support System
             </h1>
           </td>
         </tr>
@@ -106,7 +106,7 @@ def _base_template(title: str, headline: str, body_html: str, ticket_id: int = N
           <td style="background:#F7FAFC; padding:20px 36px;
                      border-top:1px solid #E2E8F0; text-align:center;">
             <p style="margin:0; color:#A0AEC0; font-size:12px;">
-              This is an automated notification from the IT Support Ticketing System.<br/>
+              This is an automated notification from SACK Support.<br/>
               Please do not reply to this email.
             </p>
           </td>
@@ -413,7 +413,7 @@ def notify_ticket_closed(
     <div style="background:#FAF5FF; border-left:4px solid #553C9A;
                 border-radius:6px; padding:16px 20px; margin-bottom:24px;">
       <p style="margin:0; color:#44337A; font-size:14px; line-height:1.7;">
-        Thank you for reaching out to IT Support. If you encounter any further
+        Thank you for reaching out to SACK Support. If you encounter any further
         issues, please don't hesitate to submit a new request.
       </p>
     </div>
@@ -466,7 +466,7 @@ def notify_auto_resolved(
         Solution
       </p>
       <p style="margin:0; color:#2D3748; font-size:14px; line-height:1.7;">
-        {resolution_text}
+        {resolution_text.replace(chr(10), '<br/>')}
       </p>
     </div>
 
@@ -483,7 +483,7 @@ def notify_auto_resolved(
 
     return _send(
         to=to_email,
-        subject=f"[IT Support] Your Request Has Been Auto-Resolved – {original_subject[:50]}",
+        subject=f"[SACK Support] Your Request Has Been Auto-Resolved – {original_subject[:50]}",
         html=html,
     )
 

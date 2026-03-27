@@ -7,12 +7,33 @@ from services.notification_service import notify_ticket_created, notify_auto_res
 from ml.inference import predict
 from ml.vector_search import semantic_search
 from ml.rule_engine import rule_based_override
+from ml.refine import refine_resolution          # ← NEW import
 from db import get_conn, release_conn
+import re
 
 logger = logging.getLogger(__name__)
 
 
 def process_email(subject: str, body: str, sender_email: str, sender_name: str = None):
+
+    def extract_email(raw):
+        match = re.search(r"<(.+?)>", raw)
+        return match.group(1) if match else raw
+
+    def extract_name(raw):
+        match = re.match(r"(.*?)\s*<", raw)
+        return match.group(1).strip() if match else raw
+
+    # CLEAN INPUT
+    clean_email = extract_email(sender_email)
+    clean_name  = extract_name(sender_email)
+    if "@" in clean_name:        # no display name found
+        clean_name = None
+
+    sender_email = clean_email
+    sender_name  = clean_name
+
+
     """
     Orchestrates the entire intake pipeline.
     """
@@ -25,7 +46,7 @@ def process_email(subject: str, body: str, sender_email: str, sender_name: str =
 
     # 2️⃣ Duplicate check
     conn = get_conn()
-    cur = conn.cursor()
+    cur  = conn.cursor()
     cur.execute("""
         SELECT er.email_id, t.ticket_id
         FROM email_requests er
@@ -59,9 +80,9 @@ def process_email(subject: str, body: str, sender_email: str, sender_name: str =
     override = rule_based_override(subject, body)
 
     if override:
-        category_name = override["category"]["value"]
+        category_name  = override["category"]["value"]
         priority_value = override["priority"]["value"]
-        confidence = override["priority"]["confidence"]
+        confidence     = override["priority"]["confidence"]
 
         logger.info(
             "Rule engine matched | email_id=%s | category=%s | priority=%s | confidence=%.2f",
@@ -105,6 +126,18 @@ def process_email(subject: str, body: str, sender_email: str, sender_name: str =
             email_id, vector_result["similarity"]
         )
 
+        # ── NEW: refine the raw article into a friendly reply ──────────────
+        user_question = f"{subject}\n\n{body}"
+        raw_article   = vector_result["content"]
+
+        refined_reply = refine_resolution(
+            user_question=user_question,
+            raw_article=raw_article,
+            user_name=sender_name
+        )
+        logger.info("Resolution refined | email_id=%s", email_id)
+        # ───────────────────────────────────────────────────────────────────
+
         store_ai_analysis(
             email_id=email_id,
             is_user_solvable=True,
@@ -117,21 +150,21 @@ def process_email(subject: str, body: str, sender_email: str, sender_name: str =
             to_email=sender_email,
             reporter_name=sender_name,
             original_subject=subject,
-            resolution_text=vector_result["content"],
+            resolution_text=refined_reply,    # ← refined reply, not raw article
         )
 
         return {
             "auto_resolved": True,
-            "resolution": vector_result["content"],
-            "similarity": vector_result["similarity"]
+            "resolution":    refined_reply,
+            "similarity":    vector_result["similarity"]
         }
 
     # 6️⃣ ML classification
     result = predict(subject, body)
 
-    category_name = result["category"]["value"]
+    category_name  = result["category"]["value"]
     priority_value = result["priority"]["value"]
-    confidence = max(result["category"]["confidence"], result["priority"]["confidence"])
+    confidence     = max(result["category"]["confidence"], result["priority"]["confidence"])
 
     logger.info(
         "ML model classified email | email_id=%s | category=%s | priority=%s | confidence=%.2f",
@@ -162,8 +195,8 @@ def process_email(subject: str, body: str, sender_email: str, sender_name: str =
 
     return {
         "ticket_created": True,
-        "ticket_id": ticket_id,
-        "source": "model",
-        "category": category_name,
-        "priority": priority_value
+        "ticket_id":      ticket_id,
+        "source":         "model",
+        "category":       category_name,
+        "priority":       priority_value
     }

@@ -17,6 +17,14 @@ def semantic_search(text: str, threshold: float = 0.80):
     cur = conn.cursor()
 
     try:
+        # <=> is the pgvector cosine distance operator.
+        # Supabase's HNSW index (created with vector_cosine_ops) is automatically
+        # used by the query planner when you ORDER BY this operator — no extra
+        # hints needed. Make sure your index was created like:
+        #
+        #   CREATE INDEX ON knowledge_base_articles
+        #   USING hnsw (embedding vector_cosine_ops);
+        #
         query = """
         SELECT article_id, title, content,
                1 - (embedding <=> %s::vector) AS similarity
@@ -34,14 +42,15 @@ def semantic_search(text: str, threshold: float = 0.80):
 
             if similarity >= threshold:
                 logger.info(
-                    "Semantic match found | article_id=%s | similarity=%.4f | threshold=%.2f",
-                    article_id, similarity, threshold
+                    "Semantic match found | article_id=%s | title=%s | similarity=%.4f | threshold=%.2f",
+                    article_id, title, similarity, threshold
                 )
                 return {
-                    "resolved": True,
-                    "article_id": article_id,
-                    "content": content,
-                    "similarity": similarity
+                    "resolved":    True,
+                    "article_id":  article_id,
+                    "title":       title,       # ← now passed through
+                    "content":     content,
+                    "similarity":  similarity
                 }
             else:
                 logger.info(
