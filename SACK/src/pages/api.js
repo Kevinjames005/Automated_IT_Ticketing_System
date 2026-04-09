@@ -75,7 +75,7 @@ export function startTicket({ ticket_id, member_id }) {
 }
 
 // ── Resolve Ticket (member: In Progress → Resolved) ───
-// This triggers the team lead approval queue automatically.
+// Resolution document is always saved. KB decision is made by lead during approval.
 export function resolveTicket({ ticket_id, member_id, resolution_text }) {
   return apiFetch("/resolve-ticket", {
     method: "POST",
@@ -119,12 +119,13 @@ export function fetchMemberAnalytics(range = "7days") {
   return apiFetch(`/analytics/members?range=${range}`);
 }
 
-export function fetchPriorityBreakdown() {
-  return apiFetch("/analytics/priority");
+// ── Fixed: range is now passed so charts filter correctly when switching 7/30 days
+export function fetchPriorityBreakdown(range = "7days") {
+  return apiFetch(`/analytics/priority?range=${range}`);
 }
 
-export function fetchCategoryBreakdown() {
-  return apiFetch("/analytics/categories");
+export function fetchCategoryBreakdown(range = "7days") {
+  return apiFetch(`/analytics/categories?range=${range}`);
 }
 
 export function fetchSlaTrend(days = 7) {
@@ -136,8 +137,6 @@ export function fetchSlaComparison(days = 7) {
 }
 
 export { apiFetch };
-
-// Add this function to your existing api.js, alongside the other exports:
 
 export function reassignTicket({ ticket_id, new_member_id, lead_id }) {
   return apiFetch("/reassign-ticket", {

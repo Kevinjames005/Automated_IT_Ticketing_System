@@ -13,6 +13,13 @@ def semantic_search(text: str, threshold: float = 0.80):
         logger.error("Embedding generation failed — skipping semantic search")
         return {"resolved": False}
 
+    # Build the pgvector literal directly and interpolate it into the SQL
+    # as a plain string (not a psycopg2 parameter). When passed as a %s
+    # parameter, psycopg2 wraps the string in quotes which can interfere
+    # with pgvector's parser and silently produce a zero vector, causing
+    # similarity scores of 0.0. Using an f-string bypasses that quoting.
+    embedding_str = "[" + ",".join(map(str, embedding)) + "]"
+
     conn = get_conn()
     cur = conn.cursor()
 
@@ -25,15 +32,15 @@ def semantic_search(text: str, threshold: float = 0.80):
         #   CREATE INDEX ON knowledge_base_articles
         #   USING hnsw (embedding vector_cosine_ops);
         #
-        query = """
+        query = f"""
         SELECT article_id, title, content,
-               1 - (embedding <=> %s::vector) AS similarity
+               1 - (embedding <=> '{embedding_str}'::vector) AS similarity
         FROM knowledge_base_articles
         ORDER BY similarity DESC
         LIMIT 1;
         """
 
-        cur.execute(query, (embedding,))
+        cur.execute(query)  # no parameter — embedding is already in the query
         result = cur.fetchone()
 
         if result:
@@ -48,7 +55,7 @@ def semantic_search(text: str, threshold: float = 0.80):
                 return {
                     "resolved":    True,
                     "article_id":  article_id,
-                    "title":       title,       # ← now passed through
+                    "title":       title,
                     "content":     content,
                     "similarity":  similarity
                 }

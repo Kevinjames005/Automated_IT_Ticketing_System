@@ -56,18 +56,29 @@ def process_pending_embeddings():
         # Generate embedding outside transaction
         embedding = get_embedding(content)
 
+        # Explicitly check for None — get_embedding() catches exceptions
+        # internally and returns None on failure. Without this check, None
+        # gets written to the DB as NULL and the row is wrongly marked
+        # 'completed' with no vector stored.
+        if embedding is None:
+            raise RuntimeError(f"get_embedding() returned None for article_id={article_id}")
+
+        embedding_str = "[" + ",".join(map(str, embedding)) + "]"
+
         conn = get_conn()
         cur = conn.cursor()
 
-        # Update record with embedding
+        # Update record with embedding using f-string to avoid psycopg2
+        # quoting the vector literal as a plain string, which causes pgvector
+        # to silently produce a zero vector and similarity scores of 0.0.
         cur.execute(
-            """
+            f"""
             UPDATE knowledge_base_articles
-            SET embedding = %s,
+            SET embedding = '{embedding_str}'::vector,
                 embedding_status = 'completed'
             WHERE article_id = %s;
             """,
-            (embedding, article_id)
+            (article_id,)
         )
 
         conn.commit()

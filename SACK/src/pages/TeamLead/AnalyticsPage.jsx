@@ -197,8 +197,8 @@ export default function AnalyticsPage() {
     try {
       const [kpiRes, prioRes, catRes, trendRes, compRes] = await Promise.allSettled([
         fetchAnalytics(range),
-        fetchPriorityBreakdown(),
-        fetchCategoryBreakdown(),
+        fetchPriorityBreakdown(range),
+        fetchCategoryBreakdown(range),
         fetchSlaTrend(days),
         fetchSlaComparison(days),
       ]);

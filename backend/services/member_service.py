@@ -110,7 +110,7 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
         if current_status != "In Progress":
             raise Exception("Only In Progress tickets can be resolved")
 
-        # 1️⃣ Insert resolution document
+        # 1️⃣ Insert resolution document (always saved, KB decision is made by lead later)
         cur.execute(
             """
             INSERT INTO resolution_documents (ticket_id, content)
@@ -122,21 +122,7 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
 
         resolution_id = cur.fetchone()[0]
 
-        # 2️⃣ Insert into knowledge_base_articles
-        cur.execute(
-            """
-            INSERT INTO knowledge_base_articles
-            (title, content, source_resolution_id, embedding, embedding_status)
-            VALUES (%s, %s, %s, NULL, 'pending');
-            """,
-            (
-                f"Resolution for Ticket #{ticket_id} [{priority}]",
-                resolution_text,
-                resolution_id,
-            )
-        )
-
-        # 3️⃣ Update ticket status → Resolved
+        # 2️⃣ Update ticket status → Resolved
         cur.execute(
             """
             UPDATE tickets
@@ -147,7 +133,7 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
             (ticket_id,)
         )
 
-        # 4️⃣ Log status history
+        # 3️⃣ Log status history
         cur.execute(
             """
             INSERT INTO ticket_status_history
@@ -193,6 +179,114 @@ def resolve_ticket(ticket_id: int, member_id: int, resolution_text: str):
     except Exception as e:
         conn.rollback()
         logger.error("Failed to resolve ticket | ticket_id=%s | member_id=%s | error=%s", ticket_id, member_id, e)
+        raise
+
+    finally:
+        cur.close()
+        release_conn(conn)
+
+
+def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool = False):
+    """
+    Called by the team lead when approving a resolved ticket.
+    If add_to_kb is True, the resolution document is published to the knowledge base.
+    """
+
+    logger.info("Approving resolution | ticket_id=%s | lead_id=%s | add_to_kb=%s", ticket_id, lead_id, add_to_kb)
+
+    conn = get_conn()
+    cur = conn.cursor()
+
+    try:
+        # Fetch the latest resolution document for this ticket
+        cur.execute(
+            """
+            SELECT rd.resolution_id, rd.content, t.priority, t.status
+            FROM resolution_documents rd
+            JOIN tickets t ON t.ticket_id = rd.ticket_id
+            WHERE rd.ticket_id = %s
+            ORDER BY rd.created_at DESC
+            LIMIT 1;
+            """,
+            (ticket_id,)
+        )
+
+        row = cur.fetchone()
+
+        if not row:
+            raise Exception("No resolution document found for this ticket")
+
+        resolution_id, content, priority, status = row
+
+        if status != "Resolved":
+            raise Exception("Only resolved tickets can be approved")
+
+        # 1️⃣ Mark resolution as approved
+        cur.execute(
+            """
+            UPDATE resolution_documents
+            SET approved_by = %s
+            WHERE resolution_id = %s;
+            """,
+            (lead_id, resolution_id)
+        )
+
+        # 2️⃣ Update ticket status → Closed
+        cur.execute(
+            """
+            UPDATE tickets
+            SET status = 'Closed',
+                closed_at = COALESCE(closed_at, NOW())
+            WHERE ticket_id = %s;
+            """,
+            (ticket_id,)
+        )
+
+        # 3️⃣ Log status history
+        cur.execute(
+            """
+            INSERT INTO ticket_status_history
+            (ticket_id, old_status, new_status, changed_by)
+            VALUES (%s, %s, %s, %s);
+            """,
+            (ticket_id, "Resolved", "Closed", lead_id)
+        )
+
+        # 4️⃣ Only add to KB if lead explicitly checked "Add to KB"
+        if add_to_kb:
+            cur.execute(
+                """
+                INSERT INTO knowledge_base_articles
+                (title, content, source_resolution_id, embedding, embedding_status)
+                VALUES (%s, %s, %s, NULL, 'pending');
+                """,
+                (
+                    f"Resolution for Ticket #{ticket_id} [{priority}]",
+                    content,
+                    resolution_id,
+                )
+            )
+            logger.info(
+                "Resolution added to knowledge base | ticket_id=%s | resolution_id=%s",
+                ticket_id, resolution_id
+            )
+        else:
+            logger.info(
+                "Resolution NOT added to knowledge base (add_to_kb=False) | ticket_id=%s",
+                ticket_id
+            )
+
+        conn.commit()
+        logger.info("Resolution approved | ticket_id=%s | lead_id=%s", ticket_id, lead_id)
+
+        return {"resolution_id": resolution_id, "added_to_kb": add_to_kb}
+
+    except Exception as e:
+        conn.rollback()
+        logger.error(
+            "Failed to approve resolution | ticket_id=%s | lead_id=%s | error=%s",
+            ticket_id, lead_id, e
+        )
         raise
 
     finally:

@@ -57,11 +57,12 @@ def get_ticket_detail(ticket_id: int):
             is_user_solvable
         ) = ticket
 
-        # SLA Calculation
+        # ── SLA Calculation — correct argument order: (priority, created_at, assigned_at, resolved_at, closed_at)
         sla_data = calculate_sla_status(
             priority,
             created_at,
             assigned_at,
+            resolved_at,   # was previously missing — closed_at was passed here instead
             closed_at
         )
 

@@ -10,7 +10,10 @@ def get_model():
     global _model
     if _model is None:
         logger.info("Loading embedding model: thenlper/gte-small")
-        _model = SentenceTransformer("thenlper/gte-small")
+        # Force CPU inference to avoid CUBLAS_STATUS_NOT_SUPPORTED on GPUs
+        # that don't support the required cuBLAS operations for this model.
+        # gte-small is lightweight enough that CPU inference is fast.
+        _model = SentenceTransformer("thenlper/gte-small", device="cpu")
         logger.info("Embedding model loaded successfully")
     return _model
 
