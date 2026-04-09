@@ -3,17 +3,17 @@ from services.user_service import get_or_create_user
 from services.email_service import create_email_request
 from services.ai_service import store_ai_analysis
 from services.ticket_service import create_ticket, get_category_id
-from services.notification_service import notify_ticket_created, notify_auto_resolved
-from ml.inference import predict
-from ml.vector_search import semantic_search
-from ml.rule_engine import rule_based_override
-from ml.refine import refine_resolution          # ← NEW import
+from services.notification_service import notify_ticket_created, notify_auto_resolved        # ← NEW import
 from db import get_conn, release_conn
 import re
 logger = logging.getLogger(__name__)
 
 
 def process_email(subject: str, body: str, sender_email: str, sender_name: str = None):
+    from ml.inference import predict
+    from ml.vector_search import semantic_search
+    from ml.rule_engine import rule_based_override
+    from ml.refine import refine_resolution  
 
     def extract_email(raw):
         match = re.search(r"<(.+?)>", raw)
