@@ -130,7 +130,6 @@ def approve_resolution(ticket_id: int, supabase_uuid: str, add_to_kb: bool):
         conn.commit()
         logger.info("Ticket closed | ticket_id=%s | lead_id=%s", ticket_id, lead_id)
 
-        # ── Fetch reporter info and notify ───────────────────────────────────
         cur.execute(
             """
             SELECT u.email, u.name, er.subject
@@ -241,10 +240,21 @@ def reject_resolution(ticket_id: int, supabase_uuid: str, rejection_reason: str 
             (ticket_id, current_status, "Assigned", lead_id)
         )
 
+        # ── Persist rejection reason as a comment ────────────────────────────
+        if rejection_reason:
+            cur.execute(
+                """
+                INSERT INTO ticket_comments
+                    (ticket_id, author_id, author_role, comment_type, body)
+                VALUES (%s, %s, 'lead', 'rejection_reason', %s)
+                """,
+                (ticket_id, lead_id, rejection_reason)
+            )
+            logger.info("Rejection reason saved as comment | ticket_id=%s", ticket_id)
+
         conn.commit()
         logger.info("Resolution rejected | ticket_id=%s | lead_id=%s", ticket_id, lead_id)
 
-        # ── Fetch member info and notify ─────────────────────────────────────
         cur.execute(
             """
             SELECT tm.email, tm.name, er.subject

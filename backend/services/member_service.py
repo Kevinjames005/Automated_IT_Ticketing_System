@@ -292,3 +292,29 @@ def approve_resolution(ticket_id: int, lead_id: int, add_to_kb: bool = False):
     finally:
         cur.close()
         release_conn(conn)
+
+def get_all_members():
+    """
+    Returns all team members ordered by name.
+    """
+    from db import get_conn, release_conn
+    import logging
+    logger = logging.getLogger(__name__)
+
+    conn = get_conn()
+    cur  = conn.cursor()
+
+    try:
+        cur.execute("""
+            SELECT member_id, name, lead_id, email
+            FROM team_members
+            ORDER BY name ASC;
+        """)
+        rows = cur.fetchall()
+        return [
+            {"member_id": row[0], "name": row[1], "lead_id": row[2], "email": row[3]}
+            for row in rows
+        ]
+    finally:
+        cur.close()
+        release_conn(conn)

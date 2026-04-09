@@ -1,7 +1,7 @@
 import logging
 from flask import Blueprint, request, jsonify
 from security.supabase_auth import require_auth
-from services.member_service import start_ticket, resolve_ticket
+from services.member_service import start_ticket, resolve_ticket, get_all_members
 
 logger = logging.getLogger(__name__)
 
@@ -12,25 +12,7 @@ member_bp = Blueprint("members", __name__)
 @require_auth
 def get_members_endpoint():
     try:
-        from db import get_conn, release_conn
-        conn = get_conn()
-        cur  = conn.cursor()
-
-        cur.execute("""
-            SELECT member_id, name, lead_id, email
-            FROM team_members
-            ORDER BY name ASC;
-        """)
-
-        rows = cur.fetchall()
-        cur.close()
-        release_conn(conn)
-
-        members = [
-            {"member_id": row[0], "name": row[1], "lead_id": row[2], "email": row[3]}
-            for row in rows
-        ]
-
+        members = get_all_members()
         return jsonify({"members": members}), 200
 
     except Exception as e:

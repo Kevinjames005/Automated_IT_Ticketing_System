@@ -16,25 +16,9 @@ def approve_resolution_endpoint():
         return {"error": "Invalid input"}, 400
 
     try:
-        from db import get_conn, release_conn
-
         supabase_uuid = request.user.get("id")
         if not supabase_uuid:
             return {"error": "Unauthorized"}, 403
-
-        # Verify the caller is actually a team lead
-        conn = get_conn()
-        cur  = conn.cursor()
-        cur.execute(
-            "SELECT lead_id FROM team_leads WHERE supabase_user_id::text = %s",
-            (supabase_uuid,)
-        )
-        row = cur.fetchone()
-        cur.close()
-        release_conn(conn)
-
-        if not row:
-            return {"error": "Lead not found"}, 403
 
         logger.info("POST /approve-resolution | ticket_id=%s", data["ticket_id"])
 
@@ -59,8 +43,6 @@ def reject_resolution_endpoint():
         return {"error": "Invalid input"}, 400
 
     try:
-        from db import get_conn, release_conn
-
         supabase_uuid = request.user.get("id")
         if not supabase_uuid:
             return {"error": "Unauthorized"}, 403
@@ -77,28 +59,6 @@ def reject_resolution_endpoint():
             supabase_uuid=supabase_uuid,
             rejection_reason=rejection_reason,
         )
-
-        # Persist the rejection reason as a comment if provided
-        if rejection_reason:
-            conn = get_conn()
-            cur  = conn.cursor()
-            cur.execute(
-                "SELECT lead_id FROM team_leads WHERE supabase_user_id::text = %s",
-                (supabase_uuid,)
-            )
-            row = cur.fetchone()
-            if row:
-                cur.execute(
-                    """
-                    INSERT INTO ticket_comments
-                        (ticket_id, author_id, author_role, comment_type, body)
-                    VALUES (%s, %s, 'lead', 'rejection_reason', %s)
-                    """,
-                    (data["ticket_id"], row[0], rejection_reason)
-                )
-                conn.commit()
-            cur.close()
-            release_conn(conn)
 
         return {"message": "Resolution rejected. Ticket reassigned."}, 200
 
